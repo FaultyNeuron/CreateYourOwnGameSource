@@ -7,6 +7,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3ebcadd-100e-4ae5-bffb-b416ee51a40c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/objectSettings/EnemySettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/EnvironmentSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/objectSettings/FloorSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/objectSettings/GoalSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/level/Level$1.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/level/Level.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/level/LevelBuilder.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/LevelSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/Main.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/objectSettings/ObjectSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/levelSettings/objectSettings/PlatformSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/PlayerSettings.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/util/RandomHolder.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/settings/Settings.class" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/objectSettings/EnemySettings.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/EnvironmentSettings.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/objectSettings/FloorSettings.java" />
@@ -14,13 +28,14 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/level/Level.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/level/LevelBuilder.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/LevelSettings.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/Main.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/objectSettings/ObjectSettings.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/levelSettings/objectSettings/PlatformSettings.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/PlayerSettings.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/util/RandomHolder.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/kinderuni/settings/Settings.java" />
       <change type="DELETED" beforePath="C:\Users\Georg\Desktop\KinderUni\out\production\KinderUni\kinderuni\desktop\Main.class" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\Georg\Desktop\KinderUni\src\kinderuni\desktop\Main.java" afterPath="$PROJECT_DIR$/src/kinderuni/Main.java" />
+      <change type="DELETED" beforePath="C:\Users\Georg\Desktop\KinderUni\src\kinderuni\desktop\Main.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/AbstractGameObject.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/AbstractGameObject.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/desktop/DesktopPainter.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/desktop/DesktopPainter.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/GameObject.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/GameObject.class" />
@@ -28,8 +43,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/desktop/GamePanel.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/desktop/GamePanel.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/GameWorld$State.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/GameWorld$State.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/GameWorld.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/GameWorld.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/LivingObject.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/LivingObject.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/solid/MovingPlatform.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/solid/MovingPlatform.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/graphics/Painter.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/graphics/Painter.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/PhysicsObject.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/PhysicsObject.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/solid/Platform.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/solid/Platform.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/Player.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/gameLogic/objects/Player.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/graphics/Screen.class" afterPath="$PROJECT_DIR$/out/production/KinderUni/kinderuni/graphics/Screen.class" />
@@ -113,10 +130,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kinderuni/gameLogic/objects/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4262295" vertical-offset="2309" max-vertical-offset="2907">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2309" max-vertical-offset="2907">
               <caret line="159" column="15" selection-start-line="159" selection-start-column="15" selection-end-line="159" selection-end-column="15" />
               <folding />
             </state>
@@ -158,11 +175,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/kinderuni/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="484" max-vertical-offset="1003">
-              <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.2568306" vertical-offset="297" max-vertical-offset="1003">
+              <caret line="23" column="78" selection-start-line="23" selection-start-column="78" selection-end-line="23" selection-end-column="78" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -249,9 +266,9 @@
         <option value="$PROJECT_DIR$/src/kinderuni/level/LevelBuilder.java" />
         <option value="$PROJECT_DIR$/src/kinderuni/gameLogic/objects/PhysicsObject.java" />
         <option value="$PROJECT_DIR$/src/kinderuni/settings/PlayerSettings.java" />
-        <option value="$PROJECT_DIR$/src/kinderuni/Main.java" />
         <option value="$PROJECT_DIR$/src/kinderuni/gameLogic/objects/LivingObject.java" />
         <option value="$PROJECT_DIR$/src/kinderuni/gameLogic/objects/Player.java" />
+        <option value="$PROJECT_DIR$/src/kinderuni/Main.java" />
       </list>
     </option>
   </component>
@@ -900,7 +917,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="483" max-vertical-offset="799">
           <caret line="38" column="25" selection-start-line="38" selection-start-column="25" selection-end-line="38" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -925,7 +942,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
           <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -943,60 +960,60 @@
         <state vertical-scroll-proportion="-6.642857" vertical-offset="3741" max-vertical-offset="4029">
           <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
           <folding>
-            <element signature="e#1018#1019#0" expanded="true" />
-            <element signature="e#1047#1048#0" expanded="true" />
-            <element signature="e#1089#1090#0" expanded="true" />
-            <element signature="e#1130#1131#0" expanded="true" />
-            <element signature="e#1172#1173#0" expanded="true" />
-            <element signature="e#1212#1213#0" expanded="true" />
-            <element signature="e#1267#1268#0" expanded="true" />
-            <element signature="e#1303#1304#0" expanded="true" />
-            <element signature="e#1442#1443#0" expanded="true" />
-            <element signature="e#1478#1479#0" expanded="true" />
-            <element signature="e#1525#1526#0" expanded="true" />
-            <element signature="e#1586#1587#0" expanded="true" />
-            <element signature="e#1636#1637#0" expanded="true" />
-            <element signature="e#1692#1693#0" expanded="true" />
-            <element signature="e#1747#1748#0" expanded="true" />
-            <element signature="e#1806#1807#0" expanded="true" />
-            <element signature="e#1840#1841#0" expanded="true" />
-            <element signature="e#1920#1921#0" expanded="true" />
-            <element signature="e#1952#1953#0" expanded="true" />
-            <element signature="e#2016#2017#0" expanded="true" />
-            <element signature="e#2056#2057#0" expanded="true" />
-            <element signature="e#2091#2092#0" expanded="true" />
-            <element signature="e#2146#2147#0" expanded="true" />
-            <element signature="e#2173#2174#0" expanded="true" />
-            <element signature="e#2345#2346#0" expanded="true" />
-            <element signature="e#2401#2402#0" expanded="true" />
-            <element signature="e#2427#2428#0" expanded="true" />
-            <element signature="e#2483#2484#0" expanded="true" />
-            <element signature="e#2523#2524#0" expanded="true" />
-            <element signature="e#2583#2584#0" expanded="true" />
-            <element signature="e#2866#2867#0" expanded="true" />
-            <element signature="e#2934#2935#0" expanded="true" />
-            <element signature="e#4754#4755#0" expanded="true" />
-            <element signature="e#4830#4831#0" expanded="true" />
-            <element signature="e#4897#4898#0" expanded="true" />
-            <element signature="e#4960#4961#0" expanded="true" />
-            <element signature="e#5016#5017#0" expanded="true" />
-            <element signature="e#5091#5092#0" expanded="true" />
-            <element signature="e#5157#5158#0" expanded="true" />
-            <element signature="e#5220#5221#0" expanded="true" />
-            <element signature="e#5530#5531#0" expanded="true" />
-            <element signature="e#5575#5576#0" expanded="true" />
-            <element signature="e#5632#5633#0" expanded="true" />
-            <element signature="e#5699#5700#0" expanded="true" />
-            <element signature="e#7012#7013#0" expanded="true" />
-            <element signature="e#7045#7046#0" expanded="true" />
-            <element signature="e#7075#7076#0" expanded="true" />
-            <element signature="e#7154#7155#0" expanded="true" />
-            <element signature="e#7194#7195#0" expanded="true" />
-            <element signature="e#7226#7227#0" expanded="true" />
-            <element signature="e#7260#7261#0" expanded="true" />
-            <element signature="e#7349#7350#0" expanded="true" />
-            <element signature="e#7402#7403#0" expanded="true" />
-            <element signature="e#7449#7450#0" expanded="true" />
+            <element signature="e#1018#1019#0" expanded="false" />
+            <element signature="e#1047#1048#0" expanded="false" />
+            <element signature="e#1089#1090#0" expanded="false" />
+            <element signature="e#1130#1131#0" expanded="false" />
+            <element signature="e#1172#1173#0" expanded="false" />
+            <element signature="e#1212#1213#0" expanded="false" />
+            <element signature="e#1267#1268#0" expanded="false" />
+            <element signature="e#1303#1304#0" expanded="false" />
+            <element signature="e#1442#1443#0" expanded="false" />
+            <element signature="e#1478#1479#0" expanded="false" />
+            <element signature="e#1525#1526#0" expanded="false" />
+            <element signature="e#1586#1587#0" expanded="false" />
+            <element signature="e#1636#1637#0" expanded="false" />
+            <element signature="e#1692#1693#0" expanded="false" />
+            <element signature="e#1747#1748#0" expanded="false" />
+            <element signature="e#1806#1807#0" expanded="false" />
+            <element signature="e#1840#1841#0" expanded="false" />
+            <element signature="e#1920#1921#0" expanded="false" />
+            <element signature="e#1952#1953#0" expanded="false" />
+            <element signature="e#2016#2017#0" expanded="false" />
+            <element signature="e#2056#2057#0" expanded="false" />
+            <element signature="e#2091#2092#0" expanded="false" />
+            <element signature="e#2146#2147#0" expanded="false" />
+            <element signature="e#2173#2174#0" expanded="false" />
+            <element signature="e#2345#2346#0" expanded="false" />
+            <element signature="e#2401#2402#0" expanded="false" />
+            <element signature="e#2427#2428#0" expanded="false" />
+            <element signature="e#2483#2484#0" expanded="false" />
+            <element signature="e#2523#2524#0" expanded="false" />
+            <element signature="e#2583#2584#0" expanded="false" />
+            <element signature="e#2866#2867#0" expanded="false" />
+            <element signature="e#2934#2935#0" expanded="false" />
+            <element signature="e#4754#4755#0" expanded="false" />
+            <element signature="e#4830#4831#0" expanded="false" />
+            <element signature="e#4897#4898#0" expanded="false" />
+            <element signature="e#4960#4961#0" expanded="false" />
+            <element signature="e#5016#5017#0" expanded="false" />
+            <element signature="e#5091#5092#0" expanded="false" />
+            <element signature="e#5157#5158#0" expanded="false" />
+            <element signature="e#5220#5221#0" expanded="false" />
+            <element signature="e#5530#5531#0" expanded="false" />
+            <element signature="e#5575#5576#0" expanded="false" />
+            <element signature="e#5632#5633#0" expanded="false" />
+            <element signature="e#5699#5700#0" expanded="false" />
+            <element signature="e#7012#7013#0" expanded="false" />
+            <element signature="e#7045#7046#0" expanded="false" />
+            <element signature="e#7075#7076#0" expanded="false" />
+            <element signature="e#7154#7155#0" expanded="false" />
+            <element signature="e#7194#7195#0" expanded="false" />
+            <element signature="e#7226#7227#0" expanded="false" />
+            <element signature="e#7260#7261#0" expanded="false" />
+            <element signature="e#7349#7350#0" expanded="false" />
+            <element signature="e#7402#7403#0" expanded="false" />
+            <element signature="e#7449#7450#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1113,7 +1130,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="14" max-vertical-offset="2193">
           <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1187,7 +1204,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="176" max-vertical-offset="748">
           <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1197,10 +1214,10 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
           <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
           <folding>
-            <element signature="e#304#305#0" expanded="true" />
-            <element signature="e#341#342#0" expanded="true" />
-            <element signature="e#394#395#0" expanded="true" />
-            <element signature="e#430#431#0" expanded="true" />
+            <element signature="e#304#305#0" expanded="false" />
+            <element signature="e#341#342#0" expanded="false" />
+            <element signature="e#394#395#0" expanded="false" />
+            <element signature="e#430#431#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1229,8 +1246,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="6" max-vertical-offset="646">
           <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
-            <element signature="e#802#803#0" expanded="true" />
-            <element signature="e#835#836#0" expanded="true" />
+            <element signature="e#802#803#0" expanded="false" />
+            <element signature="e#835#836#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1309,8 +1326,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
           <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
           <folding>
-            <element signature="e#705#706#0" expanded="true" />
-            <element signature="e#739#740#0" expanded="true" />
+            <element signature="e#705#706#0" expanded="false" />
+            <element signature="e#739#740#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1355,7 +1372,7 @@
         <state vertical-scroll-proportion="-10.107142" vertical-offset="907" max-vertical-offset="2023">
           <caret line="70" column="172" selection-start-line="70" selection-start-column="172" selection-end-line="70" selection-end-column="172" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1416,16 +1433,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kinderuni/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="484" max-vertical-offset="1003">
-          <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/kinderuni/gameLogic/objects/PhysicsObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="291" max-vertical-offset="2006">
@@ -1452,9 +1459,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kinderuni/gameLogic/objects/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4262295" vertical-offset="2309" max-vertical-offset="2907">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2309" max-vertical-offset="2907">
           <caret line="159" column="15" selection-start-line="159" selection-start-column="15" selection-end-line="159" selection-end-column="15" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kinderuni/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2568306" vertical-offset="297" max-vertical-offset="1003">
+          <caret line="23" column="78" selection-start-line="23" selection-start-column="78" selection-end-line="23" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

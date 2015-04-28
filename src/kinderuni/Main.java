@@ -21,7 +21,7 @@ public class Main {
         DesktopSystem system = new DesktopSystem();
         Screen screen = system.createScreen();
         int levelCounter = 0;
-        LevelSettings[] levelSettings = new LevelSettings[]{LevelSettings.ICE, LevelSettings.SPACE};
+        LevelSettings[] levelSettings = new LevelSettings[]{LevelSettings.STANDARD, LevelSettings.ICE, LevelSettings.SPACE};
         PlayerSettings playerSettings = PlayerSettings.DEFAULT;
         Player player = new Player(
                 null,
