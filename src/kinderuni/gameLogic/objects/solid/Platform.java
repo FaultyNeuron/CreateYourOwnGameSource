@@ -8,12 +8,16 @@ import kinderuni.gameLogic.GameWorld;
  * Created by Georg Plaz.
  */
 public class Platform extends SolidObject{
-    public Platform(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
+    private double friction;
+
+    public Platform(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld, double friction) {
         super(position, graphicsObject, gameWorld);
+        this.friction = friction;
     }
 
-    public Platform(DoubleTupel position, GraphicsObject graphicsObject) {
+    public Platform(DoubleTupel position, GraphicsObject graphicsObject, double friction) {
         super(position, graphicsObject);
+        this.friction = friction;
     }
 
     @Override
@@ -23,6 +27,6 @@ public class Platform extends SolidObject{
 
     @Override
     public double getFriction() {
-        return 0.3;
+        return friction;
     }
 }

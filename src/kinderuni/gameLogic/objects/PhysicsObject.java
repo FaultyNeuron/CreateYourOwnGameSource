@@ -18,6 +18,8 @@ import java.util.Set;
 public abstract class PhysicsObject extends AbstractGameObject {
     private DoubleTupel speed = DoubleTupel.ZEROS;
     private boolean inAir = true;
+//    private Direction2D movingDirection;
+//    private DoubleTupel movingSpeed;
 
     public PhysicsObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
         super(position, graphicsObject, gameWorld);
@@ -51,13 +53,18 @@ public abstract class PhysicsObject extends AbstractGameObject {
     @Override
     public void update(int time) {
         super.update(time);
+        accelerate(0, -getWorld().getGravity());
+        move(speed);
+//        System.out.println(getClass().getSimpleName()+" is moving "+speed);
+//        if(inAir) {
+//            System.out.println(getClass().getSimpleName() + " is in air " + inAir);
+//        }
         if(isSticking()){
-            speed = speed.div((1+getStickingTo().getFriction())*(1+getWorld().getAirFriction()), (1+getWorld().getAirFriction()));
+//            speed = speed.div((1+getStickingTo().getFriction())*(1+getWorld().getAirFriction()), (1+getWorld().getAirFriction()));
+            speed = speed.sub(speed.mult(getStickingTo().getFriction() + getWorld().getAirFriction(), getWorld().getAirFriction()));
         }else{
             speed = speed.div(1+getWorld().getAirFriction());
         }
-        accelerate(0, -getWorld().getGravity());
-        move(speed);
     }
 
     public void accelerate(double x, double y){

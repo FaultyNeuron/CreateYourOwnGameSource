@@ -17,12 +17,12 @@ import java.util.*;
 public class GameWorld {
     private static final double activeDistance = 100;
 //    private double airResistance = 0.99;
-    private double airFriction = 0.01;
-    private double gravity = 0.1;
+    private double airFriction;
+    private double gravity;
     private Box worldBounds;
     private Goal goal;
     private Player player;
-    private Screen renderScreen;
+//    private Screen renderScreen;
     private ModifiableBox activeBoundings;
     private State gameState;
     private int time=0;
@@ -42,11 +42,13 @@ public class GameWorld {
     private final Set<Enemy> enemiesActive = new LinkedHashSet<Enemy>();
     private final Set<Collectible> collectiblesActive = new LinkedHashSet<Collectible>();
 
-    public GameWorld(Box worldBounds, Screen renderScreen) {
+    public GameWorld(Box worldBounds, double screenWidth, double airFriction, double gravity) {
         this.worldBounds = worldBounds;
-        this.renderScreen = renderScreen;
-        this.activeBoundings = new FastAccessBox(renderScreen.getCenter(),
-                new DoubleTupel(renderScreen.getScreenWidth()+activeDistance, Double.POSITIVE_INFINITY));
+        this.airFriction = airFriction;
+        this.gravity = gravity;
+//        this.renderScreen = renderScreen;
+        this.activeBoundings = new FastAccessBox(DoubleTupel.ZEROS,
+                new DoubleTupel(screenWidth+activeDistance, Double.POSITIVE_INFINITY));
         gameState = State.RUNNING;
     }
 
@@ -55,8 +57,10 @@ public class GameWorld {
     }
 
     public void update(){
-        renderScreen.setCenter(player.getCenter());
-        activeBoundings.setCenter(renderScreen.getCenter());
+//        renderScreen.setCenter(player.getCenter());
+        if(player!=null){
+            activeBoundings.setCenter(player.getCenter());
+        }
 
         testActive(gameObjects, gameObjectsActive);
         testActive(solidObjects, solidObjectsActive);
@@ -67,17 +71,6 @@ public class GameWorld {
         for(GameObject gameObject : gameObjectsActive){
             if(!gameObject.isDestroyed()){
                 gameObject.initUpdateCycle();
-            }
-        }
-
-        if(player!=null) {
-            if (renderScreen.goRight()) {
-                player.moveRight();
-            } else if (renderScreen.goLeft()) {
-                player.moveLeft();
-            }
-            if (renderScreen.jump()) {
-                player.jump();
             }
         }
 
@@ -172,22 +165,22 @@ public class GameWorld {
     public void paint(Painter painter){
         synchronized (gameObjectsActive){
             for(GameObject gameObject : gameObjectsActive){
-                if(isOnScreen(gameObject) && !gameObject.isDestroyed()){
+                if(isOnScreen(gameObject, painter.getRenderScreen()) && !gameObject.isDestroyed()){
                     gameObject.paint(painter);
                 }
             }
         }
     }
 
-    public boolean isOnScreen(GameObject toTest){
-        return isOnScreen(toTest.getBoundingBox());
+    public boolean isOnScreen(GameObject toTest, Screen screen){
+        return isOnScreen(toTest.getBoundingBox(), screen);
     }
     public boolean isActive(GameObject toTest){
         return isActive(toTest.getBoundingBox());
     }
 
-    public boolean isOnScreen(Box box){
-        return box.collides(renderScreen.getScreenArea());
+    public boolean isOnScreen(Box box, Screen screen){
+        return box.collides(screen.getScreenArea());
     }
     public boolean isActive(Box box){
         return box.collides(activeBoundings);

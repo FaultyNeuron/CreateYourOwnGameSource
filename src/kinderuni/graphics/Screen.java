@@ -3,6 +3,7 @@ package kinderuni.graphics;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.GameWorld;
+import kinderuni.level.Level;
 
 /**
  * Created by Georg Plaz.
@@ -27,9 +28,9 @@ public interface Screen {
 
 //    public void paint(Painter painter);
 
-    public GameWorld getGameWorld();
+    public Level getLevel();
 
-    public void setGameWorld(GameWorld gameWorld);
+    public void setLevel(Level level);
 
     public boolean goRight();
     public boolean goLeft();

@@ -31,6 +31,7 @@ public class SolidObject extends AbstractGameObject {
         super.move(delta);
     }
 
+
     @Override
     public boolean isSolid() {
         return true;

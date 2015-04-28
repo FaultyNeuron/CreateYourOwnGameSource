@@ -45,7 +45,7 @@ public abstract class LivingObject extends PhysicsObject{
     public boolean takeDamage(int damage, LivingObject source){
         hp-=damage;
         if(hp<=0){
-            kill(source);
+            killedBy(source);
             return true;
         }
         return false;
@@ -53,10 +53,10 @@ public abstract class LivingObject extends PhysicsObject{
 
 
     public void kill(){
-        kill(null);
+        killedBy(null);
     }
 
-    public void kill(LivingObject source){
+    public void killedBy(LivingObject source){
         destroy();
     }
 

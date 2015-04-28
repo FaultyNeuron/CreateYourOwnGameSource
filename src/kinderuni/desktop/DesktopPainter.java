@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Created by Georg Plaz.
  */
-public class DesktopPainter extends Painter{
+public class DesktopPainter implements Painter{
     private final Graphics g;
     private Screen screen;
 
@@ -25,6 +25,11 @@ public class DesktopPainter extends Painter{
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
         DoubleTupel screenDelta = screen.getScreenDimensions().div(2, -2).sub(screen.getCenter());
         graphics.drawTo(g, abstractGameObject.getBoundingBox().move(screenDelta));
+    }
+
+    @Override
+    public Screen getRenderScreen() {
+        return screen;
     }
 
 }

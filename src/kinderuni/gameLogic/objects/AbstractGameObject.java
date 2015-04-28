@@ -99,6 +99,10 @@ public abstract class AbstractGameObject implements GameObject {
         return boundingBox;
     }
 
+    public void moveTo(DoubleTupel newPos){
+        move(newPos.sub(getCenter()));
+    }
+
     public void move(DoubleTupel delta){
         if(sticking!=null){
             for(GameObject stick : sticking){

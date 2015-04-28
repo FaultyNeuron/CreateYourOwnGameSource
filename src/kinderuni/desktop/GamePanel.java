@@ -6,6 +6,7 @@ import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
 import kinderuni.gameLogic.GameWorld;
+import kinderuni.level.Level;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class GamePanel extends JPanel implements Screen {
     private DoubleTupel center;
     private DoubleTupel dimensions;
     private Dimension dimensionsAwt;
-    private GameWorld gameWorld;
+    private Level level;
     private long lastPaintTime = 0;
 
     private int lives;
@@ -104,12 +105,12 @@ public class GamePanel extends JPanel implements Screen {
         repaint();
     }
 
-    public GameWorld getGameWorld() {
-        return gameWorld;
+    public Level getLevel() {
+        return level;
     }
 
-    public void setGameWorld(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     @Override
@@ -131,8 +132,8 @@ public class GamePanel extends JPanel implements Screen {
     public void paint(Graphics g) {
         super.paint(g);
         Painter painter = new DesktopPainter(g, this);
-        if(gameWorld!=null){
-            gameWorld.paint(painter);
+        if(level!=null){
+            level.paint(painter);
         }
         long currentTime = System.currentTimeMillis();
         int cursorDelta = 15;

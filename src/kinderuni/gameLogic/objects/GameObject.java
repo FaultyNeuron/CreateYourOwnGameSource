@@ -17,6 +17,7 @@ public interface GameObject {
     public void setCenter(DoubleTupel newPosition);
 
     public void move(DoubleTupel delta);
+    public void moveTo(DoubleTupel delta);
     public DoubleTupel getDimensions();
     public Box getBoundingBox();
 

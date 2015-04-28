@@ -4,7 +4,6 @@ import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
 import kinderuni.graphics.GraphicsObject;
-import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
 import java.util.Set;
@@ -13,13 +12,11 @@ import java.util.Set;
  * Created by Georg Plaz.
  */
 public class Player extends LivingObject {
-    public static final int STARTING_HP = 3;
-
-    private int lives = 3;
-    private double jumpPower = 7; //todo set
-    private double enemyJumpPower = 1; //todo set
-    private double enemythrobackPower = 5; //todo set
-    private double moveSpeed = 2; //todo set
+    private int startingHp;
+    private int lives;
+    private double jumpPower;
+    private double enemyThrowbackPower = 5; //todo set
+    private double moveSpeed;
     private int invincibleTimer;
     private boolean isInvincible = false;
     private DoubleTupel lastCenterOnSolid = null;
@@ -27,14 +24,12 @@ public class Player extends LivingObject {
     private boolean goingRight = false;
     private boolean goingLeft = false;
 
-    public Player(DoubleTupel position, GraphicsObject graphicsObject) {
-        super(position, graphicsObject, STARTING_HP);
-        lastCenterOnSolid = position;
-    }
-
-    public Player(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
-        super(position, graphicsObject, gameWorld, STARTING_HP);
-        lastCenterOnSolid = position;
+    public Player(DoubleTupel position, GraphicsObject graphicsObject, double jumpPower, double moveSpeed, int lives, int hp) {
+        super(position, graphicsObject, hp);
+        this.jumpPower = jumpPower;
+        this.moveSpeed = moveSpeed;
+        this.lives = lives;
+        startingHp = hp;
     }
 
     public void jump(){
@@ -47,6 +42,14 @@ public class Player extends LivingObject {
                 accelerate(0, jumpPower);
             }
             jumping = false;
+        }
+    }
+
+    @Override
+    public void setCenter(DoubleTupel position) {
+        super.setCenter(position);
+        if(lastCenterOnSolid==null){
+            lastCenterOnSolid = position;
         }
     }
 
@@ -65,11 +68,17 @@ public class Player extends LivingObject {
     }
 
     private void consumeMove(Direction2D direction){
-        if (!inAir()) {
-            accelerate(direction.toVector(moveSpeed * getStickingTo().getFriction()));
+        double friction;
+        if (inAir()) {
+            friction = getWorld().getAirFriction();
         } else {
-            accelerate(direction.toVector(moveSpeed * getWorld().getAirFriction()));
+            friction = getStickingTo().getFriction();
         }
+        friction = Math.pow(friction, 0.85);
+        Direction2D positiveDirection = direction.toAxis().toDirection(true);
+        System.out.println(positiveDirection.toVector());
+        accelerate((direction.toVector(moveSpeed).sub(getSpeed().mult(positiveDirection.toVector()))).mult(friction));
+//        accelerate(direction.toVector(moveSpeed * friction));
     }
 
     private void consumeMovement(){
@@ -123,10 +132,10 @@ public class Player extends LivingObject {
     public boolean takeDamage(int damage, LivingObject source) {
         if(!isInvincible){
             boolean killed = super.takeDamage(damage, source);
+            stop();
             if(!killed) {
-                stop();
                 DoubleTupel throwBack = getCenter().sub(source.getCenter()).add(0, 5);
-                accelerate(throwBack.toLength(enemythrobackPower));
+                accelerate(throwBack.toLength(enemyThrowbackPower));
                 setInvincible(200);
             }
             return killed;
@@ -142,18 +151,19 @@ public class Player extends LivingObject {
 
     @Override
     public void kill() {
-        kill(null);
+        killedBy(null);
     }
 
     @Override
-    public void kill(LivingObject source) {
+    public void killedBy(LivingObject source) {
         lives--;
+        stop();
         if (lives > 0) {
             if(source==null) {
                 setCenter(lastCenterOnSolid);
             }
             setInvincible(200);
-            setHp(STARTING_HP);
+            setHp(startingHp);
         } else {
             destroy();
         }
