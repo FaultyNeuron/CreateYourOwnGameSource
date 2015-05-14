@@ -42,29 +42,22 @@ public class LevelBuilder {
     }
 
     private Level buildLevel(){
-        level = buildEnvironment(levelSettings.getEnvironmentSettings(), screen, system);
-        buildObjects(levelSettings.getObjectSettings(), system);
+        EnvironmentSettings environmentSettings = levelSettings.getEnvironmentSettings();
+        buildEnvironment();
+        buildObjects();
         return level;
     }
 
-    private Level buildEnvironment(EnvironmentSettings environmentSettings, Screen screen, kinderuni.System system){
-        Level toReturn = new Level(
-                environmentSettings.getDimensions(),
-                screen,
-                environmentSettings.getAirFriction(),
-                environmentSettings.getGravity(),
-                environmentSettings.getPlayerInitPos());
-        //todo do stuff
-        return toReturn;
+    private void buildEnvironment() {
+        EnvironmentSettings environmentSettings = levelSettings.getEnvironmentSettings();
+        level = new Level(levelSettings.getLevelName(), environmentSettings.getDimensions(),
+                screen, environmentSettings.getAirFriction(),
+                environmentSettings.getGravity(), environmentSettings.getPlayerInitPos());
     }
 
-    /**
-     * this method does bla
-     * @param objectSettings the settings for the objects to place
-     * @param system the system..
-     */
-    private void buildObjects(ObjectSettings objectSettings, kinderuni.System system){
+    private void buildObjects(){
         //todo do stuff
+        ObjectSettings objectSettings = levelSettings.getObjectSettings();
         Box levelBox = level.getGameWorld().getBounds();
 
         FloorSettings floorSettings = objectSettings.getFloorSettings();
@@ -72,14 +65,12 @@ public class LevelBuilder {
         double lastEnd = levelBox.getLeft();
         while(lastEnd<levelBox.getRight()){
             double width = floorSettings.getTileWidth();
-//            Math.min(levelBox.getRight() - lastEnd, random.nextDouble()*300+400);
             level.getGameWorld().add(new Platform(new DoubleTupel(lastEnd + width / 2, floor), system.createTextBoxGraphics(width, 25, "floor"), floorSettings.getFriction()));
             lastEnd += width + floorSettings.getGapWidth();
         }
 
         for(EnemySettings enemySettings : objectSettings.getEnemySettings()){
-//            Enemy enemy = new Enemy(level.);
-            for(DoubleTupel tupel : create(levelBox, enemySettings.getCount())) {
+            for(DoubleTupel tupel : createPoints(levelBox, enemySettings.getCount())) {
                 level.getGameWorld().add(
                         new Enemy(
                                 tupel,
@@ -89,8 +80,7 @@ public class LevelBuilder {
             }
         }
         for(PlatformSettings platformSettings : objectSettings.getPlatformSettings()){
-//            Enemy enemy = new Enemy(level.);
-            for(DoubleTupel tupel : create(level.getGameWorld().getBounds(), platformSettings.getCount())) {
+            for(DoubleTupel tupel : createPoints(level.getGameWorld().getBounds(), platformSettings.getCount())) {
                 level.getGameWorld().add(
                         new MovingPlatform(
                                 tupel,
@@ -102,17 +92,17 @@ public class LevelBuilder {
         }
 
         GoalSettings goalSettings = objectSettings.getGoalSettings();
-        level.set(
-                new Goal(new DoubleTupel(levelBox.getRight() - 50, levelBox.getLower() + 100), system.createTextBoxGraphics(20, goalSettings.getHeight(), "goal")));
+        level.set(new Goal(new DoubleTupel(levelBox.getRight() - 50, levelBox.getLower() + 100),
+                system.createTextBoxGraphics(20, goalSettings.getHeight(), "goal")));
     }
 
-    public Collection<DoubleTupel> create(Box bounding, int count){
-        Collection<DoubleTupel> tupels = new LinkedList<DoubleTupel>();
+    public Collection<DoubleTupel> createPoints(Box bounding, int count){
+        Collection<DoubleTupel> points = new LinkedList<DoubleTupel>();
         for (int i = 0; i < count; i++) {
             double x = random.nextDouble() * bounding.getWidth() + bounding.getLeft();
             double y = random.nextDouble() * bounding.getHeight() + bounding.getLower();
-            tupels.add(new DoubleTupel(x, y));
+            points.add(new DoubleTupel(x, y));
         }
-        return tupels;
+        return points;
     }
 }

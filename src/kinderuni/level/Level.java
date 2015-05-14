@@ -12,9 +12,9 @@ import kinderuni.graphics.Screen;
  * Created by Georg Plaz.
  */
 public class Level {
-    private final Screen screen;
-    private final double initialAirFriction;
-    private final double initialGravity;
+    private Screen screen;
+    private double initialAirFriction;
+    private double initialGravity;
     private GameWorld gameWorld;
     private boolean isRunning = false;
     private Thread thread;
@@ -22,11 +22,14 @@ public class Level {
     private int time = 0;
     private Goal goal;
     private State state;
+    private String name;
+    private DoubleTupel dimensions;
 
-    public Level(DoubleTupel dimensions, Screen screen, double initialAirFriction, double initialGravity, DoubleTupel initPlayerPosition) {
+    public Level(String name, DoubleTupel dimensions, Screen screen, double initialAirFriction, double gravity, DoubleTupel initPlayerPosition) {
+        this.name = name;
         this.screen = screen;
         this.initialAirFriction = initialAirFriction;
-        this.initialGravity = initialGravity;
+        this.initialGravity = gravity;
         this.initPlayerPosition = initPlayerPosition;
         gameWorld = new GameWorld(new ModifiableBox(dimensions.div(2), dimensions), screen.getScreenWidth(), this.initialAirFriction, this.initialGravity);
     }
@@ -73,6 +76,7 @@ public class Level {
                             screen.setCenter(getGameWorld().getPlayer().getCenter());
                             screen.setLives(getGameWorld().getPlayer().getLives());
                             screen.setHp(getGameWorld().getPlayer().getHp());
+                            screen.setLevelName(Level.this.getName());
                             screen.render();
                             Thread.sleep(10);
                         }
@@ -109,6 +113,10 @@ public class Level {
 
     public void stop() {
         isRunning = false;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public enum State{

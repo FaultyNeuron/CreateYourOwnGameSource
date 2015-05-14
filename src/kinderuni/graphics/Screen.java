@@ -36,5 +36,5 @@ public interface Screen {
     public boolean goRight();
     public boolean goLeft();
     public boolean jump();
-
+    public void setLevelName(String name);
 }

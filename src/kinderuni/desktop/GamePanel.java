@@ -5,7 +5,6 @@ import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
-import kinderuni.gameLogic.GameWorld;
 import kinderuni.level.Level;
 
 import javax.swing.*;
@@ -33,6 +32,7 @@ public class GamePanel extends JPanel implements Screen {
     private boolean right;
     private boolean jump;
     private boolean skipLevel;
+    private String levelName;
 
 
     public GamePanel(DoubleTupel dimensions) {
@@ -150,10 +150,22 @@ public class GamePanel extends JPanel implements Screen {
         }
         long currentTime = System.currentTimeMillis();
         int cursorDelta = 15;
+        int valueDelta = 35;
         int cursorHeight = getHeight() - cursorDelta/2;
-        g.drawString("fps:   "+(1000/(currentTime - lastPaintTime)), cursorDelta, cursorHeight);
-        g.drawString("lives: "+(lives), cursorDelta, cursorHeight-=cursorDelta);
-        g.drawString("hp:    "+(hp), cursorDelta, cursorHeight-=cursorDelta);
+        g.drawString("fps:", cursorDelta, cursorHeight);
+        g.drawString(String.valueOf(1000/(currentTime - lastPaintTime)), cursorDelta + valueDelta, cursorHeight);
+
+        g.drawString("lives:", cursorDelta, cursorHeight-=cursorDelta);
+        g.drawString(String.valueOf(lives), cursorDelta + valueDelta, cursorHeight);
+
+        g.drawString("hp:", cursorDelta, cursorHeight-=cursorDelta);
+        g.drawString(String.valueOf(hp), cursorDelta + valueDelta, cursorHeight);
+
+        if(levelName!=null) {
+            g.drawString("level:", cursorDelta, cursorHeight -= cursorDelta);
+            g.drawString(levelName, cursorDelta + valueDelta, cursorHeight);
+        }
+
         lastPaintTime = currentTime;
     }
 
@@ -168,5 +180,10 @@ public class GamePanel extends JPanel implements Screen {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    @Override
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 }
