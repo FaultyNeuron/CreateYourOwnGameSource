@@ -35,17 +35,17 @@ public class FastAccessBox extends ModifiableBox {
     }
 
     @Override
-    public DoubleTupel getRightUpper() {
-        return leftUpper;
-    }
-
-    @Override
     public DoubleTupel getRightLower() {
         return rightLower;
     }
 
     @Override
     public DoubleTupel getLeftUpper() {
+        return leftUpper;
+    }
+
+    @Override
+    public DoubleTupel getRightUpper() {
         return rightUpper;
     }
 
