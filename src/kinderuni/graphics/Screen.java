@@ -32,7 +32,9 @@ public interface Screen {
 
     public void setLevel(Level level);
 
+    public boolean skipLevelAndConsume();
     public boolean goRight();
     public boolean goLeft();
     public boolean jump();
+
 }

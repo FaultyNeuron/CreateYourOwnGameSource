@@ -27,6 +27,7 @@ public abstract class AbstractGameObject implements GameObject {
     private boolean isDestroyed = false;
     private SolidObject stickingTo;
     private DoubleTupel lastDelta = DoubleTupel.ZEROS;
+    private Object stickyLock = new Object();
 
     protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
         this(position, graphicsObject);
@@ -44,9 +45,6 @@ public abstract class AbstractGameObject implements GameObject {
 
     public void initUpdateCycle(){
         lastDelta = DoubleTupel.ZEROS;
-    }
-
-    public void update(int time){
     }
 
     @Override
@@ -172,38 +170,52 @@ public abstract class AbstractGameObject implements GameObject {
     }
 
     @Override
-    public void stickToThis(GameObject toStick){
-        if(sticking==null){
-            sticking=new HashSet<GameObject>();
+    public synchronized void stickToThis(GameObject toStick){
+        synchronized (stickyLock){
+            if(sticking==null){
+                sticking=new HashSet<GameObject>();
+            }
+            sticking.add(toStick);
         }
-        sticking.add(toStick);
     }
 
     @Override
-    public void unStickFromThis(GameObject toUnStick){
-        sticking.remove(toUnStick);
-        if(sticking.size()==0){
-            sticking=null;
+    public void unStick(GameObject toUnStick){
+        synchronized (stickyLock){
+            sticking.remove(toUnStick);
+            if(sticking.size()==0){
+                sticking=null;
+            }
         }
     }
 
     public void unStick(){
-        if(stickingTo!=null){
-            stickingTo.unStickFromThis(this);
+        synchronized (stickyLock) {
+            unStickUnSynchronized();
+        }
+    }
+
+    private void unStickUnSynchronized(){
+        if (stickingTo != null) {
+            stickingTo.unStick(this);
         }
         stickingTo = null;
     }
 
     public void stickToBase(SolidObject base){
-        if(getStickingTo()!=base) {
-            unStick();
-            stickingTo = base;
-            base.stickToThis(this);
+        synchronized (stickyLock) {
+            if (getStickingTo() != base) {
+                unStickUnSynchronized();
+                stickingTo = base;
+                base.stickToThis(this);
+            }
         }
     }
 
     public boolean hasSticking(){
-        return sticking!=null && !sticking.isEmpty();
+        synchronized (stickyLock) {
+            return sticking!=null && !sticking.isEmpty();
+        }
     }
 
     public boolean isSticking(){

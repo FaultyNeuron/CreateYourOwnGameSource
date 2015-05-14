@@ -3,6 +3,7 @@ package kinderuni.level;
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
@@ -18,6 +19,9 @@ public class Level {
     private boolean isRunning = false;
     private Thread thread;
     private DoubleTupel initPlayerPosition;
+    private int time = 0;
+    private Goal goal;
+    private State state;
 
     public Level(DoubleTupel dimensions, Screen screen, double initialAirFriction, double initialGravity, DoubleTupel initPlayerPosition) {
         this.screen = screen;
@@ -39,7 +43,16 @@ public class Level {
                 player.jump();
             }
         }
-        gameWorld.update();
+
+        if(state == Level.State.IN_PROGRESS && getGameWorld().getPlayer()!=null){
+            if(getGameWorld().getPlayer().getLives() <= 0){
+                state = Level.State.LOST;
+            }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
+                    screen.skipLevelAndConsume()){
+                state = Level.State.WON;
+            }
+        }
+        gameWorld.update(time++);
     }
 
     public void paint(Painter painter) {
@@ -47,14 +60,15 @@ public class Level {
     }
 
     public void start(){
-        screen.setLevel(this);
         if(!isRunning) {
+            state = State.IN_PROGRESS;
+            screen.setLevel(this);
             isRunning = true;
             thread = new Thread() {
                 @Override
                 public void run() {
                     try {
-                        while(true) {
+                        while(isRunning) {
                             update();
                             screen.setCenter(getGameWorld().getPlayer().getCenter());
                             screen.setLives(getGameWorld().getPlayer().getLives());
@@ -79,12 +93,25 @@ public class Level {
         return isRunning;
     }
 
-    public GameWorld.State getGameState() {
-        return gameWorld.getGameState();
+    public State getGameState() {
+        return state;
     }
 
     public void put(Player player){
         player.setCenter(initPlayerPosition);
         getGameWorld().set(player);
+    }
+
+    public void set(Goal goal) {
+        this.goal = goal;
+        gameWorld.addObject(goal);
+    }
+
+    public void stop() {
+        isRunning = false;
+    }
+
+    public enum State{
+        IN_PROGRESS, WON, LOST
     }
 }

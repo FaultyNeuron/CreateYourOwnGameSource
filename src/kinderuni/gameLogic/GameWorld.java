@@ -20,13 +20,10 @@ public class GameWorld {
     private double airFriction;
     private double gravity;
     private Box worldBounds;
-    private Goal goal;
+//    private Goal goal;
     private Player player;
 //    private Screen renderScreen;
     private ModifiableBox activeBoundings;
-    private State gameState;
-    private int time=0;
-
     private final Set<GameObject> gameObjects = new LinkedHashSet<GameObject>();
     private final Set<SolidObject> solidObjects = new LinkedHashSet<SolidObject>();
     private final Set<Enemy> enemies = new LinkedHashSet<Enemy>();
@@ -49,14 +46,13 @@ public class GameWorld {
 //        this.renderScreen = renderScreen;
         this.activeBoundings = new FastAccessBox(DoubleTupel.ZEROS,
                 new DoubleTupel(screenWidth+activeDistance, Double.POSITIVE_INFINITY));
-        gameState = State.RUNNING;
     }
 
     public double getGravity() {
         return gravity;
     }
 
-    public void update(){
+    public void update(int time){
 //        renderScreen.setCenter(player.getCenter());
         if(player!=null){
             activeBoundings.setCenter(player.getCenter());
@@ -86,25 +82,19 @@ public class GameWorld {
             }
         }
 
-        gameObjects.removeAll(gameObjectsToDestroy);
-        synchronized (gameObjectsActive){
-            gameObjectsActive.removeAll(gameObjectsToDestroy);
-        }
-        solidObjects.removeAll(solidObjectsToDestroy);
-        solidObjectsActive.removeAll(solidObjectsToDestroy);
-        enemies.removeAll(enemiesToDestroy);
-        enemiesActive.removeAll(enemiesToDestroy);
-        collectibles.removeAll(collectiblesToDestroy);
-        collectiblesActive.removeAll(collectiblesToDestroy);
+        destroy(gameObjects, gameObjectsActive, gameObjectsToDestroy);
+        destroy(solidObjects, solidObjectsActive, solidObjectsToDestroy);
+        destroy(enemies, enemiesActive, enemiesToDestroy);
+        destroy(collectibles, collectiblesActive, collectiblesToDestroy);
+    }
 
-        if(player!=null && gameState == State.RUNNING) {
-            if (player.isDestroyed()) {
-                gameState = State.LOST;
-            } else if (goal!=null && player.getBoundingBox().collides(goal.getBoundingBox())) {
-                gameState = State.WON;
+    private <A> void destroy(Set<A> base, Set<A> baseActive, Set<A> toDestroy){
+        synchronized(base) {
+            synchronized(baseActive) {
+                base.removeAll(toDestroy);
+                baseActive.removeAll(toDestroy);
             }
         }
-        time++;
     }
 
 
@@ -233,7 +223,7 @@ public class GameWorld {
         addObject(toAdd);
     }
 
-    private void addObject(GameObject toAdd){
+    public void addObject(GameObject toAdd){
         gameObjects.add(toAdd);
         toAdd.setWorld(this);
     }
@@ -243,22 +233,12 @@ public class GameWorld {
         addObject(player);
     }
 
-    public void set(Goal goal) {
-        this.goal = goal;
-        addObject(goal);
-    }
+//    public void set(Goal goal) {
+//        this.goal = goal;
+//        addObject(goal);
+//    }
 
     public double getAirFriction() {
         return airFriction;
-    }
-
-    public State getGameState() {
-        return gameState;
-    }
-    public boolean isRunning(){
-        return gameState == State.RUNNING;
-    }
-    public enum State{
-        RUNNING, WON, LOST
     }
 }

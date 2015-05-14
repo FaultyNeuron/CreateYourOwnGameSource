@@ -32,7 +32,7 @@ public interface GameObject {
     public void checkCollision();
 
     void stickToThis(GameObject toStick);
-    void unStickFromThis(GameObject toUnStick);
+    void unStick(GameObject toUnStick);
     double getFriction();
 
     public GraphicsObject getGraphics();

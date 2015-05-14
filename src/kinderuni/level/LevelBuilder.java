@@ -58,6 +58,11 @@ public class LevelBuilder {
         return toReturn;
     }
 
+    /**
+     * this method does bla
+     * @param objectSettings the settings for the objects to place
+     * @param system the system..
+     */
     private void buildObjects(ObjectSettings objectSettings, kinderuni.System system){
         //todo do stuff
         Box levelBox = level.getGameWorld().getBounds();
@@ -97,7 +102,7 @@ public class LevelBuilder {
         }
 
         GoalSettings goalSettings = objectSettings.getGoalSettings();
-        level.getGameWorld().set(
+        level.set(
                 new Goal(new DoubleTupel(levelBox.getRight() - 50, levelBox.getLower() + 100), system.createTextBoxGraphics(20, goalSettings.getHeight(), "goal")));
     }
 

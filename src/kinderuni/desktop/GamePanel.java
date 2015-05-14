@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements Screen {
     private boolean left;
     private boolean right;
     private boolean jump;
+    private boolean skipLevel;
+
 
     public GamePanel(DoubleTupel dimensions) {
         this.center = DoubleTupel.ZEROS;
@@ -41,11 +43,11 @@ public class GamePanel extends JPanel implements Screen {
         requestFocusInWindow();
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
-            public boolean dispatchKeyEvent(KeyEvent ke) {
+            public boolean dispatchKeyEvent(KeyEvent keyEvent) {
                 synchronized (GamePanel.class) {
-                    switch (ke.getID()) {
+                    switch (keyEvent.getID()) {
                         case KeyEvent.KEY_PRESSED:
-                            switch (ke.getKeyCode()){
+                            switch (keyEvent.getKeyCode()){
                                 case KeyEvent.VK_A:
                                     left = true;
                                     break;
@@ -55,11 +57,15 @@ public class GamePanel extends JPanel implements Screen {
                                 case KeyEvent.VK_SPACE:
                                     jump = true;
                                     break;
+                                case KeyEvent.VK_F:
+                                    skipLevel = true;
+                                    System.out.println("pressed f!");
+                                    break;
                             }
                             break;
 
                         case KeyEvent.KEY_RELEASED:
-                            switch (ke.getKeyCode()){
+                            switch (keyEvent.getKeyCode()){
                                 case KeyEvent.VK_A:
                                     left = false;
                                     break;
@@ -111,6 +117,13 @@ public class GamePanel extends JPanel implements Screen {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    @Override
+    public boolean skipLevelAndConsume() {
+        boolean toReturn = skipLevel;
+        skipLevel = false;
+        return toReturn;
     }
 
     @Override

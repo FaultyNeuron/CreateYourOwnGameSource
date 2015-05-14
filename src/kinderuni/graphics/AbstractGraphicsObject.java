@@ -6,7 +6,7 @@ import functionalJava.data.tupel.DoubleTupel;
 /**
  * Created by Georg Plaz.
  */
-public class AbstractGraphicsObject implements GraphicsObject {
+public abstract class AbstractGraphicsObject implements GraphicsObject {
     private DoubleTupel dimensions;
     private boolean isBlinking = false;
     private long blinkStartTime;

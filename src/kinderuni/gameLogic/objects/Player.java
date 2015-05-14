@@ -76,7 +76,6 @@ public class Player extends LivingObject {
         }
         friction = Math.pow(friction, 0.85);
         Direction2D positiveDirection = direction.toAxis().toDirection(true);
-        System.out.println(positiveDirection.toVector());
         accelerate((direction.toVector(moveSpeed).sub(getSpeed().mult(positiveDirection.toVector()))).mult(friction));
 //        accelerate(direction.toVector(moveSpeed * friction));
     }
@@ -106,6 +105,7 @@ public class Player extends LivingObject {
                 getGraphics().stopBlink();
             }
         }
+//        System.out.println("in air: "+inAir());
     }
 
     @Override

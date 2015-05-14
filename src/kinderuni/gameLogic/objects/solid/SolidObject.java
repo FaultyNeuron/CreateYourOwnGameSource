@@ -24,6 +24,10 @@ public class SolidObject extends AbstractGameObject {
         getWorld().destroySolid(this);
     }
 
+    @Override
+    public void update(int time) {
+
+    }
 
 
     @Override

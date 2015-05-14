@@ -22,7 +22,7 @@ public class Platform extends SolidObject{
 
     @Override
     public void update(int time) {
-        super.update(time);
+
     }
 
     @Override

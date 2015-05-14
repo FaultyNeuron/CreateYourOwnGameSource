@@ -33,18 +33,20 @@ public class Main {
         do {
             Level level = LevelBuilder.build(levelSettings[levelCounter], screen, system);
             player.stop();
+            player.unStick();
             level.put(player);
             level.start();
             while(level.isRunning()){
                 Thread.sleep(10);
-                if(level.getGameState() == GameWorld.State.WON){
+                if(level.getGameState() == Level.State.WON){
                     System.out.println("won!");
                     break; //todo next level
-                }else if(level.getGameState() == GameWorld.State.LOST){
+                }else if(level.getGameState() == Level.State.LOST){
                     System.out.println("lost!");
                     break;
                 }
             }
+            level.stop();
             levelCounter++;
         } while (player.getLives()>0 && levelCounter<levelSettings.length);
 

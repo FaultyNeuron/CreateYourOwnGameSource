@@ -32,22 +32,6 @@ public class MovingPlatform extends Platform {
 
     @Override
     public void update(int time) { //TODO: calculate position from time, so platforms won't go out of sync
-        super.update(time);
-//        double remainingDelta = speed;
-//        while (remainingDelta > 0) {
-//            System.out.println("remaining delta: "+remainingDelta);
-//            double posDelta;// = remainingDelta;
-//            if(speedSig==1){
-//                posDelta = Math.min(1 - position, remainingDelta);
-//            }else{
-//                posDelta = Math.min(position, remainingDelta);
-//            }
-//            System.out.println("posDelta: "+posDelta);
-//
-//            double newPos = position + posDelta * speedSig;
-//            remainingDelta-=posDelta;
-//            goToPosition(newPos);
-//        }
         if(speed>0) {
             int cycles = (int) (time / cycleLength);
             double pos = (time % cycleLength)/cycleLength;
