@@ -9,7 +9,6 @@ import kinderuni.gameLogic.objects.Player;
 import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Paintable;
 import kinderuni.graphics.Painter;
-import kinderuni.graphics.Screen;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class Level implements Paintable {
         }
 
         if(state == Level.State.IN_PROGRESS && getGameWorld().getPlayer()!=null){
-            if(getGameWorld().getPlayer().getLives() <= 0){
+            if(getGameWorld().getPlayer().getLifes() <= 0){
                 state = Level.State.LOST;
             }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
                     inputRetriever.skipLevelAndConsume()){
@@ -74,7 +73,7 @@ public class Level implements Paintable {
     public List<Info> getInfos() {
         List<Info> toReturn = new LinkedList<>();
         toReturn.add(new Info("level", name));
-        toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLives())));
+        toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifes())));
         toReturn.add(new Info("hp", String.valueOf(getGameWorld().getPlayer().getHp())));
         return toReturn;
     }
@@ -119,6 +118,7 @@ public class Level implements Paintable {
 
     public void put(Player player){
         player.setCenter(initPlayerPosition);
+        player.setSpawnPoint(initPlayerPosition);
         getGameWorld().set(player);
     }
 

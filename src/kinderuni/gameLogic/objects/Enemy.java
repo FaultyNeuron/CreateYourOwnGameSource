@@ -1,6 +1,8 @@
 package kinderuni.gameLogic.objects;
 
+import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.graphics.GraphicsObject;
 import kinderuni.gameLogic.GameWorld;
 
@@ -12,6 +14,7 @@ public class Enemy extends LivingObject {
     private boolean jumper;
     private int jumpPause = 0;
     private double jumpHeight = Math.random()*3+0.5;
+    private Collectible drop;
 
     public Enemy(DoubleTupel position, GraphicsObject graphicsObject, int damage) {
         this(position, graphicsObject, damage, Math.random() < 0.5);
@@ -44,7 +47,12 @@ public class Enemy extends LivingObject {
     public void update(int time) {
         DoubleTupel playerDelta = getWorld().getPlayer().getCenter().sub(getCenter());
         if(!jumper){
-            move(playerDelta.toLength(1));
+            if(playerDelta.getFirst()>0){
+                walk(Direction1D.RIGHT, 1);
+            }else{
+                walk(Direction1D.LEFT, 1);
+            }
+//            move(playerDelta.toLength(1));
         }else if (!inAir() && jumpPause--==0){
             DoubleTupel jumpDir = new DoubleTupel(Math.signum(playerDelta.getFirst()), jumpHeight).toLength(5);
             accelerate(jumpDir);
@@ -58,5 +66,14 @@ public class Enemy extends LivingObject {
     public void destroy() {
         super.destroy();
         getWorld().destroyEnemy(this);
+        if(drop!=null){
+            drop.setCenter(getCenter());
+            drop.accelerate(0, 5);
+            getWorld().add(drop);
+        }
+    }
+
+    public void setDrop(Collectible drop) {
+        this.drop = drop;
     }
 }

@@ -3,6 +3,7 @@ package kinderuni.desktop;
 import functionalJava.data.shape.box.*;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
+import functionalJava.data.tupel.Tupel;
 import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Paintable;
 import kinderuni.graphics.Painter;
@@ -12,6 +13,7 @@ import kinderuni.level.Level;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
     private Thread renderThread;
     private Info fpsInfo;
     private List<Info> infos = new LinkedList<>();
-    private List<Paintable> paintables = new LinkedList<>();
+    private List<Tupel<Paintable, Long>> paintables = new LinkedList<>();
     private boolean running;
 
     private boolean left;
@@ -147,10 +149,14 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
         for(Info info : infos){
             paintInfo(g, info, cursorHeight-=cursorDelta);
         }
-        for(Paintable paintable : paintables){
-            paintable.paint(painter);
-            for(Info info : paintable.getInfos()){
-                paintInfo(g, info, cursorHeight-=cursorDelta);
+        for(Tupel<Paintable, Long> tupel : paintables){
+            Paintable paintable = tupel.getFirst();
+            long time = tupel.getSecond();
+            if(paintable.getTime() > time) {
+                paintable.paint(painter);
+                for (Info info : paintable.getInfos()) {
+                    paintInfo(g, info, cursorHeight -= cursorDelta);
+                }
             }
         }
 
@@ -175,11 +181,18 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
         renderThread = new Thread(){
             @Override
             public void run() {
+                long delta = 1000/60;
+                long lastTime;
                 while(running){
+                    lastTime = System.currentTimeMillis();
                     render();
-                    try {
-                        sleep(10);
-                    } catch (InterruptedException e) {
+                    long sleepFor = delta - (System.currentTimeMillis()-lastTime);
+                    if(sleepFor>0){
+                        try {
+                            sleep(sleepFor);
+                        } catch (InterruptedException e) {
+                            running = false;
+                        }
                     }
                 }
             }
@@ -189,12 +202,19 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
 
     @Override
     public boolean add(Paintable paintable) {
-        return paintables.add(paintable);
+        return paintables.add(new Tupel<Paintable, Long>(paintable, paintable.getTime()));
     }
 
     @Override
     public boolean remove(Paintable paintable) {
-        return paintables.remove(paintable);
+        Iterator<Tupel<Paintable, Long>> iterator = paintables.iterator();
+        while(iterator.hasNext()){
+            if(iterator.next().getFirst()  == paintable){
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     public void stop(){

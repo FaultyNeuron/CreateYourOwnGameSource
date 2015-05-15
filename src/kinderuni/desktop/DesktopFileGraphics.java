@@ -22,14 +22,14 @@ public class DesktopFileGraphics extends DesktopGraphics {
     private ImageIcon jump;
     private ImageIcon standing;
     private Map<State, ImageIcon[]> images = new HashMap<>();
-    public DesktopFileGraphics(File path, DoubleTupel dimensions) {
+    public DesktopFileGraphics(File path, String fileType, DoubleTupel dimensions) {
         super(dimensions);
         for (State state : State.values()){
             File stateFolder = new File(path, state.name().toLowerCase());
             if(stateFolder.exists()){
                 List<File> files = new LinkedList<>();
                 for (int i = 0;; i++) {
-                    File f = new File(stateFolder, "anim"+i+".jpg");
+                    File f = new File(stateFolder, "anim"+i+"."+fileType);
                     if(f.exists()){
                         files.add(f);
                     }else{

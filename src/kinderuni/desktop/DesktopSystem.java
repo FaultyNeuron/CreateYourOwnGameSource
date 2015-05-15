@@ -20,13 +20,13 @@ public class DesktopSystem implements kinderuni.System {
     }
 
     @Override
-    public GraphicsObject createGraphics(String id, double width, double height) {
-        return createGraphics(id, new DoubleTupel(width, height));
+    public GraphicsObject createGraphics(String id, String fileType, double width, double height) {
+        return createGraphics(id, fileType, new DoubleTupel(width, height));
     }
 
     @Override
-    public GraphicsObject createGraphics(String id, DoubleTupel dimensions) {
-        return new DesktopFileGraphics(new File(animations, id), dimensions);
+    public GraphicsObject createGraphics(String id, String fileType, DoubleTupel dimensions) {
+        return new DesktopFileGraphics(new File(animations, id), fileType, dimensions);
     }
 
     @Override

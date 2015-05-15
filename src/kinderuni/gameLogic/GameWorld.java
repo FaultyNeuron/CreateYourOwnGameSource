@@ -4,6 +4,7 @@ import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
 import kinderuni.gameLogic.objects.*;
@@ -224,6 +225,11 @@ public class GameWorld {
         addObject(toAdd);
     }
 
+    public void add(Collectible toAdd){
+        collectibles.add(toAdd);
+        addObject(toAdd);
+    }
+
     public void addObject(GameObject toAdd){
         gameObjects.add(toAdd);
         toAdd.setWorld(this);
@@ -241,5 +247,13 @@ public class GameWorld {
 
     public double getAirFriction() {
         return airFriction;
+    }
+
+    public Set<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void setGravity(double gravity) {
+        this.gravity = gravity;
     }
 }

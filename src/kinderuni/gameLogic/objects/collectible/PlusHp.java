@@ -7,8 +7,8 @@ import kinderuni.graphics.GraphicsObject;
 /**
  * Created by Georg Plaz.
  */
-public class Heart extends Collectible {
-    public Heart(GraphicsObject graphicsObject, DoubleTupel position) {
+public class PlusHp extends Collectible {
+    public PlusHp(GraphicsObject graphicsObject, DoubleTupel position) {
         super(graphicsObject, position);
     }
 
