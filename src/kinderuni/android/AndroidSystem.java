@@ -1,7 +1,9 @@
 package kinderuni.android;
 
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.*;
 import kinderuni.graphics.GraphicsObject;
+import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Screen;
 
 import java.io.File;
@@ -9,15 +11,16 @@ import java.io.File;
 /**
  * Created by Georg Plaz.
  */
-public class AndroidSystem extends kinderuni.System {
+public class AndroidSystem implements kinderuni.System {
+
 
     @Override
-    public GraphicsObject createGraphics(File path, double width, double height) {
+    public GraphicsObject createGraphics(String id, double width, double height) {
         return null;
     }
 
     @Override
-    public GraphicsObject createGraphics(File path, DoubleTupel dimensions) {
+    public GraphicsObject createGraphics(String id, DoubleTupel dimensions) {
         return null;
     }
 
@@ -32,7 +35,12 @@ public class AndroidSystem extends kinderuni.System {
     }
 
     @Override
-    public Screen createScreen() {
+    public Screen getScreen() {
+        return null;
+    }
+
+    @Override
+    public InputRetriever getInputRetriever() {
         return null;
     }
 

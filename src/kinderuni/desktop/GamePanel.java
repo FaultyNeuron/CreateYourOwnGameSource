@@ -3,6 +3,8 @@ package kinderuni.desktop;
 import functionalJava.data.shape.box.*;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.graphics.InputRetriever;
+import kinderuni.graphics.Paintable;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
 import kinderuni.level.Level;
@@ -10,33 +12,33 @@ import kinderuni.level.Level;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
-//import javax.swing.*;
-//import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
  * Created by Georg Plaz.
  */
-public class GamePanel extends JPanel implements Screen {
+public class GamePanel extends JPanel implements Screen, InputRetriever {
     private DoubleTupel center;
     private DoubleTupel dimensions;
     private Dimension dimensionsAwt;
-    private Level level;
     private long lastPaintTime = 0;
-
-    private int lives;
-    private int hp;
+    private Thread renderThread;
+    private Info fpsInfo;
+    private List<Info> infos = new LinkedList<>();
+    private List<Paintable> paintables = new LinkedList<>();
+    private boolean running;
 
     private boolean left;
     private boolean right;
     private boolean jump;
     private boolean skipLevel;
-    private String levelName;
-
 
     public GamePanel(DoubleTupel dimensions) {
         setBackground(Color.WHITE);
+        fpsInfo = new Info("fps", "NA");
+        infos.add(fpsInfo);
         this.center = DoubleTupel.ZEROS;
         this.dimensions = dimensions;
         dimensionsAwt = new Dimension((int) dimensions.getFirst().doubleValue(), (int) dimensions.getSecond().doubleValue());
@@ -112,14 +114,6 @@ public class GamePanel extends JPanel implements Screen {
         repaint();
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
     @Override
     public boolean skipLevelAndConsume() {
         boolean toReturn = skipLevel;
@@ -146,28 +140,28 @@ public class GamePanel extends JPanel implements Screen {
     public void paint(Graphics g) {
         super.paint(g);
         Painter painter = new DesktopPainter(g, this);
-        if(level!=null){
-            level.paint(painter);
-        }
-        long currentTime = System.currentTimeMillis();
         int cursorDelta = 15;
-        int valueDelta = 35;
-        int cursorHeight = getHeight() - cursorDelta/2;
-        g.drawString("fps:", cursorDelta, cursorHeight);
-        g.drawString(String.valueOf(1000/(currentTime - lastPaintTime)), cursorDelta + valueDelta, cursorHeight);
-
-        g.drawString("lives:", cursorDelta, cursorHeight -=         cursorDelta);
-        g.drawString(String.valueOf(lives), cursorDelta + valueDelta, cursorHeight);
-
-        g.drawString("hp:", cursorDelta, cursorHeight -= cursorDelta);
-        g.drawString(String.valueOf(hp), cursorDelta + valueDelta, cursorHeight);
-
-        if(levelName!=null) {
-            g.drawString("level:", cursorDelta, cursorHeight -= cursorDelta);
-            g.drawString(levelName, cursorDelta + valueDelta, cursorHeight);
+        int cursorHeight = getHeight() + cursorDelta/2;
+        long currentTime = System.currentTimeMillis();
+        fpsInfo.setValue(String.valueOf(1000/(currentTime - lastPaintTime)));
+        for(Info info : infos){
+            paintInfo(g, info, cursorHeight-=cursorDelta);
+        }
+        for(Paintable paintable : paintables){
+            paintable.paint(painter);
+            for(Info info : paintable.getInfos()){
+                paintInfo(g, info, cursorHeight-=cursorDelta);
+            }
         }
 
         lastPaintTime = currentTime;
+    }
+
+    private void paintInfo(Graphics g, Info info, int cursorHeight){
+        int valueDelta = 35;
+        int cursorDelta = 15;
+        g.drawString(info.getKey(), cursorDelta, cursorHeight);
+        g.drawString(info.getValue(), cursorDelta + valueDelta, cursorHeight);
     }
 
     @Override
@@ -175,16 +169,36 @@ public class GamePanel extends JPanel implements Screen {
         return dimensionsAwt;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
+    @Override
+    public void start() {
+        running = true;
+        renderThread = new Thread(){
+            @Override
+            public void run() {
+                while(running){
+                    render();
+                    try {
+                        sleep(10);
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        };
+        renderThread.start();
     }
 
     @Override
-    public void setLevelName(String levelName) {
-        this.levelName = levelName;
+    public boolean add(Paintable paintable) {
+        return paintables.add(paintable);
+    }
+
+    @Override
+    public boolean remove(Paintable paintable) {
+        return paintables.remove(paintable);
+    }
+
+    public void stop(){
+        running = false;
+        renderThread.interrupt();
     }
 }

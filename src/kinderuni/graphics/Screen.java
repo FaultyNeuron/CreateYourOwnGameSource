@@ -23,18 +23,9 @@ public interface Screen {
 
     public abstract void render();
 
-    public abstract void setLives(int lives);
-    public abstract void setHp(int hp);
+    public void start();
 
-//    public void paint(Painter painter);
+    public boolean add(Paintable paintable);
 
-    public Level getLevel();
-
-    public void setLevel(Level level);
-
-    public boolean skipLevelAndConsume();
-    public boolean goRight();
-    public boolean goLeft();
-    public boolean jump();
-    public void setLevelName(String name);
+    public boolean remove(Paintable paintable);
 }

@@ -10,64 +10,71 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Georg Plaz.
  */
 public class DesktopFileGraphics extends DesktopGraphics {
-    private ImageIcon[] imageIcon;
     private ImageIcon jump;
     private ImageIcon standing;
+    private Map<State, ImageIcon[]> images = new HashMap<>();
     public DesktopFileGraphics(File path, DoubleTupel dimensions) {
         super(dimensions);
-        List<File> files = new LinkedList<>();
-        for (int i = 0;; i++) {
-            File f = new File(path, "anim"+i+".jpg");
-            if(f.exists()){
-                files.add(f);
-            }else{
-                break;
+        for (State state : State.values()){
+            File stateFolder = new File(path, state.name().toLowerCase());
+            if(stateFolder.exists()){
+                List<File> files = new LinkedList<>();
+                for (int i = 0;; i++) {
+                    File f = new File(stateFolder, "anim"+i+".jpg");
+                    if(f.exists()){
+                        files.add(f);
+                    }else{
+                        break;
+                    }
+                }
+                if(files.size()==1){
+                    addStillState(state);
+                }else{
+                    addState(state, new AnimationLogicImpl(20, AnimationLogicImpl.LoopType.START_OVER, files.size()));
+                }
+                try{
+                    ImageIcon[] imageIcon = new ImageIcon[files.size()];
+                    int counter = 0;
+                    for(File f : files){
+                        imageIcon[counter++] =  new ImageIcon(f.toURI().toURL());
+                    }
+                    images.put(state, imageIcon);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 //        animationLogic = new AnimationLogic(10, AnimationLogic.LoopType.START_OVER, files.size());
 //        animationLogic.start();
-        addStillState(State.JUMPING);
-        addStillState(State.STANDING);
-        addState(State.WALKING, new AnimationLogicImpl(20, AnimationLogicImpl.LoopType.START_OVER, files.size()));
-        imageIcon = new ImageIcon[files.size()];
-        int counter = 0;
-        try {
-            jump = new ImageIcon(new File(path, "anim3.jpg").toURI().toURL());
-            standing = new ImageIcon(new File(path, "standing.jpg").toURI().toURL());
-            for(File f : files){
-                imageIcon[counter++] =  new ImageIcon(f.toURI().toURL());
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+
+
+//        try {
+//            jump = new ImageIcon(new File(path, "anim3.jpg").toURI().toURL());
+//            standing = new ImageIcon(new File(path, "standing.jpg").toURI().toURL());
+//
+
     }
 
     @Override
     public void drawTo(Graphics drawTo, DoubleTupel center) {
         Box graphicsBounding = new FastAccessBox(center, getDimensions());
         Image image;// = imageIcon[animationLogic.getCurrentFrame()].getImage();
-        switch (getState()){
-            case STANDING:
-                image = standing.getImage();
-                break;
-            case WALKING:
-                image = imageIcon[getCurrentFrame()].getImage();
-                break;
-            case JUMPING:
-                image = jump.getImage();
-                break;
-//            case FLYING:
-//                break;
-            default:
-                return;
+        ImageIcon[] imageIcons;
+        if(images.containsKey(getState())){
+            imageIcons = images.get(getState());
+        }else{
+            imageIcons = images.get(State.STANDING);
         }
+        image = imageIcons[getCurrentFrame()].getImage();
 
         if(!isBlinking() || blinkShow()) {
             boolean right = getDirection() == Direction1D.RIGHT;
@@ -87,5 +94,8 @@ public class DesktopFileGraphics extends DesktopGraphics {
 //                    (int) boundingBox.getHeight());
 //
 //        }
+    }
+    private ImageIcon[] getIcons(State state){
+        return images.get(state);
     }
 }

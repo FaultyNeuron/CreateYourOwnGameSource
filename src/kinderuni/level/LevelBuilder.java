@@ -6,6 +6,7 @@ import kinderuni.gameLogic.objects.Enemy;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.solid.MovingPlatform;
 import kinderuni.gameLogic.objects.solid.Platform;
+import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Screen;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
@@ -18,14 +19,15 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class LevelBuilder {
+    private static InputRetriever inputRetriever;
     private final LevelSettings levelSettings;
-    private final Screen screen;
+    private final double screenWidth;
     private final kinderuni.System system;
     private Random random;
     private Level level;
-    private LevelBuilder(LevelSettings levelSettings, Screen screen, kinderuni.System system){
+    private LevelBuilder(LevelSettings levelSettings, double screenWidth, kinderuni.System system){
         this.levelSettings = levelSettings;
-        this.screen = screen;
+        this.screenWidth = screenWidth;
         this.system = system;
         String strSeed = levelSettings.getSeed();
         long longSeed = 0;
@@ -36,13 +38,13 @@ public class LevelBuilder {
         random = new Random(longSeed);
     }
 
-    public static Level build(LevelSettings levelSettings, Screen screen, kinderuni.System system){
-        LevelBuilder builder = new LevelBuilder(levelSettings, screen, system);
+    public static Level build(LevelSettings levelSettings, double screenWidth, InputRetriever inputRetriever, kinderuni.System system){
+        LevelBuilder.inputRetriever = inputRetriever;
+        LevelBuilder builder = new LevelBuilder(levelSettings, screenWidth, system);
         return builder.buildLevel();
     }
 
     private Level buildLevel(){
-        EnvironmentSettings environmentSettings = levelSettings.getEnvironmentSettings();
         buildEnvironment();
         buildObjects();
         return level;
@@ -51,7 +53,8 @@ public class LevelBuilder {
     private void buildEnvironment() {
         EnvironmentSettings environmentSettings = levelSettings.getEnvironmentSettings();
         level = new Level(levelSettings.getLevelName(), environmentSettings.getDimensions(),
-                screen, environmentSettings.getAirFriction(),
+                screenWidth,
+                inputRetriever, environmentSettings.getAirFriction(),
                 environmentSettings.getGravity(), environmentSettings.getPlayerInitPos());
     }
 

@@ -153,6 +153,7 @@ public class GameWorld {
     }
 
     public void paint(Painter painter){
+        painter.getRenderScreen().setCenter(player.getCenter());
         synchronized (gameObjectsActive){
             for(GameObject gameObject : gameObjectsActive){
                 if(isOnScreen(gameObject, painter.getRenderScreen()) && !gameObject.isDestroyed()){
