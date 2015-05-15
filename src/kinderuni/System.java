@@ -11,9 +11,9 @@ import java.io.File;
  * Created by Georg Plaz.
  */
 public interface System {
-    public GraphicsObject createGraphics(String id, double width, double height);
+    public GraphicsObject createGraphics(String id, String fileType, double width, double height);
 
-    public GraphicsObject createGraphics(String id, DoubleTupel dimensions);
+    public GraphicsObject createGraphics(String id, String fileType, DoubleTupel dimensions);
 
     public GraphicsObject createBoxGraphics(double width, double height);
 

@@ -46,10 +46,12 @@ public class ObjectSettings {
         jumping.setJumping(true);
         jumping.setCount(5);
         jumping.setHeight(40);
+        jumping.setDamage(1);
         EnemySettings nonJumping = new EnemySettings();
         nonJumping.setJumping(false);
         nonJumping.setCount(5);
         nonJumping.setHeight(50);
+        nonJumping.setDamage(1);
         toReturn.enemies = new LinkedList<EnemySettings>();
         toReturn.enemies.add(jumping);
         toReturn.enemies.add(nonJumping);

@@ -1,6 +1,9 @@
 package kinderuni;
 
+import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.desktop.DesktopSystem;
+import kinderuni.gameLogic.objects.Enemy;
+import kinderuni.gameLogic.objects.collectible.*;
 import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Screen;
 import kinderuni.gameLogic.objects.Player;
@@ -9,7 +12,6 @@ import kinderuni.level.LevelBuilder;
 import kinderuni.settings.levelSettings.LevelSettings;
 import kinderuni.settings.PlayerSettings;
 
-import java.io.File;
 import java.lang.System;
 import java.util.Random;
 
@@ -29,7 +31,7 @@ public class Main {
         Player player = new Player(
                 null,
 //                system.createBoxGraphics(50, playerSettings.getHeight()),
-                system.createGraphics("player", 70, 70),
+                system.createGraphics("player", "jpg", 70, 70),
                 playerSettings.getJumpPower(),
                 playerSettings.getMoveSpeed(),
                 playerSettings.getLives(),
@@ -40,6 +42,23 @@ public class Main {
             player.stop();
             player.unStick();
             level.put(player);
+//            for (int i = 0; i < 50; i++) {
+//                level.getGameWorld().add(new GravitySwitch(system.createGraphics("star", "png", 30, 30), player.getCenter().add(100+400*i, 300)));
+//            }
+            for(Enemy enemy : level.getGameWorld().getEnemies()){
+                double random = Math.random();
+                if(random > 0.5){
+                    enemy.setDrop(new Coin(system.createGraphics("coin", "png", 30, 30), DoubleTupel.ZEROS));
+                }else if(random > 0.3){
+                    enemy.setDrop(new PlusHp(system.createGraphics("heart", "png", 30, 30), DoubleTupel.ZEROS));
+                }else if(random > 0.2){
+                    enemy.setDrop(new PlusLife(system.createGraphics("live", "png", 30, 30), DoubleTupel.ZEROS));
+                }else if(random > 0.2){
+                    enemy.setDrop(new Invincible(system.createGraphics("star", "png", 30, 30), DoubleTupel.ZEROS));
+                }else{
+                    enemy.setDrop(new PlusSpeed(system.createGraphics("bolt", "png", 30, 30), DoubleTupel.ZEROS));
+                }
+            }
             level.start();
             while(level.isRunning()){
                 Thread.sleep(10);
@@ -54,7 +73,7 @@ public class Main {
             screen.remove(level);
             level.stop();
             levelCounter++;
-        } while (player.getLives()>0 && levelCounter<levelSettings.length);
+        } while (player.getLifes()>0 && levelCounter<levelSettings.length);
 
 
     }

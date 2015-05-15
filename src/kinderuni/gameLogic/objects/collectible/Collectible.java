@@ -1,7 +1,9 @@
 package kinderuni.gameLogic.objects.collectible;
 
+import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.PhysicsObject;
+import kinderuni.gameLogic.objects.solid.SolidObject;
 import kinderuni.graphics.GraphicsObject;
 import kinderuni.gameLogic.GameWorld;
 
@@ -17,5 +19,20 @@ public abstract class Collectible extends PhysicsObject {
         super(position, graphicsObject);
     }
 
-    public abstract void collect();
+    public void collect(){
+        destroy();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        getWorld().destroyCollectable(this);
+    }
+
+    @Override
+    public void collidedWithSolid(SolidObject solidObject, Direction2D collisionSide) {
+        DoubleTupel speed = getSpeed();
+        super.collidedWithSolid(solidObject, collisionSide);
+        accelerate(speed.mult(0.9,-0.9));
+    }
 }

@@ -49,6 +49,7 @@ public class LevelSettings {
         toReturn.seed = String.valueOf(RandomHolder.random.nextLong());
         return toReturn;
     }
+
     private static LevelSettings createIceLevelSettings() {
         LevelSettings toReturn = new LevelSettings();
         toReturn.levelName = "ice";

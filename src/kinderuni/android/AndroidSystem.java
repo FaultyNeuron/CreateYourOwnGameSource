@@ -12,15 +12,13 @@ import java.io.File;
  * Created by Georg Plaz.
  */
 public class AndroidSystem implements kinderuni.System {
-
-
     @Override
-    public GraphicsObject createGraphics(String id, double width, double height) {
+    public GraphicsObject createGraphics(String id, String fileType, double width, double height) {
         return null;
     }
 
     @Override
-    public GraphicsObject createGraphics(String id, DoubleTupel dimensions) {
+    public GraphicsObject createGraphics(String id, String fileType, DoubleTupel dimensions) {
         return null;
     }
 

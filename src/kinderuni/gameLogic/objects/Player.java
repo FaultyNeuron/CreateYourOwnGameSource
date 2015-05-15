@@ -4,9 +4,14 @@ import functionalJava.data.Direction1D;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
+import kinderuni.gameLogic.objects.collectible.Collectible;
+import kinderuni.gameLogic.objects.collectible.Invincible;
+import kinderuni.gameLogic.objects.collectible.powerUp.PowerUp;
 import kinderuni.graphics.GraphicsObject;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,22 +19,24 @@ import java.util.Set;
  */
 public class Player extends LivingObject {
     private int startingHp;
-    private int lives;
+    private int lifes;
     private double jumpPower;
     private double enemyThrowbackPower = 5; //todo set
     private double moveSpeed;
-    private int invincibleTimer;
+//    private int invincibleTimer;
     private boolean isInvincible = false;
-    private DoubleTupel lastCenterOnSolid = null;
+    private DoubleTupel spawnPoint = null;
     private boolean jumping = false;
     private boolean goingRight = false;
     private boolean goingLeft = false;
+    private int coins;
+    private List<PowerUp> activePowerUps = new LinkedList<>();
 
-    public Player(DoubleTupel position, GraphicsObject graphicsObject, double jumpPower, double moveSpeed, int lives, int hp) {
+    public Player(DoubleTupel position, GraphicsObject graphicsObject, double jumpPower, double moveSpeed, int lifes, int hp) {
         super(position, graphicsObject, hp);
         this.jumpPower = jumpPower;
         this.moveSpeed = moveSpeed;
-        this.lives = lives;
+        this.lifes = lifes;
         startingHp = hp;
     }
 
@@ -40,9 +47,8 @@ public class Player extends LivingObject {
     private void consumeJump(){
         if(jumping){
             if(!inAir()){
-                accelerate(0, jumpPower);
+                jump(jumpPower);
             }
-            getGraphics().setState(GraphicsObject.State.JUMPING);
             jumping = false;
         }
     }
@@ -50,17 +56,14 @@ public class Player extends LivingObject {
     @Override
     public void setCenter(DoubleTupel position) {
         super.setCenter(position);
-        if(lastCenterOnSolid==null){
-            lastCenterOnSolid = position;
-        }
     }
 
     private void consumeRight(){
         if(goingRight && !goingLeft){
-            consumeMove(Direction2D.RIGHT);
-            getGraphics().setDirection(Direction1D.RIGHT);
             if(!inAir()){
-                getGraphics().setState(GraphicsObject.State.WALKING);
+                walk(Direction1D.RIGHT, moveSpeed);
+            }else{
+                consumeMove(Direction2D.RIGHT, moveSpeed);
             }
         }
         goingRight = false;
@@ -68,26 +71,13 @@ public class Player extends LivingObject {
 
     private void consumeLeft(){
         if(!goingRight && goingLeft){
-            consumeMove(Direction2D.LEFT);
-            getGraphics().setDirection(Direction1D.LEFT);
-            if(!inAir()) {
-                getGraphics().setState(GraphicsObject.State.WALKING);
+            if(!inAir()){
+                walk(Direction1D.LEFT, moveSpeed);
+            }else{
+                consumeMove(Direction2D.LEFT, moveSpeed);
             }
         }
         goingLeft = false;
-    }
-
-    private void consumeMove(Direction2D direction){
-        double friction;
-        if (inAir()) {
-            friction = getWorld().getAirFriction();
-        } else {
-            friction = getStickingTo().getFriction();
-        }
-        friction = Math.pow(friction, 0.85);
-        Direction2D positiveDirection = direction.toAxis().toDirection(true);
-        accelerate((direction.toVector(moveSpeed).sub(getSpeed().mult(positiveDirection.toVector()))).mult(friction));
-//        accelerate(direction.toVector(moveSpeed * friction));
     }
 
     private void consumeMovement(){
@@ -111,12 +101,15 @@ public class Player extends LivingObject {
         }
         consumeMovement();
         super.update(time);
-        if(isInvincible){
-            invincibleTimer--;
-            if(invincibleTimer==0){
-                isInvincible = false;
-                getGraphics().stopBlink();
-            }
+//        if(isInvincible){
+//            invincibleTimer--;
+//            if(invincibleTimer==0){
+//                isInvincible = false;
+//                getGraphics().stopBlink();
+//            }
+//        }
+        for(PowerUp powerUp : new LinkedList<>(activePowerUps)){
+            powerUp.update();
         }
 //        System.out.println("in air: "+inAir());
     }
@@ -129,6 +122,15 @@ public class Player extends LivingObject {
             Tupel<DoubleTupel, Direction2D> collision = collideAfterMoving(getBoundingBox(), getLastDelta(), enemy);
             collidedWithEnemy(enemy, collision.getSecond());
         }
+        Set<Collectible> collectibles = getWorld().collidesWith(getBoundingBox(), getWorld().getCollectiblesActive());
+        for(Collectible collectible : collectibles){
+            Tupel<DoubleTupel, Direction2D> collision = collideAfterMoving(getBoundingBox(), getLastDelta(), collectible);
+            collect(collectible, collision.getSecond());
+        }
+    }
+
+    private void collect(Collectible collectible, Direction2D second) {
+        collectible.collect();
     }
 
     public void collidedWithEnemy(Enemy enemy, Direction2D collisionSide) {
@@ -149,7 +151,7 @@ public class Player extends LivingObject {
             if(!killed) {
                 DoubleTupel throwBack = getCenter().sub(source.getCenter()).add(0, 5);
                 accelerate(throwBack.toLength(enemyThrowbackPower));
-                setInvincible(200);
+                new Invincible.InvinciblePower(200).activate(this);
             }
             return killed;
         }
@@ -159,7 +161,7 @@ public class Player extends LivingObject {
     @Override
     public void stickToBase(SolidObject base) {
         super.stickToBase(base);
-        lastCenterOnSolid = getCenter();
+        spawnPoint = getCenter();
     }
 
     @Override
@@ -169,26 +171,67 @@ public class Player extends LivingObject {
 
     @Override
     public void killedBy(LivingObject source) {
-        lives--;
-        stop();
-        if (lives > 0) {
-            if(source==null) {
-                setCenter(lastCenterOnSolid);
+        lifes--;
+        if (lifes > 0) {
+            stop();
+            for(PowerUp powerUp : new LinkedList<>(activePowerUps)){
+                powerUp.deActivate();
             }
-            setInvincible(200);
+            if(source==null) {
+                setCenter(spawnPoint);
+            }
+            new Invincible.InvinciblePower(200).activate(this);
+//            setInvincible(200);
             setHp(startingHp);
         } else {
             destroy();
         }
     }
 
-    public void setInvincible(int time){
-        invincibleTimer = time;
+    public void setInvincible(){
+//        invincibleTimer = time;
         getGraphics().blink(10);
         isInvincible = true;
     }
 
-    public int getLives() {
-        return lives;
+    public void setVincible(){
+        isInvincible = false;
+        getGraphics().stopBlink();
+//        invincibleTimer = 0;
+    }
+
+    public int getLifes() {
+        return lifes;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void addCoin() {
+        coins++;
+    }
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setSpawnPoint(DoubleTupel spawnPoint) {
+        this.spawnPoint = spawnPoint;
+    }
+
+    public void addLife(int lifeToAdd) {
+        lifes +=lifeToAdd;
+    }
+
+    public void speedUp(double speedFactor) {
+        moveSpeed*=speedFactor;
+    }
+
+    public void addPowerUp(PowerUp powerUp) {
+        activePowerUps.add(powerUp);
+    }
+
+    public void removePowerUp(PowerUp powerUp){
+        activePowerUps.remove(powerUp);
     }
 }
