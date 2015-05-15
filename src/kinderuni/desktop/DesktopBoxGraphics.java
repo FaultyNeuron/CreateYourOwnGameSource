@@ -1,6 +1,7 @@
 package kinderuni.desktop;
 
 import functionalJava.data.shape.box.Box;
+import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.graphics.AbstractGraphicsObject;
 
@@ -10,9 +11,11 @@ import java.io.File;
 /**
  * Created by Georg Plaz.
  */
-public class DesktopBoxGraphics extends AbstractGraphicsObject {
+public class DesktopBoxGraphics extends DesktopGraphics {
+    private static final int defaultSize = 50;
     private String text;
     public DesktopBoxGraphics() {
+        super(defaultSize, defaultSize);
     }
 
     public DesktopBoxGraphics(double width, double height) {
@@ -33,7 +36,8 @@ public class DesktopBoxGraphics extends AbstractGraphicsObject {
         this.text = text;
     }
 
-    public void drawTo(Graphics drawTo, Box boundingBox){
+    public void drawTo(Graphics drawTo, DoubleTupel center){
+        Box boundingBox = new FastAccessBox(center, getDimensions());
         if(!isBlinking() || blinkShow()) {
             drawTo.drawRect((int) boundingBox.getLeft(),
                     -(int) boundingBox.getUpper(),

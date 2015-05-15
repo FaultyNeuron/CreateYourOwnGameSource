@@ -9,6 +9,7 @@ import kinderuni.level.LevelBuilder;
 import kinderuni.settings.levelSettings.LevelSettings;
 import kinderuni.settings.PlayerSettings;
 
+import java.io.File;
 import java.lang.System;
 import java.util.Random;
 
@@ -25,7 +26,8 @@ public class Main {
         PlayerSettings playerSettings = PlayerSettings.DEFAULT;
         Player player = new Player(
                 null,
-                system.createBoxGraphics(50, playerSettings.getHeight()),
+//                system.createBoxGraphics(50, playerSettings.getHeight()),
+                system.createGraphics(new File("C:/Users/Georg/Desktop/anim"), 70, 70),
                 playerSettings.getJumpPower(),
                 playerSettings.getMoveSpeed(),
                 playerSettings.getLives(),

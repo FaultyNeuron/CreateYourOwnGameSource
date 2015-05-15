@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects;
 
+import functionalJava.data.Direction1D;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
@@ -41,6 +42,7 @@ public class Player extends LivingObject {
             if(!inAir()){
                 accelerate(0, jumpPower);
             }
+            getGraphics().setState(GraphicsObject.State.JUMPING);
             jumping = false;
         }
     }
@@ -56,6 +58,10 @@ public class Player extends LivingObject {
     private void consumeRight(){
         if(goingRight && !goingLeft){
             consumeMove(Direction2D.RIGHT);
+            getGraphics().setDirection(Direction1D.RIGHT);
+            if(!inAir()){
+                getGraphics().setState(GraphicsObject.State.WALKING);
+            }
         }
         goingRight = false;
     }
@@ -63,6 +69,10 @@ public class Player extends LivingObject {
     private void consumeLeft(){
         if(!goingRight && goingLeft){
             consumeMove(Direction2D.LEFT);
+            getGraphics().setDirection(Direction1D.LEFT);
+            if(!inAir()) {
+                getGraphics().setState(GraphicsObject.State.WALKING);
+            }
         }
         goingLeft = false;
     }
@@ -96,6 +106,9 @@ public class Player extends LivingObject {
 
     @Override
     public void update(int time) {
+        if(!inAir()){
+            getGraphics().setState(GraphicsObject.State.STANDING);
+        }
         consumeMovement();
         super.update(time);
         if(isInvincible){

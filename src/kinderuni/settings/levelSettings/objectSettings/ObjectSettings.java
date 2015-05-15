@@ -76,16 +76,19 @@ public class ObjectSettings {
 
     private static ObjectSettings createSpaceLevelSettings() {
         ObjectSettings toReturn = createStandardLevelSettings();
-        PlatformSettings moving = new PlatformSettings();
-        moving.setDelta(0, 100);
-        moving.setSpeed(1);
-        moving.setWidth(200);
-        moving.setCount(10);
+        toReturn.platformSettings = new LinkedList<PlatformSettings>();
+        for (int i = 0; i < 10; i++) {
+            PlatformSettings moving = new PlatformSettings();
+            moving.setDelta(0, 200*Math.random()+100);
+            moving.setSpeed(Math.random()+0.5);
+            moving.setWidth(200);
+            moving.setCount(1);
+            toReturn.platformSettings.add(moving);
+        }
+
         PlatformSettings nonMoving = new PlatformSettings();
         nonMoving.setWidth(300);
         nonMoving.setCount(5);
-        toReturn.platformSettings = new LinkedList<PlatformSettings>();
-        toReturn.platformSettings.add(moving);
         toReturn.platformSettings.add(nonMoving);
         return toReturn;
     }

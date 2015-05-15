@@ -36,6 +36,7 @@ public class GamePanel extends JPanel implements Screen {
 
 
     public GamePanel(DoubleTupel dimensions) {
+        setBackground(Color.WHITE);
         this.center = DoubleTupel.ZEROS;
         this.dimensions = dimensions;
         dimensionsAwt = new Dimension((int) dimensions.getFirst().doubleValue(), (int) dimensions.getSecond().doubleValue());

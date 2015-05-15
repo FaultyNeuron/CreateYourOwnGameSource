@@ -24,7 +24,7 @@ public class DesktopPainter implements Painter{
         DesktopGraphics graphics = (DesktopGraphics) abstractGameObject.getGraphics();
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
         DoubleTupel screenDelta = screen.getScreenDimensions().div(2, -2).sub(screen.getCenter());
-        graphics.drawTo(g, abstractGameObject.getBoundingBox().move(screenDelta));
+        graphics.drawTo(g, abstractGameObject.getCenter().add(screenDelta));
     }
 
     @Override

@@ -9,6 +9,8 @@ import functionalJava.data.tupel.DoubleTupel;
 public interface GraphicsObject {
     public Direction1D getDirection();
     public void setDirection(Direction1D direction);
+    public State getState();
+    public void setState(State state);
 
     public DoubleTupel getDimensions();
     public void blink(double blinkPerSecond, double timeOn);
@@ -17,7 +19,7 @@ public interface GraphicsObject {
     void stopBlink();
 //    public void draw(Screen screen);
 
-    public enum STATE{
+    public enum State {
         STANDING, WALKING, JUMPING, FLYING,
     }
 }

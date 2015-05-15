@@ -10,22 +10,12 @@ import java.io.File;
 /**
  * Created by Georg Plaz.
  */
-public class DesktopGraphics extends AbstractGraphicsObject {
-    public DesktopGraphics() {
+public abstract class DesktopGraphics extends AbstractGraphicsObject {
+    public DesktopGraphics(double width, double height) {
+        super(new DoubleTupel(width, height));
     }
-
-    public DesktopGraphics(File path) {
-
+    public DesktopGraphics(DoubleTupel dimensions) {
+        super(dimensions);
     }
-
-    public void drawTo(Graphics drawTo, Box boundingBox){
-        if(!isBlinking() || blinkShow()) {
-            drawTo.drawRect((int) boundingBox.getLeft(),
-                    -(int) boundingBox.getUpper(),
-                    (int) boundingBox.getWidth(),
-                    (int) boundingBox.getHeight());
-
-        }
-    }
-
+    public abstract void drawTo(Graphics drawTo, DoubleTupel center);
 }

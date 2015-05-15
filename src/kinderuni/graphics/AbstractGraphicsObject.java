@@ -3,6 +3,9 @@ package kinderuni.graphics;
 import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Georg Plaz.
  */
@@ -13,15 +16,27 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     private int blinkDelta;
     private double timeOn;
     private Direction1D direction;
+    private State state;
+    private Map<State, AnimationLogic> animationLogicMap = new HashMap<>();
 
-    public AbstractGraphicsObject() {
-        this(new DoubleTupel(50));
-    }
     public AbstractGraphicsObject(double width, double height) {
         this(new DoubleTupel(width, height));
     }
     public AbstractGraphicsObject(DoubleTupel dimensions) {
         this.dimensions = dimensions;
+        state = State.STANDING;
+    }
+
+    public void addState(State state, AnimationLogic animationLogic){
+        animationLogic.start();
+        animationLogicMap.put(state, animationLogic);
+    }
+    public void addStillState(State state){
+        addState(state, StillAnimationLogic.get());
+    }
+    public void addState(State state, double fps, int frameCount){
+        AnimationLogic animationLogic = new AnimationLogicImpl(fps, frameCount);
+        addState(state, animationLogic);
     }
 
     @Override
@@ -66,5 +81,18 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
 
     public boolean isBlinking() {
         return isBlinking;
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public int getCurrentFrame(){
+        return animationLogicMap.get(getState()).getCurrentFrame();
     }
 }
