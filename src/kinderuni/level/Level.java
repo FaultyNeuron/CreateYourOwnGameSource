@@ -70,8 +70,8 @@ public class Level {
             thread = new Thread() {
                 @Override
                 public void run() {
-                    try {
-                        while(isRunning) {
+                    while(isRunning) {
+                        try {
                             update();
                             screen.setCenter(getGameWorld().getPlayer().getCenter());
                             screen.setLives(getGameWorld().getPlayer().getLives());
@@ -79,9 +79,8 @@ public class Level {
                             screen.setLevelName(Level.this.getName());
                             screen.render();
                             Thread.sleep(10);
+                        } catch (InterruptedException e) {
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             };
@@ -113,6 +112,7 @@ public class Level {
 
     public void stop() {
         isRunning = false;
+        thread.interrupt();
     }
 
     public String getName() {

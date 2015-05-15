@@ -155,10 +155,10 @@ public class GamePanel extends JPanel implements Screen {
         g.drawString("fps:", cursorDelta, cursorHeight);
         g.drawString(String.valueOf(1000/(currentTime - lastPaintTime)), cursorDelta + valueDelta, cursorHeight);
 
-        g.drawString("lives:", cursorDelta, cursorHeight-=cursorDelta);
+        g.drawString("lives:", cursorDelta, cursorHeight -=         cursorDelta);
         g.drawString(String.valueOf(lives), cursorDelta + valueDelta, cursorHeight);
 
-        g.drawString("hp:", cursorDelta, cursorHeight-=cursorDelta);
+        g.drawString("hp:", cursorDelta, cursorHeight -= cursorDelta);
         g.drawString(String.valueOf(hp), cursorDelta + valueDelta, cursorHeight);
 
         if(levelName!=null) {

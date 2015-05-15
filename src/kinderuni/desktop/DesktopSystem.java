@@ -12,16 +12,16 @@ import java.io.File;
 public class DesktopSystem extends kinderuni.System {
     @Override
     public GraphicsObject createGraphics(File path) {
-        return new DesktopGraphics();
+        return new DesktopGraphics(path);
     }
 
     @Override
     public GraphicsObject createBoxGraphics(double width, double height) {
-        return new DesktopGraphics(width, height);
+        return new DesktopBoxGraphics(width, height);
     }
     @Override
     public GraphicsObject createTextBoxGraphics(double width, double height, String text) {
-        return new DesktopGraphics(width, height, text);
+        return new DesktopBoxGraphics(width, height, text);
     }
 
 
