@@ -1,0 +1,39 @@
+{
+  "seed" : "hello_space_world",
+
+  "width" : 5000,
+  "height" : 600,
+
+  "gravity" : 0.03,
+  "airFriction" : 0.001,
+
+  "player_x" : 50,
+  "player_y" : 50,
+
+  "enemies" : [
+    {"id" : "standard", "count" : 5},
+    {"id" : "standard_jumping", "count" : 5},
+    {"id" : "standard_boss", "count" : 1}
+  ],
+
+  "platforms":[
+    {"id" : "standard_moving_vertically", "count" : 20},
+    {"id" : "standard", "count" : 20}
+  ],
+
+  "goal" : {
+    "graphics" : {
+      "draw_box" : true,
+      "width": 20,
+      "height": 20
+    },
+    "x" : 4950,
+    "y" : 50
+  },
+
+  "floor" : {
+    "gap_width" : 100,
+    "friction" : 0.8,
+    "tile_width" : 500
+  }
+}

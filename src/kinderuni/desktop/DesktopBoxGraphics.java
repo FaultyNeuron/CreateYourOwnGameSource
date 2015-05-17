@@ -3,10 +3,9 @@ package kinderuni.desktop;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.AbstractGraphicsObject;
+import kinderuni.graphics.GraphicsObject;
 
 import java.awt.*;
-import java.io.File;
 
 /**
  * Created by Georg Plaz.
@@ -37,16 +36,22 @@ public class DesktopBoxGraphics extends DesktopGraphics {
     }
 
     public void drawTo(Graphics drawTo, DoubleTupel center){
-        Box boundingBox = new FastAccessBox(center, getDimensions());
-        if(!isBlinking() || blinkShow()) {
-            drawTo.drawRect((int) boundingBox.getLeft(),
-                    -(int) boundingBox.getUpper(),
-                    (int) boundingBox.getWidth(),
-                    (int) boundingBox.getHeight());
-            if(text!=null){
-                drawTo.drawString(text, (int) boundingBox.getLeft()+2, -(int) boundingBox.getUpper()+13);
+        if(painting()) {
+            Box boundingBox = new FastAccessBox(center, getDimensions());
+            if (!isBlinking() || blinkShow()) {
+                drawTo.drawRect((int) boundingBox.getLeft(),
+                        -(int) boundingBox.getUpper(),
+                        (int) boundingBox.getWidth(),
+                        (int) boundingBox.getHeight());
+                if (text != null) {
+                    drawTo.drawString(text, (int) boundingBox.getLeft() + 2, -(int) boundingBox.getUpper() + 13);
+                }
             }
         }
     }
 
+    @Override
+    public GraphicsObject copy() {
+        return new DesktopBoxGraphics(getDimensions(), text);
+    }
 }

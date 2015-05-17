@@ -6,16 +6,16 @@ package kinderuni.settings.levelSettings.objectSettings;
 public class FloorSettings {
     public static final FloorSettings DEFAULT = createDefaultFloor();
 
-    private double gapWidth;
+    private double gap_width;
     private double friction = ObjectSettings.DEFAULT_FLOOR_FRICTION;
-    private double tileWidth;
+    private double tile_width;
 
     public double getGapWidth() {
-        return gapWidth;
+        return gap_width;
     }
 
     public void setGapWidth(double gapWidth) {
-        this.gapWidth = gapWidth;
+        this.gap_width = gapWidth;
     }
 
     public double getFriction() {
@@ -27,11 +27,11 @@ public class FloorSettings {
     }
 
     public double getTileWidth() {
-        return tileWidth;
+        return tile_width;
     }
 
     public void setTileWidth(double tileWidth) {
-        this.tileWidth = tileWidth;
+        this.tile_width = tileWidth;
     }
 
     public static FloorSettings createDefaultFloor() {

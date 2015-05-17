@@ -1,8 +1,10 @@
 package kinderuni.graphics;
 
+import com.google.gson.Gson;
 import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     private Direction1D direction;
     private State state;
     private Map<State, AnimationLogic> animationLogicMap = new HashMap<>();
+    private boolean paint = true;
 
     public AbstractGraphicsObject(double width, double height) {
         this(new DoubleTupel(width, height));
@@ -59,6 +62,11 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
         blink(blinkFrequency, 0.5);
     }
 
+//    @Override
+//    public void blink(double blinkFrequency, int blinks) {
+//
+//    }
+
     @Override
     public void blink(double blinkFrequency, double timeOn) {
         this.timeOn = timeOn;
@@ -94,5 +102,14 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
 
     public int getCurrentFrame(){
         return animationLogicMap.get(getState()).getCurrentFrame();
+    }
+
+    @Override
+    public void painting(boolean toPaint) {
+        paint = toPaint;
+    }
+
+    public boolean painting() {
+        return paint;
     }
 }

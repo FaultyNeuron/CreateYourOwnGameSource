@@ -1,0 +1,12 @@
+{
+    "graphics": {
+        "id": "life",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0.9,
+    "gravity_factor" : 0.5,
+    "effects" : [
+        {"id":"plus_life", "value" : 1}
+    ]
+}

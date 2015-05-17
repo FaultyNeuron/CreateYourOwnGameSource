@@ -193,15 +193,11 @@ public class DoubleTupel extends NumberTupel<Double>{
     public static DoubleTupel parse(String toParse){
         int errorOffset = 0;
         try {
-//            System.out.println("toParse: "+toParse);
             String escapedDelimiter = "\\" + DELIMITER;
             StringTupel values = new StringTupel(toParse.split(escapedDelimiter)).remove(" ");
-//            System.out.println("values"+ values);
             if (values.getFirst().startsWith(START_STRING) && values.getSecond().endsWith(END_STRING)) {
-//                System.out.println("true");
                 values = new StringTupel(values.getFirst().substring(1), values.getSecond().substring(0, values.getSecond().length() - 1));
             }
-//            System.out.println("length: "+(values.toArray().length));
             return new DoubleTupel(values);
         }catch (Exception exception){
             exception.printStackTrace();

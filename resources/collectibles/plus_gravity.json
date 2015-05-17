@@ -1,0 +1,13 @@
+{
+    "graphics": {
+        "id": "black_hole",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0,
+    "gravity_factor" : 2,
+    "effect_duration" : 750,
+    "effects" : [
+        {"id":"gravity", "factor" : 2}
+    ]
+}

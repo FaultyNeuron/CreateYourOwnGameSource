@@ -9,22 +9,23 @@ public class PlatformSettings{
     private double width;
     private int count;
 
-    private double deltaX = 0;
-    private double deltaY = 0;
+    private double delta_x = 0;
+    private double delta_y = 0;
     private double friction = ObjectSettings.DEFAULT_FLOOR_FRICTION;
     private double speed = 0;
+    private GraphicsSettings graphics;
 
     public double getDeltaX() {
-        return deltaX;
+        return delta_x;
     }
 
     public void setDelta(double deltaX, double deltaY) {
-        this.deltaX = deltaX;
-        this.deltaY = deltaY;
+        this.delta_x = deltaX;
+        this.delta_y = deltaY;
     }
 
     public double getDeltaY() {
-        return deltaY;
+        return delta_y;
     }
 
     public double getWidth() {
@@ -61,5 +62,21 @@ public class PlatformSettings{
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public GraphicsSettings getGraphicsSettings() {
+        return graphics;
+    }
+
+    @Override
+    public String toString() {
+        return "PlatformSettings{" +
+                "width=" + width +
+                ", count=" + count +
+                ", delta_x=" + delta_x +
+                ", delta_y=" + delta_y +
+                ", friction=" + friction +
+                ", speed=" + speed +
+                '}';
     }
 }

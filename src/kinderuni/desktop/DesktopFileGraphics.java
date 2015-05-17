@@ -5,6 +5,8 @@ import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.graphics.AnimationLogicImpl;
+import kinderuni.graphics.GraphicsInfo;
+import kinderuni.graphics.GraphicsObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,17 +21,19 @@ import java.util.Map;
  * Created by Georg Plaz.
  */
 public class DesktopFileGraphics extends DesktopGraphics {
-    private ImageIcon jump;
-    private ImageIcon standing;
     private Map<State, ImageIcon[]> images = new HashMap<>();
-    public DesktopFileGraphics(File path, String fileType, DoubleTupel dimensions) {
+    private File path;
+
+    public DesktopFileGraphics(File path, DoubleTupel dimensions) {
         super(dimensions);
+        this.path = path;
+        GraphicsInfo graphicsInfo = GraphicsInfo.createInfo(path);
         for (State state : State.values()){
             File stateFolder = new File(path, state.name().toLowerCase());
             if(stateFolder.exists()){
                 List<File> files = new LinkedList<>();
                 for (int i = 0;; i++) {
-                    File f = new File(stateFolder, "anim"+i+"."+fileType);
+                    File f = new File(stateFolder, "anim"+i+"."+graphicsInfo.getFileType());
                     if(f.exists()){
                         files.add(f);
                     }else{
@@ -39,7 +43,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
                 if(files.size()==1){
                     addStillState(state);
                 }else{
-                    addState(state, new AnimationLogicImpl(20, AnimationLogicImpl.LoopType.START_OVER, files.size()));
+                    addState(state, new AnimationLogicImpl(graphicsInfo.getFps(), graphicsInfo.getLoopType(), files.size()));
                 }
                 try{
                     ImageIcon[] imageIcon = new ImageIcon[files.size()];
@@ -97,5 +101,10 @@ public class DesktopFileGraphics extends DesktopGraphics {
     }
     private ImageIcon[] getIcons(State state){
         return images.get(state);
+    }
+
+    @Override
+    public GraphicsObject copy() {
+        return new DesktopFileGraphics(path, getDimensions());
     }
 }

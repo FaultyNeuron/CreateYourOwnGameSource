@@ -1,0 +1,41 @@
+{
+
+  "seed" : "hello_ice_world",
+
+  "width" : 5000,
+  "height" : 600,
+
+  "gravity" : 0.1,
+  "airFriction" : 0.001,
+
+  "player_x" : 50,
+  "player_y" : 50,
+
+  "enemies" : [
+    {"id" : "standard", "count" : 5},
+    {"id" : "standard_jumping", "count" : 5},
+    {"id" : "standard_boss", "count" : 1}
+
+  ],
+
+  "platforms":[
+    {"id" : "icy_moving_horizontally", "count" : 20},
+    {"id" : "icy", "count" : 20}
+  ],
+
+  "goal" : {
+    "graphics" : {
+      "draw_box" : true,
+      "width": 20,
+      "height": 20
+    },
+    "x" : 4950,
+    "y" : 50
+  },
+
+  "floor" : {
+    "gap_width" : 100,
+    "friction" : 0.01,
+    "tile_width" : 500
+  }
+}

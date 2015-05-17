@@ -1,0 +1,14 @@
+{
+    "graphics": {
+        "id": "white_hole",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0.9,
+    "gravity_factor" : 0.1,
+    "drop_acceleration" : 2,
+    "effect_duration" : 750,
+    "effects" : [
+        {"id":"gravity", "factor" : 0.75}
+    ]
+}

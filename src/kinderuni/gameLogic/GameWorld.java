@@ -16,14 +16,12 @@ import java.util.*;
  * Created by Georg Plaz.
  */
 public class GameWorld {
-    private static final double activeDistance = 100;
-//    private double airResistance = 0.99;
+    /** distance for the objects to move off screen and still be active*/
+    private static final double ACTIVE_DISTANCE = 100;
     private double airFriction;
     private double gravity;
     private Box worldBounds;
-//    private Goal goal;
     private Player player;
-//    private Screen renderScreen;
     private ModifiableBox activeBoundings;
     private final Set<GameObject> gameObjects = new LinkedHashSet<GameObject>();
     private final Set<SolidObject> solidObjects = new LinkedHashSet<SolidObject>();
@@ -44,9 +42,8 @@ public class GameWorld {
         this.worldBounds = worldBounds;
         this.airFriction = airFriction;
         this.gravity = gravity;
-//        this.renderScreen = renderScreen;
         this.activeBoundings = new FastAccessBox(DoubleTupel.ZEROS,
-                new DoubleTupel(screenWidth+activeDistance, Double.POSITIVE_INFINITY));
+                new DoubleTupel(screenWidth + ACTIVE_DISTANCE, 2<<10));
     }
 
     public double getGravity() {
@@ -158,7 +155,7 @@ public class GameWorld {
         synchronized (gameObjectsActive){
             for(GameObject gameObject : gameObjectsActive){
                 if(isOnScreen(gameObject, painter.getRenderScreen()) && !gameObject.isDestroyed()){
-                    gameObject.paint(painter);
+                    painter.paint(gameObject);
                 }
             }
         }

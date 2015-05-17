@@ -24,21 +24,13 @@ public class EnvironmentSettings {
         this.goalType = goalType;
     }
 
-    public DoubleTupel getDimensions() {
-        return dimensions;
-    }
 
-    public double getGravity() {
-        return gravity;
-    }
 
     public void setGravity(double gravity) {
         this.gravity = gravity;
     }
 
-    public double getAirFriction() {
-        return airFriction;
-    }
+
 
     public void setAirFriction(double airFriction) {
         this.airFriction = airFriction;

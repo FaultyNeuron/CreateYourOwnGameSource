@@ -1,0 +1,13 @@
+{
+    "graphics": {
+        "id": "bolt",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0.9,
+    "gravity_factor" : 0.5,
+    "effect_duration" : 750,
+    "effects" : [
+        {"id":"speed", "factor" : 2}
+    ]
+}

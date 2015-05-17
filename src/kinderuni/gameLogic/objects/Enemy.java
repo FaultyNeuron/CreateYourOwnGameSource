@@ -4,39 +4,26 @@ import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.graphics.GraphicsObject;
-import kinderuni.gameLogic.GameWorld;
 
 /**
  * Created by Georg Plaz.
  */
 public class Enemy extends LivingObject {
+    private int hp;
     private int damage;
-    private boolean jumper;
     private int jumpPause = 0;
-    private double jumpHeight = Math.random()*3+0.5;
+    private int initialJumpPause;
+    private double walkingSpeed;
+    private double jumpPower;
     private Collectible drop;
 
-    public Enemy(DoubleTupel position, GraphicsObject graphicsObject, int damage) {
-        this(position, graphicsObject, damage, Math.random() < 0.5);
-    }
-
-    public Enemy(DoubleTupel position, GraphicsObject graphicsObject, int damage, boolean jumper) {
-        super(position, graphicsObject);
+    public Enemy(DoubleTupel position, GraphicsObject graphicsObject, int hp, int damage,
+                 double walkingSpeed, double jumpPower, int jumpPause) {
+        super(position, graphicsObject, hp);
         this.damage = damage;
-        this.jumper = jumper;
-    }
-
-    public Enemy(DoubleTupel position, GraphicsObject graphicsObject,
-                 GameWorld gameWorld, int damage) {
-        this(position, graphicsObject, gameWorld, damage, Math.random()<0.5);
-
-    }
-    public Enemy(DoubleTupel position, GraphicsObject graphicsObject,
-                 GameWorld gameWorld, int damage, boolean jumper) {
-        super(position, graphicsObject, gameWorld);
-        this.damage = damage;
-        this.jumper = jumper;
-        gameWorld.add(this);
+        this.walkingSpeed = walkingSpeed;
+        this.jumpPower = jumpPower;
+        this.initialJumpPause = jumpPause;
     }
 
     public int damageDealt(){
@@ -46,18 +33,19 @@ public class Enemy extends LivingObject {
     @Override
     public void update(int time) {
         DoubleTupel playerDelta = getWorld().getPlayer().getCenter().sub(getCenter());
-        if(!jumper){
-            if(playerDelta.getFirst()>0){
-                walk(Direction1D.RIGHT, 1);
-            }else{
-                walk(Direction1D.LEFT, 1);
-            }
+        Direction1D direction;
+        if(playerDelta.getFirst()>0){
+            direction = Direction1D.RIGHT;
+        }else{
+            direction = Direction1D.LEFT;
+        }
+        walk(direction, walkingSpeed);
 //            move(playerDelta.toLength(1));
-        }else if (!inAir() && jumpPause--==0){
-            DoubleTupel jumpDir = new DoubleTupel(Math.signum(playerDelta.getFirst()), jumpHeight).toLength(5);
+        if (!inAir() && jumpPause--==0){
+            DoubleTupel jumpDir = direction.to2D().toVector().add(0, 1).toLength(jumpPower);
             accelerate(jumpDir);
 
-            jumpPause = 50;
+            jumpPause = initialJumpPause;
         }
         super.update(time);
     }
@@ -68,7 +56,7 @@ public class Enemy extends LivingObject {
         getWorld().destroyEnemy(this);
         if(drop!=null){
             drop.setCenter(getCenter());
-            drop.accelerate(0, 5);
+            drop.accelerate(0, drop.getDropAcceleration());
             getWorld().add(drop);
         }
     }

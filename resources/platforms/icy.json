@@ -1,0 +1,12 @@
+{
+
+    "graphics" : {
+        "draw_box" : true,
+        "width" : 200,
+        "height" : 20
+    },
+    "friction" : 0.01,
+    "speed" : 1,
+    "delta_x" : 0,
+    "delta_y" : 0
+}

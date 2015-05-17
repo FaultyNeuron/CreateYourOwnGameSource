@@ -34,6 +34,9 @@ public abstract class AbstractGameObject implements GameObject {
         setWorld(gameWorld);
     }
 
+    protected AbstractGameObject(DoubleTupel position) {
+        boundingBox = new ModifiableBox(position, DoubleTupel.ZEROS);
+    }
     protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject) {
         this.graphicsObject = graphicsObject;
         boundingBox = new ModifiableBox(position, graphicsObject.getDimensions());
