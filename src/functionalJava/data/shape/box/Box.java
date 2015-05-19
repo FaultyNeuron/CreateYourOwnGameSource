@@ -16,7 +16,6 @@ public interface Box {
     public DoubleTupel getCenter();
     public DoubleTupel getDimensions();
 
-
     public double getLeft();
     public double getLower();
     public double getRight();

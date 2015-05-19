@@ -48,7 +48,8 @@ public abstract class LivingObject extends PhysicsObject{
     }
     public boolean takeDamage(int damage, LivingObject source){
         hp-=damage;
-//        System.out.println("took "+damage+" damage. new hp: "+hp);
+        getGraphics().blink(10, 3);
+
         if(hp <= 0){
             killedBy(source);
             return true;

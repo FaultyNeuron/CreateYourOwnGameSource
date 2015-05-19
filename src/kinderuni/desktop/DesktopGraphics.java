@@ -18,4 +18,5 @@ public abstract class DesktopGraphics extends AbstractGraphicsObject {
         super(dimensions);
     }
     public abstract void drawTo(Graphics drawTo, DoubleTupel center);
+
 }

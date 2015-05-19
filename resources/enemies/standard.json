@@ -1,0 +1,21 @@
+{
+    "graphics" : {
+        "draw_box" : true,
+        "width" : 50,
+        "height" : 50
+    },
+    "hp" : 1,
+    "damage" : 1,
+    "walking_speed" : 1,
+    "jump_power" : 0,
+    "jump_pause" : 0,
+    "drop" : [
+        {"id" : "coin", "probability" : 7},
+        {"id" : "heart", "probability" : 4},
+        {"id" : "life", "probability" : 1},
+        {"id" : "minus_gravity", "probability" : 1},
+        {"id" : "plus_gravity", "probability" : 1},
+        {"id" : "speed_boost", "probability" : 1},
+        {"id" : "star", "probability" : 1}
+    ]
+}

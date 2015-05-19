@@ -5,6 +5,8 @@ import kinderuni.*;
 import kinderuni.graphics.GraphicsObject;
 import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Screen;
+import kinderuni.settings.Settings;
+import kinderuni.settings.levelSettings.objectSettings.GraphicsSettings;
 
 import java.io.File;
 
@@ -12,13 +14,14 @@ import java.io.File;
  * Created by Georg Plaz.
  */
 public class AndroidSystem implements kinderuni.System {
+
     @Override
-    public GraphicsObject createGraphics(String id, String fileType, double width, double height) {
+    public GraphicsObject createGraphics(String id, double width, double height) {
         return null;
     }
 
     @Override
-    public GraphicsObject createGraphics(String id, String fileType, DoubleTupel dimensions) {
+    public GraphicsObject createGraphics(String id, DoubleTupel dimensions) {
         return null;
     }
 
@@ -39,6 +42,16 @@ public class AndroidSystem implements kinderuni.System {
 
     @Override
     public InputRetriever getInputRetriever() {
+        return null;
+    }
+
+    @Override
+    public Settings getSettings() {
+        return null;
+    }
+
+    @Override
+    public GraphicsObject createGraphics(GraphicsSettings graphicsSettings) {
         return null;
     }
 

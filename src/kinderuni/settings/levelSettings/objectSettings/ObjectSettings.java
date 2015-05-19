@@ -1,5 +1,7 @@
 package kinderuni.settings.levelSettings.objectSettings;
 
+import functionalJava.data.tupel.Tupel;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,12 +15,12 @@ public class ObjectSettings {
 
     public static final double DEFAULT_FLOOR_FRICTION = 0.8;
 
-    private List<EnemySettings> enemies;
+    private List<Tupel<EnemySettings, Integer>> enemies;
     private List<PlatformSettings> platformSettings;
     private GoalSettings goalSettings;
     private FloorSettings floorSettings;
 
-    public List<EnemySettings> getEnemySettings() {
+    public List<Tupel<EnemySettings, Integer>> getEnemySettings() {
         return enemies;
     }
 
@@ -43,18 +45,27 @@ public class ObjectSettings {
     private static ObjectSettings createStandardLevelSettings() {
         ObjectSettings toReturn = new ObjectSettings();
         EnemySettings jumping = new EnemySettings();
+        toReturn.enemies = new LinkedList<>();
+
         jumping.setJumping(true);
-        jumping.setCount(5);
         jumping.setHeight(40);
         jumping.setDamage(1);
+        jumping.setHp(1);
+        toReturn.enemies.add(new Tupel<>(jumping, 5));
+
         EnemySettings nonJumping = new EnemySettings();
         nonJumping.setJumping(false);
-        nonJumping.setCount(5);
         nonJumping.setHeight(50);
         nonJumping.setDamage(1);
-        toReturn.enemies = new LinkedList<EnemySettings>();
-        toReturn.enemies.add(jumping);
-        toReturn.enemies.add(nonJumping);
+        nonJumping.setHp(1);
+        toReturn.enemies.add(new Tupel<>(nonJumping, 5));
+
+        EnemySettings boss = new EnemySettings();
+        boss.setJumping(false);
+        boss.setHeight(80);
+        boss.setDamage(1);
+        boss.setHp(5);
+        toReturn.enemies.add(new Tupel<>(boss, 1));
 
         PlatformSettings moving = new PlatformSettings();
         moving.setDelta(100, 0);
@@ -69,7 +80,7 @@ public class ObjectSettings {
         toReturn.platformSettings.add(nonMoving);
 
         toReturn.goalSettings = new GoalSettings();
-        toReturn.goalSettings.setHeight(25);
+//        toReturn.goalSettings.setHeight(25);
 
         toReturn.floorSettings = FloorSettings.createDefaultFloor();
         //todo..

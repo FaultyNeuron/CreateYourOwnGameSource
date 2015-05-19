@@ -13,10 +13,15 @@ public interface GraphicsObject {
     public void setState(State state);
 
     public DoubleTupel getDimensions();
+//    public void blink(double blinkPerSecond, int blinks);
     public void blink(double blinkPerSecond, double timeOn);
     public void blink(double blinkPerSecond);
 
-    void stopBlink();
+    public void stopBlink();
+
+    public GraphicsObject copy();
+
+    void painting(boolean toPaint);
 //    public void draw(Screen screen);
 
     public enum State {

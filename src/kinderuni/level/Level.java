@@ -6,6 +6,9 @@ import kinderuni.desktop.Info;
 import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
+import kinderuni.gameLogic.objects.collectible.effects.Effect;
+import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
+import kinderuni.graphics.GraphicsObject;
 import kinderuni.graphics.InputRetriever;
 import kinderuni.graphics.Paintable;
 import kinderuni.graphics.Painter;
@@ -30,8 +33,15 @@ public class Level implements Paintable {
     private State state;
     private String name;
     private DoubleTupel dimensions;
+    private GraphicsObject heartGraphics;
+    private GraphicsObject playerGraphics;
 
-    public Level(String name, DoubleTupel dimensions, double screenWidth, InputRetriever inputRetriever, double initialAirFriction, double gravity, DoubleTupel initPlayerPosition) {
+    public Level(String name, DoubleTupel dimensions,
+                 double screenWidth, InputRetriever inputRetriever,
+                 double initialAirFriction, double gravity,
+                 DoubleTupel initPlayerPosition, kinderuni.System system) {
+        heartGraphics = system.createGraphics("heart", 25, 25);
+        playerGraphics = system.createGraphics("player", 50, 50);
         this.name = name;
 //        this.screen = screen;
         this.inputRetriever = inputRetriever;
@@ -55,7 +65,7 @@ public class Level implements Paintable {
         }
 
         if(state == Level.State.IN_PROGRESS && getGameWorld().getPlayer()!=null){
-            if(getGameWorld().getPlayer().getLifes() <= 0){
+            if(getGameWorld().getPlayer().getLifeCount() <= 0){
                 state = Level.State.LOST;
             }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
                     inputRetriever.skipLevelAndConsume()){
@@ -66,15 +76,31 @@ public class Level implements Paintable {
     }
 
     public void paint(Painter painter) {
+        DoubleTupel heartDim = heartGraphics.getDimensions();
+        double iconDelta = heartDim.max();
         gameWorld.paint(painter);
+        double left = -painter.getRenderScreen().getScreenWidth()/2;
+        double top = painter.getRenderScreen().getScreenHeight()/2;
+        for (int i = 0; i < getGameWorld().getPlayer().getHp(); i++) {
+            painter.paint(heartGraphics, new DoubleTupel(left + iconDelta + i*(heartDim.getFirst()+iconDelta), top-iconDelta));
+        }
+        List<ReversibleEffect> effects = getGameWorld().getPlayer().getActiveEffects();
+        double pos = left + iconDelta;
+        for (Effect effect : effects) {
+            GraphicsObject graphic = effect.getGraphics();
+            if (graphic != null){
+                painter.paint(graphic, new DoubleTupel(pos, top - iconDelta*2 - heartDim.getSecond()));
+                pos += graphic.getDimensions().getFirst() + iconDelta;
+            }
+        }
     }
 
     @Override
     public List<Info> getInfos() {
         List<Info> toReturn = new LinkedList<>();
         toReturn.add(new Info("level", name));
-        toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifes())));
-        toReturn.add(new Info("hp", String.valueOf(getGameWorld().getPlayer().getHp())));
+        toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
+        toReturn.add(new Info("coins", String.valueOf(getGameWorld().getPlayer().getCoins())));
         return toReturn;
     }
 

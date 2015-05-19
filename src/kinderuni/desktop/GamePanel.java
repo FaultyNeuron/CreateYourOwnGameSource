@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Georg Plaz.
  */
-public class GamePanel extends JPanel implements Screen, InputRetriever {
+public class GamePanel extends JPanel implements Screen{
     private DoubleTupel center;
     private DoubleTupel dimensions;
     private Dimension dimensionsAwt;
@@ -32,10 +32,7 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
     private List<Tupel<Paintable, Long>> paintables = new LinkedList<>();
     private boolean running;
 
-    private boolean left;
-    private boolean right;
-    private boolean jump;
-    private boolean skipLevel;
+
 
     public GamePanel(DoubleTupel dimensions) {
         setBackground(Color.WHITE);
@@ -46,47 +43,7 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
         dimensionsAwt = new Dimension((int) dimensions.getFirst().doubleValue(), (int) dimensions.getSecond().doubleValue());
         setFocusable(true);
         requestFocusInWindow();
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent keyEvent) {
-                synchronized (GamePanel.class) {
-                    switch (keyEvent.getID()) {
-                        case KeyEvent.KEY_PRESSED:
-                            switch (keyEvent.getKeyCode()){
-                                case KeyEvent.VK_A:
-                                    left = true;
-                                    break;
-                                case KeyEvent.VK_D:
-                                    right = true;
-                                    break;
-                                case KeyEvent.VK_SPACE:
-                                    jump = true;
-                                    break;
-                                case KeyEvent.VK_F:
-                                    skipLevel = true;
-                                    System.out.println("pressed f!");
-                                    break;
-                            }
-                            break;
 
-                        case KeyEvent.KEY_RELEASED:
-                            switch (keyEvent.getKeyCode()){
-                                case KeyEvent.VK_A:
-                                    left = false;
-                                    break;
-                                case KeyEvent.VK_D:
-                                    right = false;
-                                    break;
-                                case KeyEvent.VK_SPACE:
-                                    jump = false;
-                                    break;
-                            }
-                            break;
-                    }
-                    return false;
-                }
-            }
-        });
     }
 
     public DoubleTupel getScreenDimensions(){
@@ -116,27 +73,7 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
         repaint();
     }
 
-    @Override
-    public boolean skipLevelAndConsume() {
-        boolean toReturn = skipLevel;
-        skipLevel = false;
-        return toReturn;
-    }
 
-    @Override
-    public boolean goRight() {
-        return right;
-    }
-
-    @Override
-    public boolean goLeft() {
-        return left;
-    }
-
-    @Override
-    public boolean jump() {
-        return jump;
-    }
 
     @Override
     public void paint(Graphics g) {
@@ -145,7 +82,10 @@ public class GamePanel extends JPanel implements Screen, InputRetriever {
         int cursorDelta = 15;
         int cursorHeight = getHeight() + cursorDelta/2;
         long currentTime = System.currentTimeMillis();
-        fpsInfo.setValue(String.valueOf(1000/(currentTime - lastPaintTime)));
+        long delta = currentTime - lastPaintTime;
+        if (delta > 0) {
+            fpsInfo.setValue(String.valueOf(1000/delta));
+        }
         for(Info info : infos){
             paintInfo(g, info, cursorHeight-=cursorDelta);
         }

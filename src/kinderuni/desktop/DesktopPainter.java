@@ -1,6 +1,7 @@
 package kinderuni.desktop;
 
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.graphics.GraphicsObject;
 import kinderuni.graphics.Painter;
 import kinderuni.graphics.Screen;
 import kinderuni.gameLogic.objects.GameObject;
@@ -21,10 +22,21 @@ public class DesktopPainter implements Painter{
 
     @Override
     public void paint(GameObject abstractGameObject) {
-        DesktopGraphics graphics = (DesktopGraphics) abstractGameObject.getGraphics();
+        DoubleTupel screenDelta = screen.getCenter();
+        paint(abstractGameObject, abstractGameObject.getCenter().sub(screenDelta));
+    }
+
+    @Override
+    public void paint(GameObject abstractGameObject, DoubleTupel center) {
+        paint(abstractGameObject.getGraphics(), center);
+    }
+
+    @Override
+    public void paint(GraphicsObject graphics, DoubleTupel center) {
+        DoubleTupel screenDelta = screen.getScreenDimensions().div(2, -2);
+        DesktopGraphics desktopGraphics = (DesktopGraphics) graphics;
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
-        DoubleTupel screenDelta = screen.getScreenDimensions().div(2, -2).sub(screen.getCenter());
-        graphics.drawTo(g, abstractGameObject.getCenter().add(screenDelta));
+        desktopGraphics.drawTo(g, center.add(screenDelta));
     }
 
     @Override

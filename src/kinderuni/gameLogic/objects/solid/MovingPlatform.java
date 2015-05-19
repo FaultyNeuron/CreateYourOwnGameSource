@@ -32,7 +32,7 @@ public class MovingPlatform extends Platform {
 
     @Override
     public void update(int time) { //TODO: calculate position from time, so platforms won't go out of sync
-        if(speed>0) {
+        if(speed*cycleLength>0) {
             int cycles = (int) (time / cycleLength);
             double pos = (time % cycleLength)/cycleLength;
             if(cycles%2==1){

@@ -47,13 +47,8 @@ public abstract class PhysicsObject extends AbstractGameObject {
 
     @Override
     public void update(int time) {
-        accelerate(0, -getWorld().getGravity());
+        accelerate(0, -getWorld().getGravity()*getGravityFactor());
         move(speed);
-//        System.out.println(getClass().getSimpleName()+" speed: "+speed);
-//        if(inAir) {
-//            System.out.println(getClass().getSimpleName() + " is in air " + inAir);
-//        }
-
     }
 
     public void accelerate(double x, double y){
@@ -129,4 +124,6 @@ public abstract class PhysicsObject extends AbstractGameObject {
     public boolean inAir() {
         return !isSticking();
     }
+
+    public double getGravityFactor(){return 1;}
 }
