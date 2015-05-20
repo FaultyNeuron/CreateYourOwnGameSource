@@ -1,11 +1,9 @@
 package kinderuni.desktop;
 
-import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.AbstractGraphicsObject;
+import kinderuni.ui.graphics.AbstractGraphicsObject;
 
 import java.awt.*;
-import java.io.File;
 
 /**
  * Created by Georg Plaz.

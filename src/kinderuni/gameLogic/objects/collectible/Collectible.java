@@ -6,7 +6,7 @@ import kinderuni.gameLogic.objects.PhysicsObject;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.solid.SolidObject;
-import kinderuni.graphics.GraphicsObject;
+import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.

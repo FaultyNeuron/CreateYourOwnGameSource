@@ -5,8 +5,8 @@ import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
-import kinderuni.graphics.Painter;
-import kinderuni.graphics.Screen;
+import kinderuni.ui.graphics.Painter;
+import kinderuni.ui.GraphicsComponent;
 import kinderuni.gameLogic.objects.*;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
@@ -151,7 +151,7 @@ public class GameWorld {
     }
 
     public void paint(Painter painter){
-        painter.getRenderScreen().setCenter(player.getCenter());
+        painter.getRenderScreen().setRenderCenter(player.getCenter());
         synchronized (gameObjectsActive){
             for(GameObject gameObject : gameObjectsActive){
                 if(isOnScreen(gameObject, painter.getRenderScreen()) && !gameObject.isDestroyed()){
@@ -161,15 +161,15 @@ public class GameWorld {
         }
     }
 
-    public boolean isOnScreen(GameObject toTest, Screen screen){
-        return isOnScreen(toTest.getBoundingBox(), screen);
+    public boolean isOnScreen(GameObject toTest, GraphicsComponent graphicsComponent){
+        return isOnScreen(toTest.getBoundingBox(), graphicsComponent);
     }
     public boolean isActive(GameObject toTest){
         return isActive(toTest.getBoundingBox());
     }
 
-    public boolean isOnScreen(Box box, Screen screen){
-        return box.collides(screen.getScreenArea());
+    public boolean isOnScreen(Box box, GraphicsComponent graphicsComponent){
+        return box.collides(graphicsComponent.getScreenArea());
     }
     public boolean isActive(Box box){
         return box.collides(activeBoundings);

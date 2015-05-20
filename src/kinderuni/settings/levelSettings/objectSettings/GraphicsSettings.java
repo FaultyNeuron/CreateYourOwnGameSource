@@ -7,7 +7,8 @@ public class GraphicsSettings {
     private String id;
     private double width;
     private double height;
-    private boolean draw_box = false;
+    private int[] bg_colour;
+    private int[] line_colour;
     private String text;
 
     public String getId() {
@@ -26,7 +27,11 @@ public class GraphicsSettings {
         return text;
     }
 
-    public boolean drawBox() {
-        return draw_box;
+    public int[] getBgColour() {
+        return bg_colour;
+    }
+
+    public int[] getLine_colour() {
+        return line_colour;
     }
 }

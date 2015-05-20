@@ -1,9 +1,9 @@
 package kinderuni.desktop;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.GraphicsObject;
-import kinderuni.graphics.Painter;
-import kinderuni.graphics.Screen;
+import kinderuni.ui.graphics.GraphicsObject;
+import kinderuni.ui.graphics.Painter;
+import kinderuni.ui.GraphicsComponent;
 import kinderuni.gameLogic.objects.GameObject;
 
 import java.awt.*;
@@ -13,16 +13,16 @@ import java.awt.*;
  */
 public class DesktopPainter implements Painter{
     private final Graphics g;
-    private Screen screen;
+    private GraphicsComponent graphicsComponent;
 
-    public DesktopPainter(Graphics g, Screen screen) {
+    public DesktopPainter(Graphics g, GraphicsComponent graphicsComponent) {
         this.g = g;
-        this.screen = screen;
+        this.graphicsComponent = graphicsComponent;
     }
 
     @Override
     public void paint(GameObject abstractGameObject) {
-        DoubleTupel screenDelta = screen.getCenter();
+        DoubleTupel screenDelta = graphicsComponent.getCenter();
         paint(abstractGameObject, abstractGameObject.getCenter().sub(screenDelta));
     }
 
@@ -33,15 +33,15 @@ public class DesktopPainter implements Painter{
 
     @Override
     public void paint(GraphicsObject graphics, DoubleTupel center) {
-        DoubleTupel screenDelta = screen.getScreenDimensions().div(2, -2);
+        DoubleTupel screenDelta = graphicsComponent.getCompSize().div(2, -2);
         DesktopGraphics desktopGraphics = (DesktopGraphics) graphics;
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
         desktopGraphics.drawTo(g, center.add(screenDelta));
     }
 
     @Override
-    public Screen getRenderScreen() {
-        return screen;
+    public GraphicsComponent getRenderScreen() {
+        return graphicsComponent;
     }
 
 }

@@ -1,7 +1,7 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
 import kinderuni.gameLogic.objects.Player;
-import kinderuni.graphics.GraphicsObject;
+import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.

@@ -1,7 +1,8 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.GameObject;
+import kinderuni.ui.GraphicsComponent;
 
 /**
  * Created by Georg Plaz.
@@ -13,5 +14,5 @@ public interface Painter {
 
     void paint(GraphicsObject graphics, DoubleTupel center);
 
-    public Screen getRenderScreen();
+    public GraphicsComponent getRenderScreen();
 }

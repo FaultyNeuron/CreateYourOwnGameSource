@@ -1,9 +1,9 @@
 package kinderuni.desktop;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.GraphicsObject;
-import kinderuni.graphics.InputRetriever;
-import kinderuni.graphics.Screen;
+import kinderuni.ui.Screen;
+import kinderuni.desktop.ui.DesktopScreen;
+import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.settings.Settings;
 import kinderuni.settings.levelSettings.objectSettings.GraphicsSettings;
 
@@ -17,10 +17,10 @@ public class DesktopSystem implements kinderuni.System {
     private File resources = new File("resources");
     private Settings settings;
     private File animations = new File(resources, "animations");
-    private GameFrame gameFrame;
+    private DesktopScreen desktopScreen;
 
     public DesktopSystem() throws FileNotFoundException {
-        gameFrame = new GameFrame(new DoubleTupel(500));
+        desktopScreen = new DesktopScreen(new DoubleTupel(500), this);
         settings = Settings.read(resources);
     }
 
@@ -35,25 +35,20 @@ public class DesktopSystem implements kinderuni.System {
     }
 
     @Override
-    public GraphicsObject createBoxGraphics(double width, double height) {
-        return new DesktopBoxGraphics(width, height);
+    public GraphicsObject createBoxGraphics(double width, double height, int[] bgColour, int[] lineColour) {
+        return new DesktopFileGraphics(bgColour, lineColour, new DoubleTupel(width, height));
     }
 
     @Override
     public GraphicsObject createTextBoxGraphics(double width, double height, String text) {
-        return new DesktopBoxGraphics(width, height, text);
+        return new DesktopFileGraphics(text, new DoubleTupel(width, height));
     }
-
 
     @Override
     public Screen getScreen() {
-        return gameFrame.getGamePanel();
+        return desktopScreen;
     }
 
-    @Override
-    public InputRetriever getInputRetriever(){
-        return new DesktopInputRetriever(gameFrame.getGamePanel());
-    }
 
     @Override
     public Settings getSettings() {
@@ -62,10 +57,16 @@ public class DesktopSystem implements kinderuni.System {
 
     @Override
     public GraphicsObject createGraphics(GraphicsSettings graphicsSettings) {
-        if(graphicsSettings.drawBox()){
-            return createBoxGraphics(graphicsSettings.getWidth(), graphicsSettings.getHeight());
-        }else{
-            return createGraphics(graphicsSettings.getId(), graphicsSettings.getWidth(), graphicsSettings.getHeight());
-        }
+        File path = graphicsSettings.getId()==null?null:new File(animations, graphicsSettings.getId());
+        return new DesktopFileGraphics(
+                path,
+                graphicsSettings.getBgColour(), graphicsSettings.getLine_colour(),
+                graphicsSettings.getText(),
+                new DoubleTupel(graphicsSettings.getWidth(), graphicsSettings.getHeight()));
+//        if(graphicsSettings.drawBox()){
+//            return createBoxGraphics(graphicsSettings.getWidth(), graphicsSettings.getHeight(), graphicsSettings.getBgColour());
+//        }else{
+//            return createGraphics(graphicsSettings.getId(), graphicsSettings.getWidth(), graphicsSettings.getHeight());
+//        }
     }
 }

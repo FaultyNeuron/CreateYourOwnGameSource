@@ -1,8 +1,8 @@
 package kinderuni.desktop;
 
-import kinderuni.graphics.InputRetriever;
+import kinderuni.desktop.ui.GraphicsPanel;
+import kinderuni.ui.graphics.InputRetriever;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -14,11 +14,12 @@ public class DesktopInputRetriever implements InputRetriever {
     private boolean right;
     private boolean jump;
     private boolean skipLevel;
-    public DesktopInputRetriever(JPanel jPanel){
+    private boolean skipLevelPressed;
+    public DesktopInputRetriever(Container jPanel){
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent keyEvent) {
-                synchronized (GamePanel.class) {
+                synchronized (GraphicsPanel.class) {
                     switch (keyEvent.getID()) {
                         case KeyEvent.KEY_PRESSED:
                             switch (keyEvent.getKeyCode()){
@@ -32,7 +33,8 @@ public class DesktopInputRetriever implements InputRetriever {
                                     jump = true;
                                     break;
                                 case KeyEvent.VK_F:
-                                    skipLevel = true;
+                                    System.out.println("pressed f..");
+                                    skipLevelPressed = true;
                                     break;
                             }
                             break;
@@ -47,6 +49,10 @@ public class DesktopInputRetriever implements InputRetriever {
                                     break;
                                 case KeyEvent.VK_SPACE:
                                     jump = false;
+                                    break;
+                                case KeyEvent.VK_F:
+                                    System.out.println("released f..");
+                                    skipLevel = true;
                                     break;
                             }
                             break;

@@ -1,7 +1,7 @@
 {
 
     "graphics" : {
-        "draw_box" : true,
+        "line_colour" : [0, 0, 0],
         "width" : 200,
         "height" : 20
     },

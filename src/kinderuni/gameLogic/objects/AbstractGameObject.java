@@ -7,8 +7,8 @@ import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.Axis;
 import functionalJava.data.tupel.SymTupel;
 import functionalJava.data.tupel.Tupel;
-import kinderuni.graphics.GraphicsObject;
-import kinderuni.graphics.Painter;
+import kinderuni.ui.graphics.GraphicsObject;
+import kinderuni.ui.graphics.Painter;
 import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 

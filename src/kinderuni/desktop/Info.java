@@ -1,7 +1,5 @@
 package kinderuni.desktop;
 
-import functionalJava.data.tupel.StringTupel;
-
 /**
  * Created by Georg Plaz.
  */

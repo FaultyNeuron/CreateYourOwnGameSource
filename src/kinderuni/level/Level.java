@@ -8,10 +8,10 @@ import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
-import kinderuni.graphics.GraphicsObject;
-import kinderuni.graphics.InputRetriever;
-import kinderuni.graphics.Paintable;
-import kinderuni.graphics.Painter;
+import kinderuni.ui.graphics.GraphicsObject;
+import kinderuni.ui.graphics.InputRetriever;
+import kinderuni.ui.graphics.Paintable;
+import kinderuni.ui.graphics.Painter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -69,6 +69,7 @@ public class Level implements Paintable {
                 state = Level.State.LOST;
             }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
                     inputRetriever.skipLevelAndConsume()){
+                System.out.println("skipping level");
                 state = Level.State.WON;
             }
         }
@@ -79,8 +80,8 @@ public class Level implements Paintable {
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
         gameWorld.paint(painter);
-        double left = -painter.getRenderScreen().getScreenWidth()/2;
-        double top = painter.getRenderScreen().getScreenHeight()/2;
+        double left = -painter.getRenderScreen().getCompSize().getFirst()/2;
+        double top = painter.getRenderScreen().getCompSize().getSecond()/2;
         for (int i = 0; i < getGameWorld().getPlayer().getHp(); i++) {
             painter.paint(heartGraphics, new DoubleTupel(left + iconDelta + i*(heartDim.getFirst()+iconDelta), top-iconDelta));
         }
@@ -99,8 +100,10 @@ public class Level implements Paintable {
     public List<Info> getInfos() {
         List<Info> toReturn = new LinkedList<>();
         toReturn.add(new Info("level", name));
-        toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
-        toReturn.add(new Info("coins", String.valueOf(getGameWorld().getPlayer().getCoins())));
+        if(gameWorld!=null && gameWorld.getPlayer()!=null) {
+            toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
+            toReturn.add(new Info("coins", String.valueOf(getGameWorld().getPlayer().getCoins())));
+        }
         return toReturn;
     }
 
@@ -164,6 +167,11 @@ public class Level implements Paintable {
 
     public long getTime() {
         return time;
+    }
+
+    @Override
+    public boolean tracksTime() {
+        return true;
     }
 
     public enum State{

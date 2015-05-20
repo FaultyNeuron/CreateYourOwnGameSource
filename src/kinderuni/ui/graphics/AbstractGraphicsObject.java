@@ -1,10 +1,8 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
-import com.google.gson.Gson;
 import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
 
-import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 

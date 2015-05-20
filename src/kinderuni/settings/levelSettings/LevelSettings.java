@@ -1,10 +1,9 @@
 package kinderuni.settings.levelSettings;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.settings.IdCountPair;
+import kinderuni.settings.IdCountSettings;
 import kinderuni.settings.levelSettings.objectSettings.FloorSettings;
 import kinderuni.settings.levelSettings.objectSettings.GoalSettings;
-import kinderuni.settings.levelSettings.objectSettings.ObjectSettings;
 import util.RandomHolder;
 
 import java.util.LinkedList;
@@ -32,8 +31,8 @@ public class LevelSettings {
     private double player_x;
     private double player_y;
 
-    private List<IdCountPair> enemies = new LinkedList<>();
-    private List<IdCountPair> platforms = new LinkedList<>();
+    private List<IdCountSettings> enemies = new LinkedList<>();
+    private List<IdCountSettings> platforms = new LinkedList<>();
     private GoalSettings goal;
     private FloorSettings floor;
 
@@ -93,11 +92,11 @@ public class LevelSettings {
         return toReturn;
     }
 
-    public List<IdCountPair> getEnemies() {
+    public List<IdCountSettings> getEnemies() {
         return enemies;
     }
 
-    public List<IdCountPair> getPlatforms() {
+    public List<IdCountSettings> getPlatforms() {
         return platforms;
     }
 

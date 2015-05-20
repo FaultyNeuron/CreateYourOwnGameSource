@@ -3,7 +3,7 @@ package kinderuni.gameLogic.objects;
 import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
-import kinderuni.graphics.GraphicsObject;
+import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.

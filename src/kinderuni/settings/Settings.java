@@ -10,10 +10,7 @@ import kinderuni.settings.levelSettings.objectSettings.PlatformSettings;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Georg Plaz.
@@ -21,7 +18,7 @@ import java.util.Map;
 public class Settings {
     private static Gson gson = new Gson();
     private PlayerSettings playerSettings;
-    private Map<String, LevelSettings> levelSettings = new HashMap<>();
+    private Map<String, LevelSettings> levelSettings = new LinkedHashMap<>();
     private Map<String, EnemySettings> enemySettings = new HashMap<>();
     private Map<String, CollectibleSettings> collectibleSettings = new HashMap<>();
     private Map<String, PlatformSettings> platformSettings = new HashMap<>();

@@ -9,8 +9,9 @@ import kinderuni.gameLogic.objects.collectible.DropFactory;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.gameLogic.objects.solid.MovingPlatform;
 import kinderuni.gameLogic.objects.solid.Platform;
-import kinderuni.graphics.InputRetriever;
-import kinderuni.settings.IdCountPair;
+import kinderuni.ui.graphics.GraphicsObject;
+import kinderuni.ui.graphics.InputRetriever;
+import kinderuni.settings.IdCountSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
@@ -24,17 +25,26 @@ import java.util.Random;
  */
 public class LevelBuilder {
     private static InputRetriever inputRetriever;
-    private final LevelSettings levelSettings;
+//    private final LevelSettings levelSettings;
     private final double screenWidth;
     private final kinderuni.System system;
-    private Random random;
-    private Level level;
 
-    private LevelBuilder(LevelSettings levelSettings, double screenWidth, kinderuni.System system) {
-        this.levelSettings = levelSettings;
+    public LevelBuilder(double screenWidth, kinderuni.System system, InputRetriever retriever) {
+//        this.levelSettings = levelSettings;
         this.screenWidth = screenWidth;
         this.system = system;
+        this.inputRetriever = retriever;
+    }
+
+    public static Level build(LevelSettings levelSettings, double screenWidth, InputRetriever inputRetriever, kinderuni.System system) {
+        LevelBuilder.inputRetriever = inputRetriever;
+        LevelBuilder builder = new LevelBuilder(screenWidth, system, inputRetriever);
+        return builder.buildLevel(levelSettings);
+    }
+
+    public Level buildLevel(LevelSettings levelSettings) {
         String strSeed = levelSettings.getSeed();
+        Random random;
         if(strSeed!=null) {
             long longSeed = 0;
             for (int i = 0; i < strSeed.length(); i++) {
@@ -44,29 +54,20 @@ public class LevelBuilder {
         }else{
             random = new Random();
         }
-    }
-
-    public static Level build(LevelSettings levelSettings, double screenWidth, InputRetriever inputRetriever, kinderuni.System system) {
-        LevelBuilder.inputRetriever = inputRetriever;
-        LevelBuilder builder = new LevelBuilder(levelSettings, screenWidth, system);
-        return builder.buildLevel();
-    }
-
-    private Level buildLevel() {
-        buildEnvironment();
-        buildObjects();
+        Level level = buildEnvironment(levelSettings, random);
+        buildObjects(level, levelSettings, random);
         return level;
     }
 
-    private void buildEnvironment() {
+    private Level buildEnvironment(LevelSettings levelSettings, Random random) {
 //        EnvironmentSettings environmentSettings = levelSettings.getEnvironmentSettings();
-        level = new Level(levelSettings.getLevelName(), levelSettings.getDimensions(),
+        return new Level(levelSettings.getLevelName(), levelSettings.getDimensions(),
                 screenWidth, inputRetriever,
                 levelSettings.getAirFriction(), levelSettings.getGravity(),
                 levelSettings.getPlayerInitPos(), system);
     }
 
-    private void buildObjects() {
+    private void buildObjects(Level level, LevelSettings levelSettings, Random random) {
         //todo do stuff
 //        ObjectSettings objectSettings = levelSettings.getObjectSettings();
         Box levelBox = level.getGameWorld().getBounds();
@@ -75,33 +76,38 @@ public class LevelBuilder {
         double floor = levelBox.getLower();
         double lastEnd = levelBox.getLeft();
         while (lastEnd < levelBox.getRight()) {
-            double width = floorSettings.getTileWidth();
-            level.getGameWorld().add(new Platform(new DoubleTupel(lastEnd + width / 2, floor), system.createTextBoxGraphics(width, 25, "floor"), floorSettings.getFriction()));
+            GraphicsObject graphicsObject;
+            if(floorSettings.getGraphicsSettings()==null){
+                graphicsObject = system.createTextBoxGraphics(500, 25, "floor");
+            }else{
+                graphicsObject = system.createGraphics(floorSettings.getGraphicsSettings());
+            }
+            double width = graphicsObject.getDimensions().getFirst();
+            level.getGameWorld().add(new Platform(new DoubleTupel(lastEnd + width / 2, floor), graphicsObject, floorSettings.getFriction()));
             lastEnd += width + floorSettings.getGapWidth();
         }
 
-        for (IdCountPair enemyId : levelSettings.getEnemies()) {
+        for (IdCountSettings enemyId : levelSettings.getEnemies()) {
             EnemySettings enemySettings = system.getSettings().getEnemySettings(enemyId.getId());
             DropFactory dropFactory = new DropFactory(random);
+            GraphicsSettings graphicsSettings = enemyId.hasGraphicsSettings()?enemyId.getGraphicsSettings():enemySettings.getGraphicsSettings();
             for(EnemySettings.Drop drop : enemySettings.getDrop()){
                 Collectible c = buildCollectible(system.getSettings().getCollectibleSettings(drop.getId()));
                 dropFactory.addBluePrint(drop.getProbability(), c);
             }
-            for (DoubleTupel tupel : createPoints(levelBox, enemyId.getCount())) {
-                Enemy enemy = buildEnemy(enemySettings, tupel, dropFactory);
+            for (DoubleTupel tupel : createPoints(levelBox, enemyId.getCount(), random)) {
+                Enemy enemy = buildEnemy(enemySettings, tupel, dropFactory, graphicsSettings);
                 level.getGameWorld().add(enemy);
             }
         }
-        for (IdCountPair platformId : levelSettings.getPlatforms()) {
+        for (IdCountSettings platformId : levelSettings.getPlatforms()) {
             PlatformSettings platformSettings = system.getSettings().getPlatformSettings(platformId.getId());
-            for (DoubleTupel tupel : createPoints(level.getGameWorld().getBounds(), platformId.getCount())) {
-                level.getGameWorld().add(
-                        new MovingPlatform(
-                                tupel,
-                                system.createGraphics(platformSettings.getGraphicsSettings()),
-                                platformSettings.getFriction(),
-                                platformSettings.getSpeed(),
-                                platformSettings.getDelta()));
+            GraphicsSettings graphicsSettings = platformId.hasGraphicsSettings()?platformId.getGraphicsSettings():platformSettings.getGraphicsSettings();
+            for (DoubleTupel tupel : createPoints(level.getGameWorld().getBounds(), platformId.getCount(), random)) {
+//                System.out.println("system: "+system);
+//                System.out.println("platformSettings: "+platformSettings);
+                level.getGameWorld().add(createMovingPlatform(tupel, platformSettings, graphicsSettings));
+
             }
         }
 
@@ -109,7 +115,16 @@ public class LevelBuilder {
         level.set(new Goal(goalSettings.getPosition(), system.createGraphics(goalSettings.getGraphicsSettings())));
     }
 
-    public Collection<DoubleTupel> createPoints(Box bounding, int count) {
+    public MovingPlatform createMovingPlatform(DoubleTupel position, PlatformSettings platformSettings, GraphicsSettings graphicsSettings){
+        return new MovingPlatform(
+                position,
+                system.createGraphics(graphicsSettings),
+                platformSettings.getFriction(),
+                platformSettings.getSpeed(),
+                platformSettings.getDelta());
+    }
+
+    public Collection<DoubleTupel> createPoints(Box bounding, int count, Random random) {
         Collection<DoubleTupel> points = new LinkedList<DoubleTupel>();
         for (int i = 0; i < count; i++) {
             double x = random.nextDouble() * bounding.getWidth() + bounding.getLeft();
@@ -119,10 +134,9 @@ public class LevelBuilder {
         return points;
     }
 
-    private Enemy buildEnemy(EnemySettings enemySettings, DoubleTupel position, DropFactory dropFactory) {
-
+    private Enemy buildEnemy(EnemySettings enemySettings, DoubleTupel position, DropFactory dropFactory, GraphicsSettings graphicsSettings) {
         Enemy toReturn = new Enemy(
-                position, system.createGraphics(enemySettings.getGraphicsSettings()),
+                position, system.createGraphics(graphicsSettings),
                 enemySettings.getHp(), enemySettings.getDamage(),
                 enemySettings.getWalkingSpeed(), enemySettings.getJumpPower(), enemySettings.getJumpPause());
         if (!dropFactory.isEmpty()) {

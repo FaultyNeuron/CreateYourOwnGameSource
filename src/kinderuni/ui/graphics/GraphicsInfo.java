@@ -1,4 +1,4 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
 import com.google.gson.Gson;
 

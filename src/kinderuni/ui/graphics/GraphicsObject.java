@@ -1,4 +1,4 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
 import functionalJava.data.Direction1D;
 import functionalJava.data.tupel.DoubleTupel;

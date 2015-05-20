@@ -1,4 +1,4 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
 import kinderuni.desktop.Info;
 
@@ -11,4 +11,5 @@ public interface Paintable {
     public void paint(Painter painter);
     public List<Info> getInfos();
     public long getTime();
+    public boolean tracksTime();
 }

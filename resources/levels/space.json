@@ -17,13 +17,28 @@
   ],
 
   "platforms":[
-    {"id" : "standard_moving_vertically", "count" : 20},
-    {"id" : "standard", "count" : 20}
+    {"id" : "standard_moving_vertically", "count" : 20,
+      "graphics" : {
+        "bg_colour" : [122, 122, 122],
+        "line_colour" : [0, 0, 0],
+        "width": 200,
+        "height": 20
+      }
+    },
+    {"id" : "standard", "count" : 20,
+      "graphics" : {
+       "bg_colour" : [122, 122, 122],
+       "line_colour" : [0, 0, 0],
+       "width": 200,
+       "height": 20
+      }
+    }
   ],
 
   "goal" : {
     "graphics" : {
-      "draw_box" : true,
+      "line_colour" : [0, 0, 0],
+      "bg_colour" : [219, 219, 9],
       "width": 20,
       "height": 20
     },
@@ -32,8 +47,14 @@
   },
 
   "floor" : {
+    "graphics" : {
+      "line_colour" : [0, 0, 0],
+      "bg_colour" : [122, 122, 122],
+//      "bg_colour" : [115, 191, 201],
+      "width" : 500,
+      "height" : 20
+    },
     "gap_width" : 100,
-    "friction" : 0.8,
-    "tile_width" : 500
+    "friction" : 0.8
   }
 }

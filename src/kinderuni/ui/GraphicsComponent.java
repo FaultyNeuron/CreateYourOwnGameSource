@@ -1,23 +1,17 @@
-package kinderuni.graphics;
+package kinderuni.ui;
 
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.gameLogic.GameWorld;
-import kinderuni.level.Level;
+import kinderuni.ui.graphics.Paintable;
+import kinderuni.ui.components.Component;
 
 /**
  * Created by Georg Plaz.
  */
-public interface Screen {
-    public DoubleTupel getScreenDimensions();
-
-    public double getScreenWidth();
-
-    public double getScreenHeight();
-
+public interface GraphicsComponent extends Component{
     public DoubleTupel getCenter();
 
-    public void setCenter(DoubleTupel center);
+    public void setRenderCenter(DoubleTupel center);
 
     public Box getScreenArea();
 

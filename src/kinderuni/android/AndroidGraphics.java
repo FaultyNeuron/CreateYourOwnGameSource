@@ -1,8 +1,8 @@
 package kinderuni.android;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.AbstractGraphicsObject;
-import kinderuni.graphics.GraphicsObject;
+import kinderuni.ui.graphics.AbstractGraphicsObject;
+import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.

@@ -1,4 +1,4 @@
-package kinderuni.graphics;
+package kinderuni.ui.graphics;
 
 /**
  * Created by Georg Plaz.

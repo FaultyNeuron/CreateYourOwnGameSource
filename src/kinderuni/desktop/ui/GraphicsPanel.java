@@ -1,18 +1,19 @@
-package kinderuni.desktop;
+package kinderuni.desktop.ui;
 
 import functionalJava.data.shape.box.*;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
-import kinderuni.graphics.InputRetriever;
-import kinderuni.graphics.Paintable;
-import kinderuni.graphics.Painter;
-import kinderuni.graphics.Screen;
-import kinderuni.level.Level;
+import kinderuni.desktop.DesktopPainter;
+import kinderuni.desktop.Info;
+import kinderuni.level.LevelSequence;
+import kinderuni.ui.SystemComponent;
+import kinderuni.ui.graphics.Paintable;
+import kinderuni.ui.graphics.Painter;
+import kinderuni.ui.GraphicsComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,9 +22,9 @@ import java.util.List;
 /**
  * Created by Georg Plaz.
  */
-public class GamePanel extends JPanel implements Screen{
+public class GraphicsPanel extends JPanel implements GraphicsComponent, SystemComponent {
     private DoubleTupel center;
-    private DoubleTupel dimensions;
+    private DoubleTupel size;
     private Dimension dimensionsAwt;
     private long lastPaintTime = 0;
     private Thread renderThread;
@@ -32,48 +33,44 @@ public class GamePanel extends JPanel implements Screen{
     private List<Tupel<Paintable, Long>> paintables = new LinkedList<>();
     private boolean running;
 
-
-
-    public GamePanel(DoubleTupel dimensions) {
+    public GraphicsPanel(DoubleTupel size) {
         setBackground(Color.WHITE);
         fpsInfo = new Info("fps", "NA");
         infos.add(fpsInfo);
         this.center = DoubleTupel.ZEROS;
-        this.dimensions = dimensions;
-        dimensionsAwt = new Dimension((int) dimensions.getFirst().doubleValue(), (int) dimensions.getSecond().doubleValue());
+        this.size = size;
+        dimensionsAwt = new Dimension((int) size.getFirst().doubleValue(), (int) size.getSecond().doubleValue());
         setFocusable(true);
         requestFocusInWindow();
 
     }
 
-    public DoubleTupel getScreenDimensions(){
-        return dimensions;
+    public DoubleTupel getComponentDimensions(){
+        return size;
     }
-    public double getScreenWidth(){
-        return getScreenDimensions().getFirst();
+    public double getComponentWidth(){
+        return getComponentDimensions().getFirst();
     }
 
-    public double getScreenHeight(){
-        return getScreenDimensions().getSecond();
+    public double getComponentHeight(){
+        return getComponentDimensions().getSecond();
     }
 
     public DoubleTupel getCenter() {
         return center;
     }
 
-    public void setCenter(DoubleTupel center) {
+    public void setRenderCenter(DoubleTupel center) {
         this.center = center;
     }
 
     public Box getScreenArea(){
-        return new ModifiableBox(center, dimensions);
+        return new ModifiableBox(center, size);
     }
 
     public void render(){
         repaint();
     }
-
-
 
     @Override
     public void paint(Graphics g) {
@@ -89,6 +86,7 @@ public class GamePanel extends JPanel implements Screen{
         for(Info info : infos){
             paintInfo(g, info, cursorHeight-=cursorDelta);
         }
+
         for(Tupel<Paintable, Long> tupel : paintables){
             Paintable paintable = tupel.getFirst();
             long time = tupel.getSecond();
@@ -160,5 +158,15 @@ public class GamePanel extends JPanel implements Screen{
     public void stop(){
         running = false;
         renderThread.interrupt();
+    }
+
+    @Override
+    public DoubleTupel getCompSize() {
+        return size;
+    }
+
+    @Override
+    public SystemComponent getSystemComponent() {
+        return this;
     }
 }

@@ -1,7 +1,8 @@
 {
-
     "graphics" : {
-        "draw_box" : true,
+        "line_colour" : [0, 0, 0],
+        "bg_colour" : [115, 191, 201],
+        "text" : "ice",
         "width" : 200,
         "height" : 20
     },

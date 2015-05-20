@@ -25,7 +25,8 @@
 
   "goal" : {
     "graphics" : {
-      "draw_box" : true,
+      "line_colour" : [0, 0, 0],
+      "bg_colour" : [219, 219, 9],
       "width": 20,
       "height": 20
     },
@@ -36,6 +37,12 @@
   "floor" : {
     "gap_width" : 100,
     "friction" : 0.01,
-    "tile_width" : 500
+    //"tile_width" : 500,
+    "graphics" : {
+      "line_colour" : [0, 0, 0],
+      "bg_colour" : [115, 191, 201],
+      "width" : 500,
+      "height" : 15
+    }
   }
 }

@@ -2,7 +2,8 @@
 
 
     "graphics" : {
-        "draw_box" : true,
+        "line_colour" : [0, 0, 0],
+        "bg_colour" : [64, 179, 118],
         "width" : 50,
         "height" : 50
     },

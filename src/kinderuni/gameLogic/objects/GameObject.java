@@ -2,8 +2,8 @@ package kinderuni.gameLogic.objects;
 
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.graphics.GraphicsObject;
-import kinderuni.graphics.Painter;
+import kinderuni.ui.graphics.GraphicsObject;
+import kinderuni.ui.graphics.Painter;
 import kinderuni.gameLogic.GameWorld;
 
 /**

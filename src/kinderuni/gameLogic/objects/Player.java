@@ -4,13 +4,12 @@ import functionalJava.data.Direction1D;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
-import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.effects.InvinciblePower;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
 import kinderuni.gameLogic.objects.collectible.effects.TimeBasedEffect;
-import kinderuni.graphics.GraphicsObject;
+import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
 import java.util.HashSet;
@@ -28,7 +27,7 @@ public class Player extends LivingObject {
     private double enemyThrowbackPower;
     private double moveSpeed;
 //    private int invincibleTimer;
-    private boolean isInvincible = false;
+    private int invincibleCounter = 0;
     private SpawnPoint spawnPoint = new SpawnPoint();
     private boolean jumping = false;
     private boolean goingRight = false;
@@ -160,7 +159,7 @@ public class Player extends LivingObject {
 
     @Override
     public boolean takeDamage(int damage, LivingObject source) {
-        if(!isInvincible){
+        if(invincibleCounter==0){
             boolean killed = super.takeDamage(damage, source);
             stop();
             if(!killed) {
@@ -207,12 +206,14 @@ public class Player extends LivingObject {
     public void setInvincible(){
 //        invincibleTimer = time;
         getGraphics().blink(10);
-        isInvincible = true;
+        invincibleCounter++;
     }
 
     public void setVincible(){
-        isInvincible = false;
-        getGraphics().stopBlink();
+        invincibleCounter--;
+        if(invincibleCounter<=0){
+            getGraphics().stopBlink();
+        }
 //        invincibleTimer = 0;
     }
 
