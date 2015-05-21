@@ -1,6 +1,7 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
 import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -14,24 +15,16 @@ public class GravityChangePower extends ReversibleEffect {
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
-        multGravity(player.getWorld(), factor);
+    public void activate(LivingObject target) {
+        super.activate(target);
+        target.setGravityFactor(target.getGravityFactor()*factor);
+//        multGravity(target.getWorld(), factor);
     }
 
     @Override
     public void deActivate() {
         super.deActivate();
-        multGravity(getPlayer().getWorld(), 1/factor);
-    }
-
-    @Override
-    public GravityChangePower copy() {
-        GravityChangePower toReturn = new GravityChangePower(factor);
-        if(hasReverser()){
-            toReturn.setReverser(getReverser().copy());
-        }
-        return toReturn;
+        getTarget().setGravityFactor(getTarget().getGravityFactor() / factor);
     }
 
     private void multGravity(GameWorld gameWorld, double factor){

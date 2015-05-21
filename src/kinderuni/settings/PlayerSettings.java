@@ -7,6 +7,12 @@ import kinderuni.settings.levelSettings.objectSettings.LivingSettings;
  * Created by Georg Plaz.
  */
 public class PlayerSettings extends LivingSettings{
+    public static final PlayerSettings DEFAULT = new PlayerSettings();
+    static{
+        DEFAULT.life=1;
+        DEFAULT.enemy_throwback_power=0.;
+    }
+
     private Double enemy_throwback_power;
     private Integer life;
 

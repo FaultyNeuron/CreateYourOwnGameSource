@@ -17,7 +17,7 @@ public class SolidObject extends AbstractGameObject {
 
     @Override
     public void update(int time) {
-
+        super.update(time);
     }
 
 

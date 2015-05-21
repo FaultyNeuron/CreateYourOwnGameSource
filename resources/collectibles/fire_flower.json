@@ -1,0 +1,13 @@
+{
+    "graphics": {
+        "id": "fire_flower",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0.5,
+    "effects" : [
+        {"id":"add_gun"}
+//        {"id":"speed", "factor" : 4},
+//        {"id":"gravity", "factor" : 0.1}
+    ]
+}

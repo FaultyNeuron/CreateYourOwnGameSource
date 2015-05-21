@@ -1,0 +1,23 @@
+{
+    "graphics" : {
+        "line_colour" : [0, 0, 0],
+        "bg_colour" : [30, 90, 60],
+        "width" : 50,
+        "height" : 50
+    },
+    "hp" : 1,
+    "damage" : 0,
+    "walking_speed" : 0.5,
+    "flying_speed" : 0,
+
+    "active_effects" : [
+        {"id":"add_gun"}
+    ],
+
+    "gravity_factor" : 1,
+    "jump_power" : 0,
+    "jump_pause" : 0,
+    "drop" : [
+        {"id" : "fire_flower", "probability" : 1}
+    ]
+}

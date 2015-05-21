@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -15,28 +16,25 @@ public abstract class ReversibleEffect extends Effect{
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
-        player.applyEffect(this);
+    public void activate(LivingObject target) {
+        super.activate(target);
+        target.applyEffect(this);
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(int time) {
+        super.update(time);
         if(reverser!=null){
-            reverser.update();
-            if(reverser.reverse()){
+            reverser.update(time);
+            if(reverser.reverse(time)){
                 deActivate();
             }
         }
     }
 
     public void deActivate() {
-        getPlayer().removeEffect(this);
+        getTarget().removeEffect(this);
     }
-
-    @Override
-    public abstract ReversibleEffect copy();
 
     public Reverser getReverser(){
         return reverser;
@@ -51,8 +49,8 @@ public abstract class ReversibleEffect extends Effect{
     }
 
     public interface Reverser {
-        public void update();
-        public boolean reverse();
+        public void update(int time);
+        public boolean reverse(int time);
         public Reverser copy();
     }
 }

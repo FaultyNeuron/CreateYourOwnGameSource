@@ -1,6 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
-import kinderuni.gameLogic.objects.Player;
+import kinderuni.gameLogic.objects.LivingObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,17 +20,17 @@ public class CombinedReversibleEffect extends ReversibleEffect {
     }
 
     @Override
-    public void update() {
+    public void update(int time) {
         for(Effect effect : effects){
-            effect.update();
+            effect.update(time);
         }
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
+    public void activate(LivingObject target) {
+        super.activate(target);
         for(Effect effect : effects){
-            effect.activate(player);
+            effect.activate(target);
         }
     }
 
@@ -42,14 +42,6 @@ public class CombinedReversibleEffect extends ReversibleEffect {
         }
     }
 
-    @Override
-    public ReversibleEffect copy() {
-        List<ReversibleEffect> effectsCopied = new LinkedList<>();
-        for(ReversibleEffect effect : effects){
-            effectsCopied.add(effect.copy());
-        }
-        return new CombinedReversibleEffect();
-    }
     public void add(ReversibleEffect effect){
         effects.add(effect);
     }

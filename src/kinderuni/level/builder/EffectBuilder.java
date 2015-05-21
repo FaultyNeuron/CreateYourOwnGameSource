@@ -1,72 +1,94 @@
 package kinderuni.level.builder;
 
+import kinderuni.gameLogic.objects.ProjectileGun;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Georg Plaz.
  */
-public class EffectBuilder {
-    public static Effect createEffects(List<EffectSettings> effectSettings){
-        return createEffects(effectSettings, null);
+public class EffectBuilder extends Builder{
+    public EffectBuilder(kinderuni.System system, Random random) {
+        super(system, random);
     }
 
-    public static Effect createEffects(List<EffectSettings> effectSettings, ReversibleEffect.Reverser reverser){
+    public Effect buildEffects(List<EffectSettings> effectSettings){
+        return buildEffects(effectSettings, null);
+    }
+
+    public Effect buildEffects(List<EffectSettings> effectSettings, ReversibleEffect.Reverser reverser){
         if(effectSettings.size() > 1) {
             List<Effect> effects = new LinkedList<>();
             for (EffectSettings effectSetting : effectSettings) {
-                effects.add(createEffect(effectSetting, reverser.copy()));
+                effects.add(buildEffect(effectSetting, reverser.copy()));
             }
             return new CombinedEffect(effects);
         }else if(effectSettings.size()==1){
-            return createEffect(effectSettings.get(0), reverser);
+            return buildEffect(effectSettings.get(0), reverser);
         }else{
             return null;
         }
     }
 
-    public static Effect createEffect(EffectSettings effectSettings){
-        return createEffect(effectSettings, null);
+    public Effect buildEffect(EffectSettings effectSettings){
+        return buildEffect(effectSettings, null);
     }
 
-    public static Effect createEffect(EffectSettings effectSettings, ReversibleEffect.Reverser reverser){
+    public Effect buildEffect(EffectSettings effectSettings, ReversibleEffect.Reverser reverser){
+        return buildEffect(effectSettings, EffectSettings.DEFAULT, reverser);
+    }
+    public Effect buildEffect(EffectSettings effectSettings, EffectSettings defaultSettings, ReversibleEffect.Reverser reverser){
+        int value = effectSettings.hasValue()?effectSettings.getValue():defaultSettings.getValue();
         Effect effect;
         switch (effectSettings.getId()){
             case PlusHp.ID:
-                effect = new PlusHp(effectSettings.getValue());
+                effect = new PlusHp(value);
                 break;
             case PlusLife.ID:
-                effect = new PlusLife(effectSettings.getValue());
+                effect = new PlusLife(value);
                 break;
             case PlusCoins.ID:
-                effect = new PlusCoins(effectSettings.getValue());
+                effect = new PlusCoins(value);
                 break;
             default:
-                effect = createReversibleEffect(effectSettings, reverser);
+                effect = createReversibleEffect(effectSettings, defaultSettings, reverser);
                 break;
         }
         return effect;
     }
 
-    public static ReversibleEffect createReversibleEffect(EffectSettings effectSettings){
+    public ReversibleEffect createReversibleEffect(EffectSettings effectSettings){
         return createReversibleEffect(effectSettings, null);
     }
 
-    public static ReversibleEffect createReversibleEffect(EffectSettings effectSettings, ReversibleEffect.Reverser reverser){
+    public ReversibleEffect createReversibleEffect(EffectSettings effectSettings, ReversibleEffect.Reverser reverser){
+        return createReversibleEffect(effectSettings, EffectSettings.DEFAULT, reverser);
+    }
+    public ReversibleEffect createReversibleEffect(EffectSettings effectSettings, EffectSettings defaultSettings, ReversibleEffect.Reverser reverser){
 //        System.out.println("creating reversible with: "+reverser.getClass().getSimpleName());
+        double factor = effectSettings.hasFactor()?effectSettings.getFactor():defaultSettings.getFactor();
         ReversibleEffect effect;
         switch (effectSettings.getId()){
             case SpeedPower.ID:
-                effect = new SpeedPower(effectSettings.getFactor());
+                effect = new SpeedPower(factor);
                 break;
             case InvinciblePower.ID:
                 effect = new InvinciblePower();
                 break;
             case GravityChangePower.ID:
-                effect = new GravityChangePower(effectSettings.getFactor());
+                effect = new GravityChangePower(factor);
+                break;
+            case AddGunEffect.ID:
+                EffectSettings projectileSettings = new EffectSettings();
+                projectileSettings.setId("plus_hp");
+                projectileSettings.setValue(-1);
+                ProjectileGun gun = new ProjectileGun(getSystem(), "black_hole", projectileSettings);
+                gun.setInitialShootCoolDown(100);
+                effect = new AddGunEffect(gun);
                 break;
             default:
                 throw new RuntimeException("no effect with id \""+effectSettings.getId()+"\" exists!");

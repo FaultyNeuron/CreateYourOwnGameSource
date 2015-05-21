@@ -38,7 +38,8 @@ public abstract class PhysicsObject extends AbstractGameObject {
 
     @Override
     public void update(int time) {
-        accelerate(0, -getWorld().getGravity()*getGravityFactor());
+        super.update(time);
+        accelerate(0, -getWorld().getGravity() * gravityFactor);
         move(speed);
     }
 
@@ -46,6 +47,9 @@ public abstract class PhysicsObject extends AbstractGameObject {
         speed = speed.add(x, y);
     }
 
+    public void accelerate(DoubleTupel delta, double friction){
+        speed = speed.add(delta.mult(friction));
+    }
     public void accelerate(DoubleTupel delta){
         speed = speed.add(delta);
     }

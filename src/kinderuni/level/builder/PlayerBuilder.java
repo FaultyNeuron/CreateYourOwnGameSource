@@ -1,7 +1,9 @@
 package kinderuni.level.builder;
 
 import kinderuni.gameLogic.objects.Player;
+import kinderuni.gameLogic.objects.ProjectileGun;
 import kinderuni.settings.PlayerSettings;
+import kinderuni.settings.levelSettings.objectSettings.GraphicsSettings;
 
 import java.util.Random;
 
@@ -15,15 +17,26 @@ public class PlayerBuilder extends LivingObjectBuilder {
     }
 
     public Player build(PlayerSettings playerSettings) {
-        return build(playerSettings, new PlayerSettings());
+        return build(playerSettings, PlayerSettings.DEFAULT, false);
     }
 
     public Player build(PlayerSettings playerSettings, PlayerSettings defaultSettings) {
+        return build(playerSettings, defaultSettings, true);
+    }
+
+    public Player build(PlayerSettings playerSettings, PlayerSettings defaultSettings, boolean keepDefault) {
         int life = playerSettings.hasLife()?playerSettings.getLife():defaultSettings.getLife();
         double enemyThrowBack = playerSettings.hasEnemyThrowbackPower()?playerSettings.getEnemyThrowbackPower():defaultSettings.getEnemyThrowbackPower();
 
         Player toReturn = new Player(enemyThrowBack, life);
-        attach(toReturn, playerSettings);
+//        ProjectileGun gun = new ProjectileGun(getSystem(), "black_hole");
+//        gun.setInitialShootCoolDown(200);
+//        toReturn.setGun(gun);
+        if(keepDefault){
+            attach(toReturn, playerSettings, defaultSettings);
+        }else{
+            attach(toReturn, playerSettings);
+        }
         return toReturn;
     }
 

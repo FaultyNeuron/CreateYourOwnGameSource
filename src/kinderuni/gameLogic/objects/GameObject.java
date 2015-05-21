@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects;
 
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.solid.SolidObject;
@@ -55,6 +56,10 @@ public interface GameObject {
     void setBounding(DoubleTupel dimensions);
 
     boolean hasGraphics();
+
+    public int getLastTimeMeasured();
+
+    public HorizontalDirection getDirection();
 
 //    public void collidedWithPlayer(Player player, DoubleTupel objectDelta, Orientation collisionSide);
 }

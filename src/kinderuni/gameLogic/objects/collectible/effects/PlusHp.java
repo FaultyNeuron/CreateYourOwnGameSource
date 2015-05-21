@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -13,13 +14,8 @@ public class PlusHp extends Effect {
     }
 
     @Override
-    public void activate(Player player) {
-        player.heal(hp);
-    }
-
-    @Override
-    public PlusHp copy() {
-        return new PlusHp(hp);
+    public void activate(LivingObject target) {
+        target.heal(hp);
     }
 
     @Override

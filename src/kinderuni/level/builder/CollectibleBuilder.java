@@ -14,31 +14,44 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class CollectibleBuilder extends PhysicsObjectBuilder{
-    private kinderuni.System system;
+    private EffectBuilder effectBuilder;
 
     public CollectibleBuilder(kinderuni.System system, Random random) {
         super(system, random);
-        this.system = system;
+        this.effectBuilder = new EffectBuilder(system, random);
     }
 
     public Collectible build(CollectibleSettings collectibleSettings) {
-        return build(collectibleSettings, DoubleTupel.ZEROS);
+        return build(collectibleSettings, CollectibleSettings.DEFAULT, false);
     }
 
-    public Collectible build(CollectibleSettings collectibleSettings, DoubleTupel position) {
+    public Collectible build(CollectibleSettings settings, CollectibleSettings defaultSettings) {
+        return build(settings, defaultSettings, true);
+    }
+
+    public Collectible build(CollectibleSettings settings, CollectibleSettings defaultSettings, boolean keepDefault) {
+        double dropAcceleration = settings.hasDropAcceleration()?settings.getDropAcceleration():defaultSettings.getDropAcceleration();
         ReversibleEffect.Reverser reverser = null;
-        if(collectibleSettings.hasEffectDuration()){
-            reverser = new TimeBasedReverser(collectibleSettings.getEffectDuration());
+        if(settings.hasEffectDuration()){
+            reverser = new TimeBasedReverser(settings.getEffectDuration());
         }
-        Effect effect = EffectBuilder.createEffects(collectibleSettings.getEffects(), reverser);
+        Effect effect = effectBuilder.buildEffects(settings.getEffects(), reverser);
         System.out.println("created: "+effect);
         Collectible toReturn;
         if(effect!=null){
-            toReturn = new Collectible(effect, collectibleSettings.getDropAcceleration());
+            toReturn = new Collectible(effect, dropAcceleration);
         }else{
-            toReturn = new Collectible(collectibleSettings.getDropAcceleration());
+            toReturn = new Collectible(dropAcceleration);
         }
-        attach(toReturn, collectibleSettings);
+        if(keepDefault){
+            attach(toReturn, settings, defaultSettings);
+        }else{
+            attach(toReturn, settings);
+        }
         return toReturn;
+    }
+
+    public EffectBuilder getEffectBuilder() {
+        return effectBuilder;
     }
 }

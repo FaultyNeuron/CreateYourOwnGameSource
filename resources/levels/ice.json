@@ -12,7 +12,7 @@
   "player_y" : 50,
 
   "enemies" : [
-    {"id" : "standard", "count" : 5},
+    {"id" : "standard_walking", "count" : 5},
     {"id" : "standard_jumping", "count" : 5},
     {"id" : "standard_boss", "count" : 1}
 

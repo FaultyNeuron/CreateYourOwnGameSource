@@ -1,5 +1,7 @@
 package kinderuni.settings.levelSettings.objectSettings;
 
+import kinderuni.gameLogic.objects.collectible.effects.Effect;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +9,12 @@ import java.util.List;
  * Created by Georg Plaz.
  */
 public class EnemySettings extends LivingSettings {
-    public static final EnemySettings EMPTY_SETTINGS = new EnemySettings();
+    public static final EnemySettings DEFAULT = new EnemySettings();
+
+    static{
+        DEFAULT.damage = 1;
+        DEFAULT.jump_pause = 0;
+    }
 
     private Integer damage;
     private List<Drop> drop = new LinkedList<>();

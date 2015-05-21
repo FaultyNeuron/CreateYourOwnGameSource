@@ -25,8 +25,8 @@ public class Level implements Paintable {
     private double initialAirFriction;
     private double initialGravity;
     private GameWorld gameWorld;
-    private boolean isRunning = false;
-    private Thread thread;
+//    private boolean isRunning = false;
+//    private Thread thread;
     private DoubleTupel initPlayerPosition;
     private long time = 0;
     private Goal goal;
@@ -47,7 +47,8 @@ public class Level implements Paintable {
         heartGraphics = system.createGraphics("heart", 25, 25);
         playerGraphics = system.createGraphics("player", 50, 50);
         this.name = name;
-        this.state = State.NOT_STARTED;
+        changeState(State.IN_PROGRESS);
+
 //        this.screen = screen;
         this.inputRetriever = inputRetriever;
         this.initialAirFriction = initialAirFriction;
@@ -63,7 +64,8 @@ public class Level implements Paintable {
         }
     }
 
-    public void update() {
+    public void update(int time) {
+        this.time = time;
         Player player = gameWorld.getPlayer();
         if (player != null) {
             if (inputRetriever.goRight()) {
@@ -85,7 +87,7 @@ public class Level implements Paintable {
                 changeState(Level.State.WON);
             }
         }
-        gameWorld.update((int)time++);
+        gameWorld.update(time);
     }
 
     private void changeState(State newState){
@@ -123,45 +125,44 @@ public class Level implements Paintable {
         List<Info> toReturn = new LinkedList<>();
         toReturn.add(new Info("level", name));
         if(gameWorld!=null && gameWorld.getPlayer()!=null) {
-            toReturn.add(new Info("lives", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
+            toReturn.add(new Info("life", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
             toReturn.add(new Info("coins", String.valueOf(getGameWorld().getPlayer().getCoins())));
         }
         return toReturn;
     }
 
-    public void start(){
-        if(!isRunning) {
-            changeState(State.IN_PROGRESS);
-//            screen.setLevel(this);
-            isRunning = true;
-            thread = new Thread() {
-                @Override
-                public void run() {
-                    while(isRunning) {
-                        try {
-                            update();
-//                            screen.setCenter(getGameWorld().getPlayer().getCenter());
-//                            screen.setLives(getGameWorld().getPlayer().getLives());
-//                            screen.setHp(getGameWorld().getPlayer().getHp());
-//                            screen.setLevelName(Level.this.getName());
-//                            screen.render();
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                }
-            };
-            thread.start();
-        }
-    }
+//    public void start(){
+//        if(!isRunning) {
+////            screen.setLevel(this);
+//            isRunning = true;
+//            thread = new Thread() {
+//                @Override
+//                public void run() {
+//                    while(isRunning) {
+//                        try {
+//                            update();
+////                            screen.setCenter(getGameWorld().getPlayer().getCenter());
+////                            screen.setLives(getGameWorld().getPlayer().getLives());
+////                            screen.setHp(getGameWorld().getPlayer().getHp());
+////                            screen.setLevelName(Level.this.getName());
+////                            screen.render();
+//                            Thread.sleep(10);
+//                        } catch (InterruptedException e) {
+//                        }
+//                    }
+//                }
+//            };
+//            thread.start();
+//        }
+//    }
 
     public GameWorld getGameWorld() {
         return gameWorld;
     }
 
-    public boolean isRunning() {
-        return isRunning;
-    }
+//    public boolean isRunning() {
+//        return isRunning;
+//    }
 
     public State getGameState() {
         return state;
@@ -181,11 +182,11 @@ public class Level implements Paintable {
         gameWorld.addObject(goal);
     }
 
-    public void stop() {
-        isRunning = false;
-        thread.interrupt();
-        changeState(State.STOPPED);
-    }
+//    public void stop() {
+//        isRunning = false;
+////        thread.interrupt();
+//        changeState(State.STOPPED);
+//    }
 
     public String getName() {
         return name;
@@ -201,7 +202,7 @@ public class Level implements Paintable {
     }
 
     public enum State{
-        NOT_STARTED, IN_PROGRESS, WON, LOST, STOPPED
+        IN_PROGRESS, WON, LOST, STOPPED
     }
 
     public void addLevelStateListener(LevelStateListener listener){

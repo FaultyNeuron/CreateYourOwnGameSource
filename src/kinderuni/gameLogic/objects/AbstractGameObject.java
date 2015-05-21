@@ -1,6 +1,7 @@
 package kinderuni.gameLogic.objects;
 
 import functionalJava.data.Direction2D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
@@ -28,19 +29,28 @@ public abstract class AbstractGameObject implements GameObject {
     private SolidObject stickingTo;
     private DoubleTupel lastDelta = DoubleTupel.ZEROS;
     private Object stickyLock = new Object();
+    private int lastTimeMeasured;
+    private HorizontalDirection direction = HorizontalDirection.RIGHT;
 
-//    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
-//        this(position, graphicsObject);
-//        setWorld(gameWorld);
-//    }
-//
-//    protected AbstractGameObject(DoubleTupel position) {
-//        boundingBox = new ModifiableBox(position, DoubleTupel.ZEROS);
-//    }
-//    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject) {
-//        this.graphicsObject = graphicsObject;
-//        boundingBox = new ModifiableBox(position, graphicsObject.getDimensions());
-//    }
+    @Override
+    public void update(int time) {
+        lastTimeMeasured = time;
+    }
+
+    @Override
+    public int getLastTimeMeasured() {
+        return lastTimeMeasured;
+    }
+
+    @Override
+    public HorizontalDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(HorizontalDirection direction){
+        this.direction = direction;
+        getGraphics().setDirection(direction);
+    }
 
     @Override
     public SolidObject getStickingTo() {

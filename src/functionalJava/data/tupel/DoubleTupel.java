@@ -224,4 +224,8 @@ public class DoubleTupel extends NumberTupel<Double>{
     public DoubleTupel toLength(double newLength) {
         return mult(newLength/length());
     }
+
+    public DoubleTupel abs() {
+        return new DoubleTupel(Math.abs(getFirst()), Math.abs(getSecond()));
+    }
 }

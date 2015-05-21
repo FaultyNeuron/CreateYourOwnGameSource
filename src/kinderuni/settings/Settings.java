@@ -61,18 +61,31 @@ public class Settings {
         return enemySettings.get(id);
     }
 
+    public boolean hasEnemySettings(String id){
+        return enemySettings.containsKey(id);
+    }
+
     public PlatformSettings getPlatformSettings(String id) {
         return platformSettings.get(id);
+    }
+
+    public boolean hasPlatformSettings(String id){
+        return platformSettings.containsKey(id);
     }
 
     public CollectibleSettings getCollectibleSettings(String id) {
         return collectibleSettings.get(id);
     }
 
+    public boolean hasCollectibleSettings(String id){
+        return collectibleSettings.containsKey(id);
+    }
+
     public LevelSettings getLevelSettings(String id) {
-        if(!levelSettings.containsKey(id)){
-            throw new RuntimeException("level with id \""+id+"\" doesn't exist!");
-        }
         return levelSettings.get(id);
+    }
+
+    public boolean hasLevelSettings(String id){
+        return levelSettings.containsKey(id);
     }
 }

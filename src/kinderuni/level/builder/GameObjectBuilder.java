@@ -91,4 +91,8 @@ public class GameObjectBuilder {
             return null;
         }
     }
+
+    public Random getRandom() {
+        return random;
+    }
 }

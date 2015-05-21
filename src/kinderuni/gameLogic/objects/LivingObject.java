@@ -3,7 +3,15 @@ package kinderuni.gameLogic.objects;
 import functionalJava.data.HorizontalDirection;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.collectible.effects.Effect;
+import kinderuni.gameLogic.objects.collectible.effects.InvinciblePower;
+import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
+import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
 import kinderuni.ui.graphics.GraphicsObject;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Georg Plaz.
@@ -13,6 +21,9 @@ public abstract class LivingObject extends PhysicsObject{
     private double walkingSpeed;
     private double flyingSpeed;
     private double jumpPower;
+    private int invincibleCounter = 0;
+    private List<ReversibleEffect> activeEffects = new LinkedList<>();
+    private ProjectileGun gun;
 
     public LivingObject() {
         this(1);
@@ -28,9 +39,10 @@ public abstract class LivingObject extends PhysicsObject{
         if(getBoundingBox().getUpper() < getWorld().getBounds().getLower()){
             kill();
         }
-
         //todo move object back into world, if moved out of it
     }
+
+
 
     public double getJumpPower() {
         return jumpPower;
@@ -45,28 +57,79 @@ public abstract class LivingObject extends PhysicsObject{
     }
 
     public void heal(int hp){
-        this.hp+=hp;
+        takeDamage(-hp);
     }
+
     public void takeDamage(int damage){
         takeDamage(damage, null);
     }
-    public boolean takeDamage(int damage, LivingObject source){
-        hp-=damage;
-        getGraphics().blink(10, 3);
 
-        if(hp <= 0){
-            killedBy(source);
-            return true;
+    public boolean takeDamage(int damage, LivingObject source){
+        if(invincibleCounter==0){
+            hp-=damage;
+            if(damage>0) {
+                getGraphics().blink(10, 3);
+
+                if (hp <= 0) {
+                    killedBy(source);
+                    return true;
+                }
+                stop();
+            }
         }
         return false;
     }
 
+    public void setInvincible(){
+//        invincibleTimer = time;
+        getGraphics().blink(10);
+        invincibleCounter++;
+    }
+
+    public void setVincible(){
+        invincibleCounter--;
+        if(invincibleCounter<=0){
+            getGraphics().stopBlink();
+        }
+//        invincibleTimer = 0;
+    }
+
+    @Override
+    public void update(int time) {
+        super.update(time);
+        for(Effect effect : new LinkedList<>(activeEffects)){
+            effect.update(time);
+        }
+        if(hasGun()){
+            gun.update(time);
+        }
+    }
 
     public void kill(){
         killedBy(null);
     }
 
+    public void deActivateEffects(){
+        for(ReversibleEffect effect : new LinkedList<>(activeEffects)){
+            effect.deActivate();
+        }
+    }
+
+    public void applyEffect(ReversibleEffect effect) {
+        activeEffects.add(effect);
+        System.out.println("effect became active: " + effect);
+    }
+
+    public void removeEffect(Effect effect){
+        activeEffects.remove(effect);
+    }
+
+    public List<ReversibleEffect> getActiveEffects() {
+        return activeEffects;
+    }
+
     public void killedBy(LivingObject source){
+        deActivateEffects();
         destroy();
     }
 
@@ -105,13 +168,13 @@ public abstract class LivingObject extends PhysicsObject{
         }
     }
 
-//    public void walk(Direction1D direction){
-//        walk(direction.to2D(), walkingSpeed);
-//    }
+    public void shoot(){
+        if(hasGun()){
+            gun.shoot(getTargets());
+        }
+    }
 
-//    public void walk(Direction2D direction){
-//        walk(direction, walkingSpeed);
-//    }
+    public abstract Collection<? extends LivingObject> getTargets();
 
     public void walk(HorizontalDirection direction){
         walk(direction, walkingSpeed);
@@ -130,9 +193,9 @@ public abstract class LivingObject extends PhysicsObject{
                 getGraphics().setState(GraphicsObject.State.WALKING);
                 friction = getStickingTo().getFriction();
             }
-            getGraphics().setDirection(direction);
+            setDirection(direction);
             friction = Math.pow(friction, 0.65);
-            accelerate((direction.toVector(speed).sub(getSpeed().mult(1, 0))).mult(friction));
+            accelerate((direction.toVector(speed).sub(getSpeed().mult(1, 0))), friction);
         }
     }
 
@@ -141,9 +204,10 @@ public abstract class LivingObject extends PhysicsObject{
     }
 
     public void fly(DoubleTupel delta){
-        move(delta);
+        double friction = Math.pow(getWorld().getAirFriction(), 0.65);
+        accelerate(delta, friction);
         getGraphics().setState(GraphicsObject.State.FLYING);
-        getGraphics().setDirection(HorizontalDirection.toDirection(delta));
+        setDirection(HorizontalDirection.toDirection(delta));
     }
 
     public void move(Direction2D direction, double speed){
@@ -160,5 +224,25 @@ public abstract class LivingObject extends PhysicsObject{
 
     public void setFlyingSpeed(double flyingSpeed) {
         this.flyingSpeed = flyingSpeed;
+    }
+
+    public ProjectileGun getGun() {
+        return gun;
+    }
+
+    public boolean hasGun(){
+        return gun!=null;
+    }
+
+    public void setGun(ProjectileGun gun) {
+        this.gun = gun;
+        gun.setHolder(this);
+    }
+
+    public void removeGun(ProjectileGun givenGun) {
+        if(gun==givenGun){
+            gun.setHolder(null);
+            gun = null;
+        }
     }
 }

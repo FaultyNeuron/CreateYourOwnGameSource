@@ -6,11 +6,17 @@ import java.util.List;
  * Created by Georg Plaz.
  */
 public class CollectibleSettings extends PhysicsObjectSettings{
+    public static final CollectibleSettings DEFAULT = new CollectibleSettings();
+    static{
+        DEFAULT.effect_duration = 0;
+        DEFAULT.drop_acceleration = 6.;
+    }
+
     private List<EffectSettings> effects;
 
-    private Integer effect_duration = 0;
+    private Integer effect_duration;
 
-    private double drop_acceleration = 6;
+    private Double drop_acceleration;
 
     public List<EffectSettings> getEffects() {
         return effects;
@@ -27,5 +33,9 @@ public class CollectibleSettings extends PhysicsObjectSettings{
 
     public double getDropAcceleration() {
         return drop_acceleration;
+    }
+
+    public boolean hasDropAcceleration() {
+        return drop_acceleration!=null;
     }
 }

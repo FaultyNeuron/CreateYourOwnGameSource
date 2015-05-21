@@ -4,7 +4,7 @@ import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.collectible.Collectible;
-import kinderuni.gameLogic.objects.collectible.DropFactory;
+import kinderuni.gameLogic.objects.collectible.DropBuilder;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.gameLogic.objects.solid.Platform;
 import kinderuni.level.Level;
@@ -14,6 +14,7 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
+import java.net.IDN;
 import java.util.Random;
 
 /**
@@ -22,7 +23,6 @@ import java.util.Random;
 public class LevelBuilder {
 //    private CollectibleBuilder collectibleBuilder;
 //    private CollectibleBuilder collectibleBuilder;
-    private EffectBuilder effectBuilder;
     private static InputRetriever inputRetriever;
     private final double screenWidth;
     private final kinderuni.System system;
@@ -32,7 +32,6 @@ public class LevelBuilder {
         this.system = system;
         this.inputRetriever = retriever;
 //        collectibleBuilder = new CollectibleBuilder(system);
-        effectBuilder = new EffectBuilder();
     }
 
     public static Level build(LevelSettings levelSettings, double screenWidth, InputRetriever inputRetriever, kinderuni.System system) {
@@ -59,7 +58,8 @@ public class LevelBuilder {
     }
 
     private Level buildEnvironment(LevelSettings levelSettings, Random random) {
-        Effect effect = EffectBuilder.createEffects(levelSettings.getActiveEffects());
+        EffectBuilder effectBuilder = new EffectBuilder(system, random);
+        Effect effect = effectBuilder.buildEffects(levelSettings.getActiveEffects());
         return new Level(levelSettings.getLevelName(), levelSettings.getDimensions(),
                 screenWidth, inputRetriever,
                 levelSettings.getAirFriction(), levelSettings.getGravity(),
@@ -67,9 +67,15 @@ public class LevelBuilder {
     }
 
     private void buildObjects(Level level, LevelSettings levelSettings, Random random) {
-        EnemyBuilder enemyBuilder = new EnemyBuilder(system, random);
-        CollectibleBuilder collectibleBuilder = new CollectibleBuilder(system, random);
         PlatformBuilder platformBuilder = new PlatformBuilder(system, random);
+        //todo: modify PlatformBuilder, so the Platforms get placed nicely.
+        //todo: in order to do that, add methods and fields to PlatformBuilder as needed and call them here
+        EnemyBuilder enemyBuilder = new EnemyBuilder(system, random);
+        //todo: do the same for enemies. we dont want enemies to spawn inside of the user or have them
+        //todo: falling onto the user at the beginning of the level
+        CollectibleBuilder collectibleBuilder = new CollectibleBuilder(system, random);
+        //todo: if we want to place collectibles at the beginning of the game, we have to add logic to this builder as well
+        //todo: and call the code somewhere below..
 
         Box levelBox = level.getGameWorld().getBounds();
 
@@ -96,30 +102,38 @@ public class LevelBuilder {
             lastEnd += width + floorSettings.getGapWidth();
         }
 
-        for (IdParametersSettings enemyId : levelSettings.getEnemies()) {
-            EnemySettings enemySettings = system.getSettings().getEnemySettings(enemyId.getId());
-            DropFactory dropFactory = new DropFactory(random);
-            enemyBuilder.setDropFactory(dropFactory);
-            for(EnemySettings.Drop drop : enemySettings.getDrop()){
-                Collectible collectible = collectibleBuilder.build(system.getSettings().getCollectibleSettings(drop.getId()));
-                dropFactory.addBluePrint(drop.getProbability(), collectible);
+        for (IdParametersSettings idSettings : levelSettings.getEnemies()) {
+            if(!system.getSettings().hasEnemySettings(idSettings.getId())){
+                throw new IdNotFoundException("enemy", idSettings.getId());
             }
-            for (int i = 0; i < enemyId.getCount(); i++) {
-                if(enemyId.hasEnemy()){
-                    level.getGameWorld().add(enemyBuilder.build(enemySettings, enemyId.getEnemy()));
+            EnemySettings enemySettings = system.getSettings().getEnemySettings(idSettings.getId());
+            DropBuilder dropBuilder = new DropBuilder(system, random);
+            enemyBuilder.setDropBuilder(dropBuilder);
+            for(EnemySettings.Drop drop : enemySettings.getDrop()){
+//                Collectible collectible = collectibleBuilder.build();
+                dropBuilder.addBluePrint(drop.getProbability(), system.getSettings().getCollectibleSettings(drop.getId()));
+            }
+            for (int i = 0; i < idSettings.getCount(); i++) {
+                if(idSettings.hasEnemy()){
+                    level.getGameWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
                 }else{
                     level.getGameWorld().add(enemyBuilder.build(enemySettings));
                 }
             }
         }
-        for (IdParametersSettings platformId : levelSettings.getPlatforms()) {
-            PlatformSettings platformSettings = system.getSettings().getPlatformSettings(platformId.getId());
-            for (int i = 0; i < platformId.getCount(); i++) {
-                if(platformId.hasPlatform()){
-                    level.getGameWorld().add(platformBuilder.build(platformSettings, platformId.getPlatform()));
+        for (IdParametersSettings idSettings : levelSettings.getPlatforms()) {
+            if(!system.getSettings().hasPlatformSettings(idSettings.getId())){
+                throw new IdNotFoundException("platform", idSettings.getId());
+            }
+            PlatformSettings platformSettings = system.getSettings().getPlatformSettings(idSettings.getId());
+            for (int i = 0; i < idSettings.getCount(); i++) {
+                Platform newPlatform;
+                if(idSettings.hasPlatform()){
+                    newPlatform = platformBuilder.build(platformSettings, idSettings.getPlatform());
                 }else{
-                    level.getGameWorld().add(platformBuilder.build(platformSettings));
+                    newPlatform = platformBuilder.build(platformSettings);
                 }
+                level.getGameWorld().add(newPlatform);
             }
         }
 
@@ -129,7 +143,11 @@ public class LevelBuilder {
         level.set(goal);
     }
 
-
+    public class IdNotFoundException extends RuntimeException{
+        public IdNotFoundException(String type, String id){
+            super("no "+type+" with id \""+id+"\" was found!");
+        }
+    }
 
 
 

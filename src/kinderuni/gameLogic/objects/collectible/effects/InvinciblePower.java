@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -16,24 +17,15 @@ public class InvinciblePower extends ReversibleEffect {
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
-        player.setInvincible();
+    public void activate(LivingObject target) {
+        super.activate(target);
+        target.setInvincible();
     }
 
     @Override
     public void deActivate() {
         super.deActivate();
-        getPlayer().setVincible();
-    }
-
-    @Override
-    public ReversibleEffect copy() {
-        InvinciblePower toReturn = new InvinciblePower();
-        if(hasReverser()){
-            toReturn.setReverser(getReverser().copy());
-        }
-        return toReturn;
+        getTarget().setVincible();
     }
 
     @Override

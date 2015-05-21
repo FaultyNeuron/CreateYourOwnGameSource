@@ -2,11 +2,15 @@ package kinderuni.gameLogic.objects.collectible;
 
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.PhysicsObject;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 import kinderuni.ui.graphics.GraphicsObject;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by Georg Plaz.
@@ -25,8 +29,18 @@ public class Collectible extends PhysicsObject {
         this.dropAcceleration = dropAcceleration;
     }
 
-    public void collect(Player player){
-        effect.activate(player);
+    @Override
+    public void checkCollision() {
+        super.checkCollision();
+        Collection<? extends LivingObject> targets = getTargets();
+        Collection<? extends LivingObject> collided = getWorld().collidesWith(getBoundingBox(), targets);
+        if(!collided.isEmpty()){
+            collect(collided.iterator().next());
+        }
+    }
+
+    public void collect(LivingObject collector){
+        effect.activate(collector);
         destroy();
     }
 
@@ -36,27 +50,10 @@ public class Collectible extends PhysicsObject {
         getWorld().destroyCollectable(this);
     }
 
-//    @Override
-//    public void collidedWithSolid(SolidObject solidObject, Direction2D collisionSide) {
-//        DoubleTupel speed = getSpeed();
-//        super.collidedWithSolid(solidObject, collisionSide);
-//        accelerate(speed.mult(bounciness, -bounciness));
-//    }
-
-    public Collectible copy(){
-        if(effect!=null){
-            return new Collectible(effect.copy(), dropAcceleration);
-        }else{
-            return new Collectible(dropAcceleration);
-        }
-        //todo copy other info
-    }
 
     public Effect getEffect() {
         return effect;
     }
-
-
 
     public double getDropAcceleration() {
         return dropAcceleration;
@@ -73,5 +70,9 @@ public class Collectible extends PhysicsObject {
     public void setGraphics(GraphicsObject graphics) {
         super.setGraphics(graphics);
         effect.setGraphics(graphics);
+    }
+
+    public Collection<? extends LivingObject> getTargets() {
+        return Collections.singleton(getWorld().getPlayer());
     }
 }

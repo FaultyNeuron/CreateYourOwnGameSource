@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -13,13 +14,10 @@ public class PlusLife extends Effect {
     }
 
     @Override
-    public void activate(Player player) {
-        player.addLife(life);
-    }
-
-    @Override
-    public PlusLife copy() {
-        return new PlusLife(life);
+    public void activate(LivingObject target) {
+        if(target instanceof Player){
+            ((Player)target).addLife(life);
+        }
     }
 
     @Override

@@ -13,7 +13,6 @@ public class ObjectsSettings {
 //    public static final ObjectSettings SPACE = createSpaceLevelSettings();
 //    public static final ObjectSettings ICE = createIceLevelSettings();
 
-    public static final double DEFAULT_FLOOR_FRICTION = 0.8;
 
     private List<Tupel<EnemySettings, Integer>> enemies;
     private List<PlatformSettings> platformSettings;

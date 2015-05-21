@@ -1,6 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
-import kinderuni.gameLogic.objects.Player;
+import kinderuni.gameLogic.objects.LivingObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,28 +20,20 @@ public class CombinedEffect extends Effect{
     }
 
     @Override
-    public void update() {
+    public void update(int time) {
         for(Effect effect : effects){
-            effect.update();
+            effect.update(time);
         }
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
+    public void activate(LivingObject target) {
+        super.activate(target);
         for(Effect effect : effects){
-            effect.activate(player);
+            effect.activate(target);
         }
     }
 
-    @Override
-    public Effect copy() {
-        List<Effect> effectsCopied = new LinkedList<>();
-        for(Effect effect : effects){
-            effectsCopied.add(effect.copy());
-        }
-        return new CombinedEffect();
-    }
     public void add(Effect effect){
         effects.add(effect);
     }

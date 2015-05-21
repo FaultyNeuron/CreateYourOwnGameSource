@@ -6,13 +6,20 @@ import functionalJava.data.tupel.DoubleTupel;
  * Created by Georg Plaz.
  */
 public class PlatformSettings extends GameObjectSettings{
-    public static final PlatformSettings EMPTY_SETTINGS = new PlatformSettings();
+    public static final PlatformSettings DEFAULT = new PlatformSettings();
+    static{
+        DEFAULT.delta_x = 0.;
+        DEFAULT.delta_y = 0.;
+        DEFAULT.friction = 0.8;
+        DEFAULT.speed = 0.;
+    }
+
     private int count;
 
-    private Double delta_x = 0.;
-    private Double delta_y = 0.;
-    private Double friction = ObjectsSettings.DEFAULT_FLOOR_FRICTION;
-    private Double speed = 0.;
+    private Double delta_x;
+    private Double delta_y;
+    private Double friction;
+    private Double speed;
 
     public double getDeltaX() {
         return delta_x;

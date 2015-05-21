@@ -4,6 +4,10 @@ import functionalJava.data.HorizontalDirection;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Georg Plaz.
  */
@@ -33,13 +37,22 @@ public class Enemy extends LivingObject {
         }
         walk(direction);
 //            move(playerDelta.toLength(1));
-        if (!inAir() && jumpPause--<=0){
-            DoubleTupel jumpDir = direction.to2D().toVector().add(0, 1).toLength(getJumpPower());
+        if(!inAir() && jumpPause--<=0){
+            DoubleTupel jumpDir = direction.toVector().add(0, 1).toLength(getJumpPower());
             jump(jumpDir);
-
             jumpPause = initialJumpPause;
         }
+
+        if(getFlyingSpeed()>0){
+            fly(playerDelta.toLength(getFlyingSpeed()));
+        }
+        shoot();
         super.update(time);
+    }
+
+    @Override
+    public Collection<? extends LivingObject> getTargets() {
+        return Collections.singleton(getWorld().getPlayer());
     }
 
     @Override

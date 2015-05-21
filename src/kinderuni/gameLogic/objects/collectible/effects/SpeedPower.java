@@ -1,5 +1,6 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.gameLogic.objects.Player;
 
 /**
@@ -13,26 +14,17 @@ public class SpeedPower extends ReversibleEffect {
     }
 
     @Override
-    public void activate(Player player) {
-        super.activate(player);
-        player.setFlyingSpeed(player.getFlyingSpeed() * factor);
-        player.setWalkingSpeed(player.getWalkingSpeed() * factor);
+    public void activate(LivingObject target) {
+        super.activate(target);
+        target.setFlyingSpeed(target.getFlyingSpeed() * factor);
+        target.setWalkingSpeed(target.getWalkingSpeed() * factor);
     }
 
     @Override
     public void deActivate() {
         super.deActivate();
-        getPlayer().setFlyingSpeed(getPlayer().getFlyingSpeed() / factor);
-        getPlayer().setWalkingSpeed(getPlayer().getWalkingSpeed() * factor);
-    }
-
-    @Override
-    public SpeedPower copy() {
-        SpeedPower toReturn = new SpeedPower(factor);
-        if(hasReverser()){
-            toReturn.setReverser(getReverser().copy());
-        }
-        return toReturn;
+        getTarget().setFlyingSpeed(getTarget().getFlyingSpeed() / factor);
+        getTarget().setWalkingSpeed(getTarget().getWalkingSpeed() / factor);
     }
 
     @Override

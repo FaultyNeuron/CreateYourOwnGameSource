@@ -21,6 +21,7 @@ public class LevelSequence implements Paintable{
     private LevelBuilder builder;
     private List<FinishedListener> listeners = new LinkedList<>();
     private Level currentLevel;
+    private int timer = 0;
     private long timeDelta;
 
     public LevelSequence(Collection<LevelSettings> levels, Player player, LevelBuilder builder) {
@@ -51,20 +52,21 @@ public class LevelSequence implements Paintable{
                         player.stop();
                         player.unStick();
                         level.put(player);
-                        level.start();
-                        while (level.isRunning()) {
+//                        level.start();
+                        while (true) {
+                            level.update(timer++);
                             Thread.sleep(10);
                             if (level.getGameState() == Level.State.WON) {
                                 System.out.println("won!");
                                 break;
                             } else if (level.getGameState() == Level.State.LOST) {
                                 System.out.println("lost!");
-                                level.stop();
+//                                level.stop();
                                 break OUTER;
                             }
                         }
 //                        levelComponent.remove(level);
-                        level.stop();
+//                        level.stop();
                         timeDelta+=level.getTime();
 //                        currentLevel = null;
                     }

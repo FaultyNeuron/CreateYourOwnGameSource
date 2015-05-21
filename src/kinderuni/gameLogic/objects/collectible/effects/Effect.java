@@ -1,22 +1,22 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
-import kinderuni.gameLogic.objects.Player;
+import kinderuni.gameLogic.objects.LivingObject;
 import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.
  */
 public abstract class Effect {
-    private Player player;
+    private LivingObject target;
     private GraphicsObject graphics;
 
-    public void activate(Player player){
-        this.player = player;
+    public void activate(LivingObject target){
+        this.target = target;
     }
-    public void update(){}
+    public void update(int time){}
 
-    public Player getPlayer() {
-        return player;
+    public LivingObject getTarget() {
+        return target;
     }
 
     public void setGraphics(GraphicsObject graphics) {
@@ -26,6 +26,4 @@ public abstract class Effect {
     public GraphicsObject getGraphics() {
         return graphics;
     }
-
-    public abstract Effect copy();
 }

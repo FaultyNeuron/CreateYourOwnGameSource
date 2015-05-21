@@ -3,6 +3,8 @@ package functionalJava.data;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.NumberTupel;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Georg Plaz.
  */
@@ -13,7 +15,7 @@ public enum HorizontalDirection {
         return this==LEFT?Direction2D.LEFT:Direction2D.RIGHT;
     }
 
-    public NumberTupel toVector(double speed) {
+    public DoubleTupel toVector(double speed) {
         return to2D().toVector(speed);
     }
 
@@ -23,5 +25,9 @@ public enum HorizontalDirection {
         }else{
             return LEFT;
         }
+    }
+
+    public DoubleTupel toVector() {
+        return to2D().toVector();
     }
 }
