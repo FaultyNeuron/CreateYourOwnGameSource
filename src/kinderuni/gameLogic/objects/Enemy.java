@@ -1,28 +1,20 @@
 package kinderuni.gameLogic.objects;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
-import kinderuni.ui.graphics.GraphicsObject;
 
 /**
  * Created by Georg Plaz.
  */
 public class Enemy extends LivingObject {
-    private int hp;
     private int damage;
     private int jumpPause = 0;
     private int initialJumpPause;
-    private double walkingSpeed;
-    private double jumpPower;
     private Collectible drop;
 
-    public Enemy(DoubleTupel position, GraphicsObject graphicsObject, int hp, int damage,
-                 double walkingSpeed, double jumpPower, int jumpPause) {
-        super(position, graphicsObject, hp);
+    public Enemy(int damage, int jumpPause) {
         this.damage = damage;
-        this.walkingSpeed = walkingSpeed;
-        this.jumpPower = jumpPower;
         this.initialJumpPause = jumpPause;
     }
 
@@ -33,17 +25,17 @@ public class Enemy extends LivingObject {
     @Override
     public void update(int time) {
         DoubleTupel playerDelta = getWorld().getPlayer().getCenter().sub(getCenter());
-        Direction1D direction;
+        HorizontalDirection direction;
         if(playerDelta.getFirst()>0){
-            direction = Direction1D.RIGHT;
+            direction = HorizontalDirection.RIGHT;
         }else{
-            direction = Direction1D.LEFT;
+            direction = HorizontalDirection.LEFT;
         }
-        walk(direction, walkingSpeed);
+        walk(direction);
 //            move(playerDelta.toLength(1));
-        if (!inAir() && jumpPause--==0){
-            DoubleTupel jumpDir = direction.to2D().toVector().add(0, 1).toLength(jumpPower);
-            accelerate(jumpDir);
+        if (!inAir() && jumpPause--<=0){
+            DoubleTupel jumpDir = direction.to2D().toVector().add(0, 1).toLength(getJumpPower());
+            jump(jumpDir);
 
             jumpPause = initialJumpPause;
         }
@@ -63,5 +55,17 @@ public class Enemy extends LivingObject {
 
     public void setDrop(Collectible drop) {
         this.drop = drop;
+    }
+
+    @Override
+    public String toString() {
+        return "Enemy{" +
+                "position=" + getCenter() +
+                ", speed=" + getSpeed() +
+                ", damage=" + damage +
+                ", jumpPause=" + jumpPause +
+                ", initialJumpPause=" + initialJumpPause +
+                ", drop=" + drop +
+                '}';
     }
 }

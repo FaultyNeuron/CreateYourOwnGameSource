@@ -1,32 +1,24 @@
 package kinderuni.gameLogic.objects;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.ui.graphics.GraphicsObject;
-import kinderuni.gameLogic.GameWorld;
 
 /**
  * Created by Georg Plaz.
  */
 public abstract class LivingObject extends PhysicsObject{
     private int hp;
+    private double walkingSpeed;
+    private double flyingSpeed;
+    private double jumpPower;
 
-    protected LivingObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
-        this(position, graphicsObject, gameWorld, 1);
+    public LivingObject() {
+        this(1);
     }
 
-    protected LivingObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld, int hp) {
-        super(position, graphicsObject, gameWorld);
-        this.hp = hp;
-    }
-
-    public LivingObject(DoubleTupel position, GraphicsObject graphicsObject) {
-        this(position, graphicsObject, 1);
-    }
-
-    public LivingObject(DoubleTupel position, GraphicsObject graphicsObject, int hp) {
-        super(position, graphicsObject);
+    public LivingObject(int hp) {
         this.hp = hp;
     }
 
@@ -38,6 +30,18 @@ public abstract class LivingObject extends PhysicsObject{
         }
 
         //todo move object back into world, if moved out of it
+    }
+
+    public double getJumpPower() {
+        return jumpPower;
+    }
+
+    public double getFlyingSpeed() {
+        return flyingSpeed;
+    }
+
+    public double getWalkingSpeed() {
+        return walkingSpeed;
     }
 
     public void heal(int hp){
@@ -74,37 +78,87 @@ public abstract class LivingObject extends PhysicsObject{
         this.hp = hp;
     }
 
-    public void walk(Direction1D direction, double speed){
-        if(!inAir()) {
-            consumeMove(direction.to2D(), speed);
-            getGraphics().setState(GraphicsObject.State.WALKING);
-        }
+    public void jump(){
+        jump(jumpPower);
+    }
+
+    public void jump(boolean mustBeStanding) {
+        jump(jumpPower, mustBeStanding);
     }
 
     public void jump(double jumpPower){
-        if(!inAir()){
-            consumeMove(Direction2D.UP, jumpPower);
+        jump(jumpPower, false);
+    }
+
+    public void jump(double jumpPower, boolean mustBeStanding) {
+        jump(DoubleTupel.UP.mult(jumpPower), mustBeStanding);
+    }
+
+    public void jump(DoubleTupel jumpDir) {
+        jump(jumpDir, false);
+    }
+
+    public void jump(DoubleTupel jumpDir, boolean mustBeStanding) {
+        if (!mustBeStanding || !inAir()){
+            accelerate(jumpDir);
             getGraphics().setState(GraphicsObject.State.JUMPING);
         }
     }
 
-    public void consumeMove(Direction2D direction, double speed){
-        double friction;
-        if(direction.isHorizontal()){
+//    public void walk(Direction1D direction){
+//        walk(direction.to2D(), walkingSpeed);
+//    }
+
+//    public void walk(Direction2D direction){
+//        walk(direction, walkingSpeed);
+//    }
+
+    public void walk(HorizontalDirection direction){
+        walk(direction, walkingSpeed);
+    }
+
+    public void walk(HorizontalDirection direction, double speed){
+        walk(direction, speed, false);
+    }
+
+    public void walk(HorizontalDirection direction, double speed, boolean mustBeStanding){
+        if(!mustBeStanding || !inAir()) {
+            double friction;
             if (inAir()) {
                 friction = getWorld().getAirFriction();
             } else {
+                getGraphics().setState(GraphicsObject.State.WALKING);
                 friction = getStickingTo().getFriction();
             }
-        }else{
-            friction = 1;
+            getGraphics().setDirection(direction);
+            friction = Math.pow(friction, 0.65);
+            accelerate((direction.toVector(speed).sub(getSpeed().mult(1, 0))).mult(friction));
         }
-        if(direction.isHorizontal()){
-            getGraphics().setDirection(direction.toDirection1D());
-        }
-        friction = Math.pow(friction, 0.65);
-        Direction2D positiveDirection = direction.toAxis().toDirection(true);
-        accelerate((direction.toVector(speed).sub(getSpeed().mult(positiveDirection.toVector()))).mult(friction));
-//        accelerate(direction.toVector(moveSpeed * friction));
+    }
+
+    public void fly(Direction2D direction, double speed){
+        fly(direction.toVector(speed));
+    }
+
+    public void fly(DoubleTupel delta){
+        move(delta);
+        getGraphics().setState(GraphicsObject.State.FLYING);
+        getGraphics().setDirection(HorizontalDirection.toDirection(delta));
+    }
+
+    public void move(Direction2D direction, double speed){
+        move(direction.toVector(speed));
+    }
+
+    public void setWalkingSpeed(double walkingSpeed) {
+        this.walkingSpeed = walkingSpeed;
+    }
+
+    public void setJumpPower(double jumpPower) {
+        this.jumpPower = jumpPower;
+    }
+
+    public void setFlyingSpeed(double flyingSpeed) {
+        this.flyingSpeed = flyingSpeed;
     }
 }

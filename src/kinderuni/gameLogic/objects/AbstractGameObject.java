@@ -21,31 +21,33 @@ import java.util.Set;
  */
 public abstract class AbstractGameObject implements GameObject {
     private Set<GameObject> sticking;
-    private GraphicsObject graphicsObject;
+    private GraphicsObject graphics;
     private GameWorld gameWorld;
-    private ModifiableBox boundingBox;
+    private ModifiableBox boundingBox = new ModifiableBox(DoubleTupel.ZEROS, DoubleTupel.ZEROS);;
     private boolean isDestroyed = false;
     private SolidObject stickingTo;
     private DoubleTupel lastDelta = DoubleTupel.ZEROS;
     private Object stickyLock = new Object();
 
-    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
-        this(position, graphicsObject);
-        setWorld(gameWorld);
-    }
+//    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
+//        this(position, graphicsObject);
+//        setWorld(gameWorld);
+//    }
+//
+//    protected AbstractGameObject(DoubleTupel position) {
+//        boundingBox = new ModifiableBox(position, DoubleTupel.ZEROS);
+//    }
+//    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject) {
+//        this.graphicsObject = graphicsObject;
+//        boundingBox = new ModifiableBox(position, graphicsObject.getDimensions());
+//    }
 
-    protected AbstractGameObject(DoubleTupel position) {
-        boundingBox = new ModifiableBox(position, DoubleTupel.ZEROS);
-    }
-    protected AbstractGameObject(DoubleTupel position, GraphicsObject graphicsObject) {
-        this.graphicsObject = graphicsObject;
-        boundingBox = new ModifiableBox(position, graphicsObject.getDimensions());
-    }
-
+    @Override
     public SolidObject getStickingTo() {
         return stickingTo;
     }
 
+    @Override
     public void initUpdateCycle(){
         lastDelta = DoubleTupel.ZEROS;
     }
@@ -92,7 +94,7 @@ public abstract class AbstractGameObject implements GameObject {
 
     @Override
     public GraphicsObject getGraphics() {
-        return graphicsObject;
+        return graphics;
     }
 
     @Override
@@ -100,10 +102,12 @@ public abstract class AbstractGameObject implements GameObject {
         return boundingBox;
     }
 
+    @Override
     public void moveTo(DoubleTupel newPos){
         move(newPos.sub(getCenter()));
     }
 
+    @Override
     public void move(DoubleTupel delta){
         if(sticking!=null){
             for(GameObject stick : sticking){
@@ -119,6 +123,7 @@ public abstract class AbstractGameObject implements GameObject {
         return isDestroyed;
     }
 
+    @Override
     public DoubleTupel getLastDelta() {
         return lastDelta;
     }
@@ -192,6 +197,7 @@ public abstract class AbstractGameObject implements GameObject {
         }
     }
 
+    @Override
     public void unStick(){
         synchronized (stickyLock) {
             unStickUnSynchronized();
@@ -205,6 +211,7 @@ public abstract class AbstractGameObject implements GameObject {
         stickingTo = null;
     }
 
+    @Override
     public void stickToBase(SolidObject base){
         synchronized (stickyLock) {
             if (getStickingTo() != base) {
@@ -215,12 +222,14 @@ public abstract class AbstractGameObject implements GameObject {
         }
     }
 
+    @Override
     public boolean hasSticking(){
         synchronized (stickyLock) {
             return sticking!=null && !sticking.isEmpty();
         }
     }
 
+    @Override
     public boolean isSticking(){
         return stickingTo!=null;
     }
@@ -230,7 +239,23 @@ public abstract class AbstractGameObject implements GameObject {
         return Double.POSITIVE_INFINITY;
     }
 
+    @Override
     public void setWorld(GameWorld world) {
         this.gameWorld = world;
+    }
+
+    @Override
+    public void setGraphics(GraphicsObject graphics) {
+        this.graphics = graphics;
+    }
+
+    @Override
+    public void setBounding(DoubleTupel dimensions) {
+        boundingBox.setDimensions(dimensions);
+    }
+
+    @Override
+    public boolean hasGraphics() {
+        return graphics!=null;
     }
 }

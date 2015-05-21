@@ -57,12 +57,17 @@ public class DesktopSystem implements kinderuni.System {
 
     @Override
     public GraphicsObject createGraphics(GraphicsSettings graphicsSettings) {
+        return createGraphics(graphicsSettings, graphicsSettings.getDimensions());
+    }
+
+    @Override
+    public GraphicsObject createGraphics(GraphicsSettings graphicsSettings, DoubleTupel dimensions) {
         File path = graphicsSettings.getId()==null?null:new File(animations, graphicsSettings.getId());
         return new DesktopFileGraphics(
                 path,
                 graphicsSettings.getBgColour(), graphicsSettings.getLine_colour(),
                 graphicsSettings.getText(),
-                new DoubleTupel(graphicsSettings.getWidth(), graphicsSettings.getHeight()));
+                dimensions);
 //        if(graphicsSettings.drawBox()){
 //            return createBoxGraphics(graphicsSettings.getWidth(), graphicsSettings.getHeight(), graphicsSettings.getBgColour());
 //        }else{

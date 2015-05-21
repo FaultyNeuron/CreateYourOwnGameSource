@@ -21,9 +21,11 @@ public class DesktopPainter implements Painter{
     }
 
     @Override
-    public void paint(GameObject abstractGameObject) {
+    public void paint(GameObject gameObject) {
         DoubleTupel screenDelta = graphicsComponent.getCenter();
-        paint(abstractGameObject, abstractGameObject.getCenter().sub(screenDelta));
+        if(gameObject.hasGraphics()){
+            paint(gameObject, gameObject.getCenter().sub(screenDelta));
+        }
     }
 
     @Override

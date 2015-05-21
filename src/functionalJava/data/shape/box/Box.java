@@ -37,4 +37,5 @@ public interface Box {
     public ModifiableBox scale(DoubleTupel c);
     public ModifiableBox scaleTo(double width, double height);
     public ModifiableBox scaleTo(DoubleTupel dimensions);
+
 }

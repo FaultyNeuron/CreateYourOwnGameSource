@@ -23,4 +23,6 @@ public interface System {
     public Settings getSettings();
 
     GraphicsObject createGraphics(GraphicsSettings graphicsSettings);
+
+    GraphicsObject createGraphics(GraphicsSettings graphicsSettings, DoubleTupel dimensions);
 }

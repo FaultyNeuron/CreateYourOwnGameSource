@@ -13,27 +13,16 @@ import kinderuni.ui.graphics.GraphicsObject;
  */
 public class Collectible extends PhysicsObject {
     private Effect effect;
-    private double gravityFactor;
     private double dropAcceleration;
-    private double bounciness;
-    public Collectible(GraphicsObject graphicsObject, DoubleTupel position, Effect effect,
-                       double gravityFactor, double dropAcceleration, double bounciness) {
-        super(position, graphicsObject);
-        this.gravityFactor = gravityFactor;
+    public Collectible(Effect effect, double dropAcceleration) {
         this.dropAcceleration = dropAcceleration;
-        this.bounciness = bounciness;
         if(effect != null) {
             this.effect = effect;
-            effect.setGraphics(graphicsObject);
         }
     }
 
-    public Collectible(GraphicsObject graphicsObject, DoubleTupel position,
-                       double gravityFactor, double dropAcceleration, double bounciness) {
-        super(position, graphicsObject);
-        this.gravityFactor = gravityFactor;
+    public Collectible(double dropAcceleration) {
         this.dropAcceleration = dropAcceleration;
-        this.bounciness = bounciness;
     }
 
     public void collect(Player player){
@@ -47,29 +36,27 @@ public class Collectible extends PhysicsObject {
         getWorld().destroyCollectable(this);
     }
 
-    @Override
-    public void collidedWithSolid(SolidObject solidObject, Direction2D collisionSide) {
-        DoubleTupel speed = getSpeed();
-        super.collidedWithSolid(solidObject, collisionSide);
-        accelerate(speed.mult(bounciness, -bounciness));
-    }
+//    @Override
+//    public void collidedWithSolid(SolidObject solidObject, Direction2D collisionSide) {
+//        DoubleTupel speed = getSpeed();
+//        super.collidedWithSolid(solidObject, collisionSide);
+//        accelerate(speed.mult(bounciness, -bounciness));
+//    }
 
     public Collectible copy(){
         if(effect!=null){
-            return new Collectible(getGraphics(), getCenter(), effect.copy(), gravityFactor, dropAcceleration, bounciness);
+            return new Collectible(effect.copy(), dropAcceleration);
         }else{
-            return new Collectible(getGraphics(), getCenter(), gravityFactor, dropAcceleration, bounciness);
+            return new Collectible(dropAcceleration);
         }
+        //todo copy other info
     }
 
     public Effect getEffect() {
         return effect;
     }
 
-    @Override
-    public double getGravityFactor() {
-        return gravityFactor;
-    }
+
 
     public double getDropAcceleration() {
         return dropAcceleration;
@@ -80,5 +67,11 @@ public class Collectible extends PhysicsObject {
         return "Collectible{" +
                 "effect=" + effect +
                 '}';
+    }
+
+    @Override
+    public void setGraphics(GraphicsObject graphics) {
+        super.setGraphics(graphics);
+        effect.setGraphics(graphics);
     }
 }

@@ -10,13 +10,7 @@ import kinderuni.gameLogic.GameWorld;
 public class Platform extends SolidObject{
     private double friction;
 
-    public Platform(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld, double friction) {
-        super(position, graphicsObject, gameWorld);
-        this.friction = friction;
-    }
-
-    public Platform(DoubleTupel position, GraphicsObject graphicsObject, double friction) {
-        super(position, graphicsObject);
+    public Platform(double friction) {
         this.friction = friction;
     }
 

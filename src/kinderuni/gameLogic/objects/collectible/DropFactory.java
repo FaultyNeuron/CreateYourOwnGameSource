@@ -12,7 +12,7 @@ import java.util.Random;
 public class DropFactory {
     private System system;
     private double probabilitySummed = 0;
-    private List<Tupel<Collectible, Double>> toClone = new LinkedList<>();
+    private List<Tupel<Collectible, Double>> toClone = new LinkedList<>(); //todo store collectible settings, instead of actual object which are copied..
     private Random random;
 
     public DropFactory(Random random) {

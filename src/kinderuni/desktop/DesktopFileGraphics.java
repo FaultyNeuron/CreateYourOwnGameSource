@@ -1,6 +1,6 @@
 package kinderuni.desktop;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
@@ -103,7 +103,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
                     imageIcons = images.get(State.STANDING);
                 }
                 image = imageIcons[getCurrentFrame()].getImage();
-                boolean right = getDirection() == Direction1D.RIGHT;
+                boolean right = getDirection() == HorizontalDirection.RIGHT;
                 int width = (int) Math.round(graphicsBounding.getWidth() * (right ? 1 : -1));
                 int left = (int) Math.round(graphicsBounding.getLeft() + (right ? 0 : -width));
                 drawTo.drawImage(image,

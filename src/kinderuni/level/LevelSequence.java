@@ -2,7 +2,7 @@ package kinderuni.level;
 
 import kinderuni.desktop.Info;
 import kinderuni.gameLogic.objects.Player;
-import kinderuni.gameLogic.objects.collectible.Collectible;
+import kinderuni.level.builder.LevelBuilder;
 import kinderuni.settings.levelSettings.LevelSettings;
 import kinderuni.ui.graphics.Paintable;
 import kinderuni.ui.graphics.Painter;

@@ -14,17 +14,8 @@ public class MovingPlatform extends Platform {
     private DoubleTupel startingPosition;
     private DoubleTupel delta;
     private double cycleLength;
-    public MovingPlatform(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld, double friction, double speed, DoubleTupel delta) {
-        super(position, graphicsObject, gameWorld, friction);
-        startingPosition = position;
-        this.speed = speed;
-        this.delta = delta;
-        cycleLength = delta.length() / speed;
-    }
-
-    public MovingPlatform(DoubleTupel position, GraphicsObject graphicsObject, double friction, double speed, DoubleTupel delta) {
-        super(position, graphicsObject, friction);
-        startingPosition = position;
+    public MovingPlatform(double friction, double speed, DoubleTupel delta) {
+        super(friction);
         this.speed = speed;
         this.delta = delta;
         cycleLength = delta.length() / speed;
@@ -46,5 +37,13 @@ public class MovingPlatform extends Platform {
 
     private void goToPosition(double newPos){
         moveTo(startingPosition.add(delta.mult(newPos)));
+    }
+
+    @Override
+    public void setCenter(DoubleTupel position) {
+        if(startingPosition==null){
+            startingPosition = position;
+        }
+        super.setCenter(position);
     }
 }

@@ -6,24 +6,12 @@ import java.util.List;
 /**
  * Created by Georg Plaz.
  */
-public class EnemySettings {
-    private boolean jumping;
-    private int damage;
-    private double height;
-    private int hp;
-    private GraphicsSettings graphics;
+public class EnemySettings extends LivingSettings {
+    public static final EnemySettings EMPTY_SETTINGS = new EnemySettings();
+
+    private Integer damage;
     private List<Drop> drop = new LinkedList<>();
-    private double walking_speed;
-    private double jump_power;
-    private int jump_pause;
-
-    public boolean isJumping() {
-        return jumping;
-    }
-
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
-    }
+    private Integer jump_pause;
 
     public int getDamage() {
         return damage;
@@ -33,40 +21,20 @@ public class EnemySettings {
         this.damage = damage;
     }
 
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
     public List<Drop> getDrop() {
         return drop;
     }
 
-    public GraphicsSettings getGraphicsSettings() {
-        return graphics;
-    }
-
-    public double getWalkingSpeed() {
-        return walking_speed;
-    }
-
-    public double getJumpPower() {
-        return jump_power;
-    }
-
     public int getJumpPause() {
         return jump_pause;
+    }
+
+    public boolean hasDamage() {
+        return damage!=null;
+    }
+
+    public boolean hasJumpPause() {
+        return jump_pause!=null;
     }
 
     public class Drop{

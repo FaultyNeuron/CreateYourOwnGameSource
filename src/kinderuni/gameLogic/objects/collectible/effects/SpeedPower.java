@@ -15,24 +15,31 @@ public class SpeedPower extends ReversibleEffect {
     @Override
     public void activate(Player player) {
         super.activate(player);
-        player.speedUp(factor);
+        player.setFlyingSpeed(player.getFlyingSpeed() * factor);
+        player.setWalkingSpeed(player.getWalkingSpeed() * factor);
     }
 
     @Override
     public void deActivate() {
         super.deActivate();
-        getPlayer().speedUp(1/factor);
+        getPlayer().setFlyingSpeed(getPlayer().getFlyingSpeed() / factor);
+        getPlayer().setWalkingSpeed(getPlayer().getWalkingSpeed() * factor);
     }
 
     @Override
-    public ReversibleEffect copy() {
-        return new SpeedPower(factor);
+    public SpeedPower copy() {
+        SpeedPower toReturn = new SpeedPower(factor);
+        if(hasReverser()){
+            toReturn.setReverser(getReverser().copy());
+        }
+        return toReturn;
     }
 
     @Override
     public String toString() {
         return "SpeedPower{" +
                 "factor=" + factor +
+                ", reverser=" + getReverser() +
                 '}';
     }
 

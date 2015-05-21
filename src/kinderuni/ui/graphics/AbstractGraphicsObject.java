@@ -1,6 +1,6 @@
 package kinderuni.ui.graphics;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.tupel.DoubleTupel;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     private long blinkStartTime;
     private int blinkDelta;
     private double timeOn;
-    private Direction1D direction;
+    private HorizontalDirection direction;
     private State state;
     private Map<State, AnimationLogic> animationLogicMap = new HashMap<>();
     private boolean paint = true;
@@ -41,12 +41,12 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     }
 
     @Override
-    public Direction1D getDirection() {
+    public HorizontalDirection getDirection() {
         return direction;
     }
 
     @Override
-    public void setDirection(Direction1D direction) {
+    public void setDirection(HorizontalDirection direction) {
         this.direction = direction;
     }
 

@@ -1,10 +1,10 @@
 package kinderuni.settings.levelSettings;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.settings.IdCountSettings;
+import kinderuni.settings.IdParametersSettings;
+import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
 import kinderuni.settings.levelSettings.objectSettings.FloorSettings;
 import kinderuni.settings.levelSettings.objectSettings.GoalSettings;
-import util.RandomHolder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,13 +13,7 @@ import java.util.List;
  * Created by Georg Plaz.
  */
 public class LevelSettings {
-    public static final LevelSettings STANDARD = createStandardLevelSettings();
-    public static final LevelSettings SPACE = createSpaceLevelSettings();
-    public static final LevelSettings ICE = createIceLevelSettings();
-
     private String seed;
-//    private EnvironmentSettings environmentSettings;
-//    private ObjectSettings objectSettings;
     private String levelName;
 
     private double width;
@@ -31,19 +25,11 @@ public class LevelSettings {
     private double player_x;
     private double player_y;
 
-    private List<IdCountSettings> enemies = new LinkedList<>();
-    private List<IdCountSettings> platforms = new LinkedList<>();
+    private List<IdParametersSettings> enemies = new LinkedList<>();
+    private List<IdParametersSettings> platforms = new LinkedList<>();
     private GoalSettings goal;
     private FloorSettings floor;
-
-
-//    public EnvironmentSettings getEnvironmentSettings() {
-//        return environmentSettings;
-//    }
-//
-//    public ObjectSettings getObjectSettings() {
-//        return objectSettings;
-//    }
+    private List<EffectSettings> active_effects = new LinkedList<>();
 
     public double getAirFriction() {
         return airFriction;
@@ -65,38 +51,11 @@ public class LevelSettings {
         return levelName;
     }
 
-    private static LevelSettings createStandardLevelSettings() {
-        LevelSettings toReturn = new LevelSettings();
-        toReturn.levelName = "standard";
-//        toReturn.environmentSettings = EnvironmentSettings.STANDARD;
-//        toReturn.objectSettings = ObjectSettings.STANDARD;
-        toReturn.seed = String.valueOf(RandomHolder.random.nextLong());
-        return toReturn;
-    }
-
-    private static LevelSettings createSpaceLevelSettings() {
-        LevelSettings toReturn = new LevelSettings();
-        toReturn.levelName = "space";
-//        toReturn.environmentSettings = EnvironmentSettings.SPACE;
-//        toReturn.objectSettings = ObjectSettings.SPACE;
-        toReturn.seed = String.valueOf(RandomHolder.random.nextLong());
-        return toReturn;
-    }
-
-    private static LevelSettings createIceLevelSettings() {
-        LevelSettings toReturn = new LevelSettings();
-        toReturn.levelName = "ice";
-//        toReturn.environmentSettings = EnvironmentSettings.STANDARD;
-//        toReturn.objectSettings = ObjectSettings.ICE;
-        toReturn.seed = String.valueOf(RandomHolder.random.nextLong());
-        return toReturn;
-    }
-
-    public List<IdCountSettings> getEnemies() {
+    public List<IdParametersSettings> getEnemies() {
         return enemies;
     }
 
-    public List<IdCountSettings> getPlatforms() {
+    public List<IdParametersSettings> getPlatforms() {
         return platforms;
     }
 
@@ -132,5 +91,9 @@ public class LevelSettings {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public List<EffectSettings> getActiveEffects() {
+        return active_effects;
     }
 }

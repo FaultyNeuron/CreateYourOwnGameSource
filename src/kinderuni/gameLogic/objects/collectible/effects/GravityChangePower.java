@@ -27,7 +27,11 @@ public class GravityChangePower extends ReversibleEffect {
 
     @Override
     public GravityChangePower copy() {
-        return new GravityChangePower(factor);
+        GravityChangePower toReturn = new GravityChangePower(factor);
+        if(hasReverser()){
+            toReturn.setReverser(getReverser().copy());
+        }
+        return toReturn;
     }
 
     private void multGravity(GameWorld gameWorld, double factor){
@@ -38,6 +42,7 @@ public class GravityChangePower extends ReversibleEffect {
     public String toString() {
         return "GravitySwitchPower{" +
                 "factor=" + factor +
+                ", reverser=" + getReverser() +
                 '}';
     }
 }

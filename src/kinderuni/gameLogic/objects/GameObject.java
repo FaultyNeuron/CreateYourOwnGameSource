@@ -2,6 +2,7 @@ package kinderuni.gameLogic.objects;
 
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.solid.SolidObject;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.Painter;
 import kinderuni.gameLogic.GameWorld;
@@ -27,16 +28,33 @@ public interface GameObject {
     public boolean isDestroyed();
     public DoubleTupel getLastDelta();
 
+    SolidObject getStickingTo();
+
     public void initUpdateCycle();
     public void update(int time);
     public void checkCollision();
 
     void stickToThis(GameObject toStick);
     void unStick(GameObject toUnStick);
+
+    void unStick();
+
+    void stickToBase(SolidObject base);
+
+    boolean hasSticking();
+
+    boolean isSticking();
+
     double getFriction();
 
     public GraphicsObject getGraphics();
     public void paint(Painter painter);
+
+    public void setGraphics(GraphicsObject graphics);
+
+    void setBounding(DoubleTupel dimensions);
+
+    boolean hasGraphics();
 
 //    public void collidedWithPlayer(Player player, DoubleTupel objectDelta, Orientation collisionSide);
 }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Georg Plaz.
  */
-public class ObjectSettings {
+public class ObjectsSettings {
 //    public static final ObjectSettings STANDARD = createStandardLevelSettings();
 //    public static final ObjectSettings SPACE = createSpaceLevelSettings();
 //    public static final ObjectSettings ICE = createIceLevelSettings();

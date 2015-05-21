@@ -35,20 +35,32 @@ public class Level implements Paintable {
     private DoubleTupel dimensions;
     private GraphicsObject heartGraphics;
     private GraphicsObject playerGraphics;
+    private Effect activeEffect;
+    private List<LevelStateListener> levelStateListeners = new LinkedList<>();
 
     public Level(String name, DoubleTupel dimensions,
                  double screenWidth, InputRetriever inputRetriever,
                  double initialAirFriction, double gravity,
-                 DoubleTupel initPlayerPosition, kinderuni.System system) {
+                 DoubleTupel initPlayerPosition, kinderuni.System system,
+                 Effect activeEffect) {
+        this.activeEffect = activeEffect; // todo: add listeners
         heartGraphics = system.createGraphics("heart", 25, 25);
         playerGraphics = system.createGraphics("player", 50, 50);
         this.name = name;
+        this.state = State.NOT_STARTED;
 //        this.screen = screen;
         this.inputRetriever = inputRetriever;
         this.initialAirFriction = initialAirFriction;
         this.initialGravity = gravity;
         this.initPlayerPosition = initPlayerPosition;
         gameWorld = new GameWorld(new ModifiableBox(dimensions.div(2), dimensions), screenWidth, this.initialAirFriction, this.initialGravity);
+        if(activeEffect!=null){
+            addLevelStateListener(new LevelStateListener() {
+                @Override
+                public void stateChanged(State newState, State oldState) {
+                }
+            });
+        }
     }
 
     public void update() {
@@ -66,14 +78,24 @@ public class Level implements Paintable {
 
         if(state == Level.State.IN_PROGRESS && getGameWorld().getPlayer()!=null){
             if(getGameWorld().getPlayer().getLifeCount() <= 0){
-                state = Level.State.LOST;
+                changeState(Level.State.LOST);
             }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
                     inputRetriever.skipLevelAndConsume()){
                 System.out.println("skipping level");
-                state = Level.State.WON;
+                changeState(Level.State.WON);
             }
         }
         gameWorld.update((int)time++);
+    }
+
+    private void changeState(State newState){
+        if(newState!=state) {
+            State oldState = state;
+            state = newState;
+            for (LevelStateListener listener : levelStateListeners) {
+                listener.stateChanged(newState, oldState);
+            }
+        }
     }
 
     public void paint(Painter painter) {
@@ -109,7 +131,7 @@ public class Level implements Paintable {
 
     public void start(){
         if(!isRunning) {
-            state = State.IN_PROGRESS;
+            changeState(State.IN_PROGRESS);
 //            screen.setLevel(this);
             isRunning = true;
             thread = new Thread() {
@@ -146,6 +168,9 @@ public class Level implements Paintable {
     }
 
     public void put(Player player){
+        if(activeEffect != null){
+            activeEffect.activate(player);
+        }
         player.setCenter(initPlayerPosition);
         player.setSpawnPoint(initPlayerPosition);
         getGameWorld().set(player);
@@ -159,6 +184,7 @@ public class Level implements Paintable {
     public void stop() {
         isRunning = false;
         thread.interrupt();
+        changeState(State.STOPPED);
     }
 
     public String getName() {
@@ -175,6 +201,14 @@ public class Level implements Paintable {
     }
 
     public enum State{
-        IN_PROGRESS, WON, LOST
+        NOT_STARTED, IN_PROGRESS, WON, LOST, STOPPED
+    }
+
+    public void addLevelStateListener(LevelStateListener listener){
+        levelStateListeners.add(listener);
+    }
+
+    public interface LevelStateListener{
+        public abstract void stateChanged(State newState, State oldState);
     }
 }

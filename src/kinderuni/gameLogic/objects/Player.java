@@ -1,6 +1,6 @@
 package kinderuni.gameLogic.objects;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.Direction2D;
 import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.tupel.Tupel;
@@ -8,7 +8,7 @@ import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.effects.InvinciblePower;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
-import kinderuni.gameLogic.objects.collectible.effects.TimeBasedEffect;
+import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
@@ -23,9 +23,7 @@ import java.util.Set;
 public class Player extends LivingObject {
     private int startingHp;
     private int lifeCount;
-    private double jumpPower;
     private double enemyThrowbackPower;
-    private double moveSpeed;
 //    private int invincibleTimer;
     private int invincibleCounter = 0;
     private SpawnPoint spawnPoint = new SpawnPoint();
@@ -36,14 +34,21 @@ public class Player extends LivingObject {
     private List<ReversibleEffect> activeEffects = new LinkedList<>();
     private Set<Enemy> currentColliding = new HashSet<>();
     private Set<Enemy> previousColliding = new HashSet<>();
+    private boolean hpSet = false;
 
-    public Player(GraphicsObject graphicsObject, double jumpPower, double moveSpeed, double enemyThrowbackPower, int hp, int lifeCount) {
-        super(DoubleTupel.ZEROS, graphicsObject, hp);
-        this.jumpPower = jumpPower;
-        this.moveSpeed = moveSpeed;
+    public Player(double enemyThrowbackPower, int lifeCount) {
         this.enemyThrowbackPower = enemyThrowbackPower;
         this.lifeCount = lifeCount;
-        startingHp = hp;
+//        startingHp = hp;
+    }
+
+    @Override
+    public void setHp(int hp) {
+        if(!hpSet){
+            startingHp = hp;
+            hpSet = true;
+        }
+        super.setHp(hp);
     }
 
     @Override
@@ -59,36 +64,21 @@ public class Player extends LivingObject {
 
     private void consumeJump(){
         if(jumping){
-            if(!inAir()){
-                jump(jumpPower);
-            }
+            super.jump(true);
             jumping = false;
         }
     }
 
-    @Override
-    public void setCenter(DoubleTupel position) {
-        super.setCenter(position);
-    }
-
     private void consumeRight(){
         if(goingRight && !goingLeft){
-            if(!inAir()){
-                walk(Direction1D.RIGHT, moveSpeed);
-            }else{
-                consumeMove(Direction2D.RIGHT, moveSpeed);
-            }
+            walk(HorizontalDirection.RIGHT);
         }
         goingRight = false;
     }
 
     private void consumeLeft(){
         if(!goingRight && goingLeft){
-            if(!inAir()){
-                walk(Direction1D.LEFT, moveSpeed);
-            }else{
-                consumeMove(Direction2D.LEFT, moveSpeed);
-            }
+            walk(HorizontalDirection.LEFT);
         }
         goingLeft = false;
     }
@@ -142,13 +132,15 @@ public class Player extends LivingObject {
         currentColliding.add(enemy);
         if(collisionSide == Direction2D.DOWN){
             if(!previousColliding.contains(enemy)) {
+                System.out.println("jumped on "+enemy);
+
 //                System.out.println("doing damage.. hp: "+enemy.getHp());
                 stop(false);
                 enemy.takeDamage(1, this);
                 if(enemy.isDestroyed()){
-                    accelerate(0, jumpPower * 1.1);
+                    jump(getJumpPower() * 1.1); //todo to constants
                 }else{
-                    accelerate(0, jumpPower*0.75);
+                    jump(getJumpPower() * 0.75);
                 }
 //                System.out.println("damage done. hp left: "+enemy.getHp());
             }
@@ -165,7 +157,7 @@ public class Player extends LivingObject {
             if(!killed) {
                 DoubleTupel throwBack = getCenter().sub(source.getCenter()).add(0, 5);
                 accelerate(throwBack.toLength(enemyThrowbackPower));
-                new TimeBasedEffect(200, new InvinciblePower()).activate(this);
+                new InvinciblePower(new TimeBasedReverser(200)).activate(this);
             }
             return killed;
         }
@@ -175,7 +167,7 @@ public class Player extends LivingObject {
     @Override
     public void stickToBase(SolidObject base) {
         super.stickToBase(base);
-        spawnPoint.setCenter(getCenter());
+        setSpawnPoint(getCenter());
         spawnPoint.stickToBase(base);
     }
 
@@ -195,8 +187,7 @@ public class Player extends LivingObject {
             if(source==null) {
                 setCenter(spawnPoint.getCenter());
             }
-            new TimeBasedEffect(200, new InvinciblePower()).activate(this);
-//            setInvincible(200);
+            new InvinciblePower(new TimeBasedReverser(200)).activate(this);
             setHp(startingHp);
         } else {
             destroy();
@@ -240,10 +231,6 @@ public class Player extends LivingObject {
         lifeCount +=lifeToAdd;
     }
 
-    public void speedUp(double speedFactor) {
-        moveSpeed*=speedFactor;
-    }
-
     public void applyEffect(ReversibleEffect effect) {
         activeEffects.add(effect);
         System.out.println("effect became active: " + effect);
@@ -258,13 +245,7 @@ public class Player extends LivingObject {
     }
 
     private class SpawnPoint extends AbstractGameObject {
-        protected SpawnPoint() {
-            super(DoubleTupel.ZEROS);
-        }
-
         @Override
-        public void update(int time) {
-
-        }
+        public void update(int time) {}
     }
 }

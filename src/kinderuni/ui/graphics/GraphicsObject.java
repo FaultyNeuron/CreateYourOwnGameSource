@@ -1,14 +1,14 @@
 package kinderuni.ui.graphics;
 
-import functionalJava.data.Direction1D;
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.tupel.DoubleTupel;
 
 /**
  * Created by Georg Plaz.
  */
 public interface GraphicsObject {
-    public Direction1D getDirection();
-    public void setDirection(Direction1D direction);
+    public HorizontalDirection getDirection();
+    public void setDirection(HorizontalDirection direction);
     public State getState();
     public void setState(State state);
 

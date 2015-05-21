@@ -17,17 +17,8 @@ import java.util.Set;
  */
 public abstract class PhysicsObject extends AbstractGameObject {
     private DoubleTupel speed = DoubleTupel.ZEROS;
-//    private boolean inAir = true;
-//    private Direction2D movingDirection;
-//    private DoubleTupel movingSpeed;
-
-    public PhysicsObject(DoubleTupel position, GraphicsObject graphicsObject, GameWorld gameWorld) {
-        super(position, graphicsObject, gameWorld);
-    }
-
-    public PhysicsObject(DoubleTupel position, GraphicsObject graphicsObject) {
-        super(position, graphicsObject);
-    }
+    private double bounciness;
+    private double gravityFactor;
 
     public DoubleTupel getSpeed() {
         return speed;
@@ -112,6 +103,7 @@ public abstract class PhysicsObject extends AbstractGameObject {
     }
 
     public void collidedWithSolid(SolidObject solidObject, Direction2D collisionSide){
+        DoubleTupel oldSpeed = getSpeed();
         if(collisionSide.getSign() * speed.get(collisionSide.toAxis()) > 0) {
             speed = speed.mult(collisionSide.toAxis(), 0);
         }
@@ -119,11 +111,31 @@ public abstract class PhysicsObject extends AbstractGameObject {
             stickToBase(solidObject);
 //            inAir = false;
         }
+        if(isBouncy()) {
+            accelerate(oldSpeed.mult(bounciness, -bounciness));
+        }
+
+    }
+
+    public boolean isBouncy(){
+        return bounciness>0;
     }
 
     public boolean inAir() {
         return !isSticking();
     }
 
-    public double getGravityFactor(){return 1;}
+    public double getGravityFactor(){return gravityFactor;}
+
+    public void setGravityFactor(Double gravityFactor) {
+        this.gravityFactor = gravityFactor;
+    }
+
+    public double getBounciness() {
+        return bounciness;
+    }
+
+    public void setBounciness(double bounciness) {
+        this.bounciness = bounciness;
+    }
 }

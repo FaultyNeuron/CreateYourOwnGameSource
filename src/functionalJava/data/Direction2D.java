@@ -87,12 +87,12 @@ public enum Direction2D {
         return new HashSet<Direction2D>(DIRECTION_SET);
     }
 
-    public Direction1D toDirection1D(){
+    public HorizontalDirection toDirection1D(){
         switch (this){
             case LEFT:
-                return Direction1D.LEFT;
+                return HorizontalDirection.LEFT;
             case RIGHT:
-                return Direction1D.RIGHT;
+                return HorizontalDirection.RIGHT;
             default:
                 return null;
         }

@@ -1,9 +1,12 @@
 {
   "jump_power" : 7,
-  "move_speed" : 3,
+  "walking_speed" : 3,
+  "flying_speed" : 0,
   "enemy_throwback_power" : 5,
   "hp" : 3,
   "life" : 3,
+  "width": 30,
+  "height": 75,
 
   "graphics" : {
     "id" : "player",

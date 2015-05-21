@@ -5,15 +5,14 @@ import functionalJava.data.tupel.DoubleTupel;
 /**
  * Created by Georg Plaz.
  */
-public class PlatformSettings{
-    private double width;
+public class PlatformSettings extends GameObjectSettings{
+    public static final PlatformSettings EMPTY_SETTINGS = new PlatformSettings();
     private int count;
 
-    private double delta_x = 0;
-    private double delta_y = 0;
-    private double friction = ObjectSettings.DEFAULT_FLOOR_FRICTION;
-    private double speed = 0;
-    private GraphicsSettings graphics;
+    private Double delta_x = 0.;
+    private Double delta_y = 0.;
+    private Double friction = ObjectsSettings.DEFAULT_FLOOR_FRICTION;
+    private Double speed = 0.;
 
     public double getDeltaX() {
         return delta_x;
@@ -26,14 +25,6 @@ public class PlatformSettings{
 
     public double getDeltaY() {
         return delta_y;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
     }
 
     public double getFriction() {
@@ -64,19 +55,26 @@ public class PlatformSettings{
         this.speed = speed;
     }
 
-    public GraphicsSettings getGraphicsSettings() {
-        return graphics;
-    }
-
     @Override
     public String toString() {
         return "PlatformSettings{" +
-                "width=" + width +
                 ", count=" + count +
                 ", delta_x=" + delta_x +
                 ", delta_y=" + delta_y +
                 ", friction=" + friction +
                 ", speed=" + speed +
                 '}';
+    }
+
+    public boolean hasFriction() {
+        return friction!=null;
+    }
+
+    public boolean hasSpeed() {
+        return speed!=null;
+    }
+
+    public boolean hasDelta() {
+        return delta_x!=null && delta_y!=null;
     }
 }
