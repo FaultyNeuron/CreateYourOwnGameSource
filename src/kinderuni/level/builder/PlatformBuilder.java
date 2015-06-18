@@ -110,9 +110,14 @@ public class PlatformBuilder extends GameObjectBuilder {
                 if (platformBox.collides(existingBox)) {
                     crash = true;
                     platformBox.move();
+                    if collideCeil()
+                            return false;
                 }
             }
-            if cr
+            if (crash)
+                return findPosition()
+            else
+                return true;
 
         }
         return false;
