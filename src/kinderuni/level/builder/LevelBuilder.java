@@ -137,6 +137,11 @@ public class LevelBuilder {
             }
         }
 
+        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
+                level.getGameWorld().add(newPlatform);
+            }
+        }
+
         GoalSettings goalSettings = levelSettings.getGoalSettings();
         Goal goal = new Goal(); //todo create goal builder
         platformBuilder.attach(goal, goalSettings);

@@ -1,17 +1,21 @@
 package kinderuni.level.builder;
 
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.*;
+import kinderuni.System;
 import kinderuni.gameLogic.objects.solid.MovingPlatform;
 import kinderuni.gameLogic.objects.solid.Platform;
+import kinderuni.settings.levelSettings.LevelSettings;
 import kinderuni.settings.levelSettings.objectSettings.PlatformSettings;
 
+import java.util.List;
 import java.util.Random;
 
 /**
  * Created by Georg Plaz.
  */
 public class PlatformBuilder extends GameObjectBuilder {
-    public PlatformBuilder(kinderuni.System system, Random random) {
+    public PlatformBuilder(System system, Random random) {
         super(system, random);
     }
 
@@ -34,5 +38,19 @@ public class PlatformBuilder extends GameObjectBuilder {
             attach(toReturn, platformSettings);
         }
         return toReturn;
+    }
+
+    private List<Platform> generatePlatforms(Random random, LevelSettings levelSettings) {
+
+        return null;
+    }
+
+    public List<Platform> buildAll(LevelSettings levelSettings) {
+
+        //create center list..
+
+        Platform platform = build(platformSettings);
+        platform.setCenter(list.pop());
+        return null;
     }
 }
