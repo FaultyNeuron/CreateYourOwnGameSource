@@ -140,7 +140,6 @@ public class LevelBuilder {
         for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
                 level.getGameWorld().add(newPlatform);
             }
-        }
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();
         Goal goal = new Goal(); //todo create goal builder
@@ -153,9 +152,6 @@ public class LevelBuilder {
             super("no "+type+" with id \""+id+"\" was found!");
         }
     }
-
-
-
 
 
 }
