@@ -127,6 +127,7 @@ public class LevelBuilder {
             }
             PlatformSettings platformSettings = system.getSettings().getPlatformSettings(idSettings.getId());
             for (int i = 0; i < idSettings.getCount(); i++) {
+                PlatformSettings p = idSettings.getPlatform();
                 Platform newPlatform;
                 if(idSettings.hasPlatform()){
                     newPlatform = platformBuilder.build(platformSettings, idSettings.getPlatform());
@@ -137,7 +138,7 @@ public class LevelBuilder {
             }
         }
 
-        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
+        for (Platform newPlatform : platformBuilder.buildAll(levelSettings, )) {
                 level.getGameWorld().add(newPlatform);
             }
 
