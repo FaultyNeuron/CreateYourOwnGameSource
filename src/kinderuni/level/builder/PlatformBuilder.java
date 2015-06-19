@@ -78,7 +78,7 @@ public class PlatformBuilder extends GameObjectBuilder {
                 platformBox = boxBuilder(xRand, platformSettings, horizontalDistance, verticalDistance);
                 // find a y position (-1 -> not found)
                 yFound = findPosition(platformBox, existingBoxes, levelDimensions) + verticalDistance;
-                if (yFound == -1)
+                if (yFound != -1)
                     break;
             }
             if (yFound != -1) {
@@ -95,38 +95,51 @@ public class PlatformBuilder extends GameObjectBuilder {
     }
 
     private double getRandX(DoubleTupel levelDimensions, PlatformSettings platformSettings) {
-        return 0;
+        // random value between 0 and 1
+        double rand = getRandom().nextDouble();
+        double deltaX = platformSettings.getDeltaX();
+        double rightBoundary = levelDimensions.getFirst();
+        double platformWidth = platformSettings.getGraphicsSettings().getWidth();
+        double left = Math.max(platformWidth/2, platformWidth/2 - deltaX);
+        double right = rightBoundary - Math.max(platformWidth/2, platformWidth/2 + deltaX);
+
+        return left + (right - left) * rand;
     }
 
     private Box boxBuilder(double xRand, PlatformSettings platformSettings, double horizontalDistance, double verticalDistance) {
-        return null;
+        // create a box surrounding each platform, to keep the distance between them
+        double deltaY = platformSettings.getDeltaY();
+        double deltaX = platformSettings.getDeltaX();
+        double nonMovingWidth = platformSettings.getGraphicsSettings().getWidth() + horizontalDistance;
+        // box moving downwards can leave the level. Should it be avoided?
+        double yCenter = verticalDistance/2 + deltaY/2;
+        double width = nonMovingWidth + Math.abs(deltaX);
+        double heigth = verticalDistance + Math.abs(deltaY);
+
+        DoubleTupel center = new DoubleTupel(xRand, yCenter);
+        DoubleTupel dimension = new DoubleTupel(width, heigth);
+        return new FastAccessBox(center, dimension);
     }
 
     private double findPosition(Box platformBox, List<Box> existingBoxes, DoubleTupel levelDimensions) {
 
+        if (platformBox.getUpper() > levelDimensions.getSecond())
+            return -1;
         boolean crash = false;
         double moveUp = 0;
         for (Box existingBox : existingBoxes) {
             if (platformBox.collides(existingBox)) {
                 crash = true;
                 double move = existingBox.getUpper() - platformBox.getLower();
-                platformBox.move(new DoubleTupel(0, move));
                 moveUp += move;
-                if (platformBox.getUpper() > levelDimensions.getSecond())
-                        return -1;
+                platformBox = platformBox.move(new DoubleTupel(0, move));
             }
         }
-        if (crash)
+        if (crash) {
             return moveUp + findPosition(platformBox, existingBoxes, levelDimensions);
+        }
         else
             return moveUp;
     }
 
-    private Box getBoundingBox(PlatformSettings platformSettings) {
-
-
-
-
-        return null;
-    }
 }

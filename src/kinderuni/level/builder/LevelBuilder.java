@@ -134,7 +134,7 @@ public class LevelBuilder {
                 }else{
                     newPlatform = platformBuilder.build(platformSettings);
                 }
-                level.getGameWorld().add(newPlatform);
+                //level.getGameWorld().add(newPlatform);
             }
         }
 
