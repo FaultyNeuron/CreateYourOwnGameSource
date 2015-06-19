@@ -138,7 +138,7 @@ public class LevelBuilder {
             }
         }
 
-        for (Platform newPlatform : platformBuilder.buildAll(levelSettings, )) {
+        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
                 level.getGameWorld().add(newPlatform);
             }
 

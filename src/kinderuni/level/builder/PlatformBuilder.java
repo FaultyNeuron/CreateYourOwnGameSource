@@ -55,38 +55,37 @@ public class PlatformBuilder extends GameObjectBuilder {
     }
 
     public List<Platform> buildAll(LevelSettings levelSettings) {
-
-        List<Box> existingBoxes = new LinkedList<Box>();
-        List<Platform> createdPlatforms = new LinkedList<Platform>();
+        // initialize values and lists
+        List<Box> existingBoxes = new LinkedList<>();
+        List<Platform> createdPlatforms = new LinkedList<>();
         DoubleTupel levelDimensions = levelSettings.getDimensions();
-        //DoubleTupel center = dimensions.div(2);
-        //Box levelBox = new FastAccessBox(center, dimensions);
-
         List<IdParametersSettings> platformsTypeIds = levelSettings.getPlatforms();
         kinderuni.System system = getSystem();
-        List<PlatformSettings> platformSettingsList = new LinkedList<PlatformSettings>();
+        List<PlatformSettings> platformSettingsList = new LinkedList<>();
         for (IdParametersSettings idSettings : platformsTypeIds)
             for (int cnt = 0; cnt < idSettings.getCount(); cnt++)
                 platformSettingsList.add(system.getSettings().getPlatformSettings(idSettings.getId()));
 
-
-
+        // iterate over all platforms in list
         for (PlatformSettings platformSettings : platformSettingsList){
-            boolean hasFoundPosition = false;
+            double yFound = -1;
+            double xRand = -1;
             // create dummy box
             Box platformBox = new FastAccessBox(DoubleTupel.ONES, DoubleTupel.ONES);
+            // try 10 times to find a x position
             for (int run = 0; run < 10; run++) {
-                double xRand = getRandX(levelDimensions, platformSettings);
+                xRand = getRandX(levelDimensions, platformSettings);
                 platformBox = boxBuilder(xRand, platformSettings, horizontalDistance, verticalDistance);
-
-                hasFoundPosition = findPosition(platformBox, existingBoxes, levelDimensions);
-                if (hasFoundPosition)
+                // find a y position (-1 -> not found)
+                yFound = findPosition(platformBox, existingBoxes, levelDimensions) + verticalDistance;
+                if (yFound == -1)
                     break;
             }
-            if (hasFoundPosition) {
+            if (yFound != -1) {
+                // create platform and add box to existingBoxes
                 existingBoxes.add(platformBox);
                 Platform platform = build(platformSettings);
-                platform.setCenter(platformBox.getCenter());
+                platform.setCenter(new DoubleTupel(xRand, yFound));
                 createdPlatforms.add(platform);
             }
 
@@ -103,24 +102,24 @@ public class PlatformBuilder extends GameObjectBuilder {
         return null;
     }
 
-    private boolean findPosition(Box platformBox, List<Box> existingBoxes, DoubleTupel levelDimensions) {
+    private double findPosition(Box platformBox, List<Box> existingBoxes, DoubleTupel levelDimensions) {
 
-            boolean crash = false;
-            for (Box existingBox : existingBoxes) {
-                if (platformBox.collides(existingBox)) {
-                    crash = true;
-                    platformBox.move();
-                    if collideCeil()
-                            return false;
-                }
+        boolean crash = false;
+        double moveUp = 0;
+        for (Box existingBox : existingBoxes) {
+            if (platformBox.collides(existingBox)) {
+                crash = true;
+                double move = existingBox.getUpper() - platformBox.getLower();
+                platformBox.move(new DoubleTupel(0, move));
+                moveUp += move;
+                if (platformBox.getUpper() > levelDimensions.getSecond())
+                        return -1;
             }
-            if (crash)
-                return findPosition()
-            else
-                return true;
-
         }
-        return false;
+        if (crash)
+            return moveUp + findPosition(platformBox, existingBoxes, levelDimensions);
+        else
+            return moveUp;
     }
 
     private Box getBoundingBox(PlatformSettings platformSettings) {
