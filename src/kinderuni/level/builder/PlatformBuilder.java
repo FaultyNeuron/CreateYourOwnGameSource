@@ -78,6 +78,7 @@ public class PlatformBuilder extends GameObjectBuilder {
                 platformBox = boxBuilder(xRand, platformSettings, horizontalDistance, verticalDistance);
                 // find a y position (-1 -> not found)
                 yFound = findPosition(platformBox, existingBoxes, levelDimensions) + verticalDistance;
+                platformBox = platformBox.move(new DoubleTupel(0,yFound-verticalDistance));
                 if (yFound != -1)
                     break;
             }
@@ -123,8 +124,8 @@ public class PlatformBuilder extends GameObjectBuilder {
 
     private double findPosition(Box platformBox, List<Box> existingBoxes, DoubleTupel levelDimensions) {
 
-        if (platformBox.getUpper() > levelDimensions.getSecond())
-            return -1;
+        if (platformBox.getUpper() > levelDimensions.getSecond()){
+            return -1;}
         boolean crash = false;
         double moveUp = 0;
         for (Box existingBox : existingBoxes) {
