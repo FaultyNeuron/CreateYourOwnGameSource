@@ -127,15 +127,20 @@ public class LevelBuilder {
             }
             PlatformSettings platformSettings = system.getSettings().getPlatformSettings(idSettings.getId());
             for (int i = 0; i < idSettings.getCount(); i++) {
+                PlatformSettings p = idSettings.getPlatform();
                 Platform newPlatform;
                 if(idSettings.hasPlatform()){
                     newPlatform = platformBuilder.build(platformSettings, idSettings.getPlatform());
                 }else{
                     newPlatform = platformBuilder.build(platformSettings);
                 }
-                level.getGameWorld().add(newPlatform);
+                //level.getGameWorld().add(newPlatform);
             }
         }
+
+        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
+                level.getGameWorld().add(newPlatform);
+            }
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();
         Goal goal = new Goal(); //todo create goal builder
@@ -148,9 +153,6 @@ public class LevelBuilder {
             super("no "+type+" with id \""+id+"\" was found!");
         }
     }
-
-
-
 
 
 }
