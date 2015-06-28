@@ -7,5 +7,4 @@ import java.awt.*;
  */
 public interface ResizableContainerCallback {
     public void releaseFocus(Point clickPoint);
-    public void removeResizable(Resizable resizable);
 }

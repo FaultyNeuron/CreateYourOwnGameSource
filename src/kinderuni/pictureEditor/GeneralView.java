@@ -10,21 +10,18 @@ import java.util.ArrayList;
  * Created by markus on 26.06.15.
  */
 public class GeneralView extends JLayeredPane implements TaskFinishedCallback<ArrayList<Resizable>> {
-    private int width, height;
     private ImagePanel imagePanel;
     private ResizableRectanglePanel resizableRectanglePanel;
     private TaskFinishedCallback taskFinishedCallback = null;
+    private ArrayList<ImageSnippet> imageSnippets;
 
-    public GeneralView(int width, int height) {
-        System.err.println("Creating JLayeredPane with size  " + width + " " + height);
-
-        this.width = width;
-        this.height = height;
+    public GeneralView(ArrayList<ImageSnippet> imageSnippets) {
+        this.imageSnippets = imageSnippets;
 
         this.setLayout(null);
 
         this.imagePanel = new ImagePanel();
-        this.resizableRectanglePanel = new ResizableRectanglePanel(width, height);
+        this.resizableRectanglePanel = new ResizableRectanglePanel(imageSnippets);
         this.resizableRectanglePanel.setBackground(Color.CYAN);
         this.resizableRectanglePanel.setTaskFinishedCallback(this);
 
@@ -63,12 +60,8 @@ public class GeneralView extends JLayeredPane implements TaskFinishedCallback<Ar
         this.taskFinishedCallback = taskFinishedCallback;
     }
 
-    private void callTaskFinishedCallback(ArrayList<Resizable> result) {
-        ArrayList<Rectangle> rectangles = new ArrayList<>();
-        for (Resizable resizable : result) {
-            rectangles.add(new Rectangle(resizable.getX(), resizable.getY(), resizable.getWidth(), resizable.getHeight()));
-        }
-        taskFinishedCallback.taskFinished(rectangles);
+    private void callTaskFinishedCallback(Object result) {
+        taskFinishedCallback.taskFinished(null);
     }
 
     @Override

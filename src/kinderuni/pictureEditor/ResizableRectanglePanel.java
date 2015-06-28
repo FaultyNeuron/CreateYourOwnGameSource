@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by markus on 26.06.15.
@@ -15,9 +16,11 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     DrawRectangleMouseListener drawRectangleMouseListener = new DrawRectangleMouseListener(10, 10);
     private int resizableBorderWidth = 7;
     private TaskFinishedCallback taskFinishedCallback = null;
+    private ArrayList<ImageSnippet> imageSnippets;
 
-    public ResizableRectanglePanel(int width, int height) {
-        this.setSize(new Dimension(width, height));
+    public ResizableRectanglePanel(ArrayList<ImageSnippet> imageSnippets) {
+        this.imageSnippets = imageSnippets;
+
         this.setBackground(Color.BLUE);
         this.setOpaque(false);
 
@@ -40,7 +43,8 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     public void releaseFocus(Point clickPoint) {
-        for (Resizable resizable : resizables) {
+        for (ImageSnippet selection: imageSnippets) {
+            Resizable resizable = selection.getResizable();
             Rectangle tempRectangle = new Rectangle(resizable.getX(), resizable.getY(), resizable.getWidth(), resizable.getHeight());
             Rectangle pointRectangle = new Rectangle((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1);
             System.out.println("" + tempRectangle + pointRectangle);
@@ -50,22 +54,15 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
         }
     }
 
-    public void removeResizable(Resizable resizable) {
-        if (resizable == null) {
-            return;
-        }
-        this.resizables.remove(resizable);
-        this.remove(resizable);
-    }
-
     private void addRectangle(Rectangle rectangle) {
         this.deactivateAllResizables();
-        Resizable resizable = new Resizable(null, new ResizableBorder(resizableBorderWidth));
-        resizable.setBounds((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
+        ImageSnippet selection = ImageSelectionFactory.getImageSelection();
+        selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()));
+        Resizable resizable = selection.getResizable();
         resizable.setResizableContainerCallback(this);
         resizable.addKeyListener(this);
         resizable.setActive(true);
-        this.resizables.add(resizable);
+        this.imageSnippets.add(selection);
         this.add(resizable);
         this.setTmpRectangle(null);
     }
@@ -76,28 +73,36 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     private void deactivateAllResizables() {
-        for (Resizable resizable : resizables) {
-            resizable.setActive(false);
+        for (ImageSnippet selection : imageSnippets) {
+            selection.getResizable().setActive(false);
         }
     }
 
     private void removeActiveResizables() {
-        Resizable resizable = null;
-        do {
-            resizable = null;
-            for (Resizable res : resizables) {
-                if (res.hasFocus()) {
-                    resizable = res;
-                    break;
-                }
+        Iterator<ImageSnippet> iterator = imageSnippets.iterator();
+        while (iterator.hasNext()) {
+            ImageSnippet selection = iterator.next();
+            if (selection.getResizable().hasFocus()) {
+                this.remove(selection.getResizable());
+                iterator.remove();
             }
-            removeResizable(resizable);
-        } while (resizable !=null);
+        }
+//        Resizable resizable = null;
+//        do {
+//            resizable = null;
+//            for (Resizable res : resizables) {
+//                if (res.hasFocus()) {
+//                    resizable = res;
+//                    break;
+//                }
+//            }
+//            removeResizable(resizable);
+//        } while (resizable !=null);
     }
 
     private void activateAllResizables() {
-        for (Resizable resizable : resizables) {
-            resizable.setActive(true);
+        for (ImageSnippet selection : imageSnippets) {
+            selection.getResizable().setActive(true);
         }
     }
 
@@ -105,9 +110,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
         this.taskFinishedCallback = taskFinishedCallback;
     }
 
-    private void callTaskFinishedCallback() {
-        taskFinishedCallback.taskFinished(resizables);
-    }
+    private void callTaskFinishedCallback() { taskFinishedCallback.taskFinished(null); }
 
     @Override
     public void keyTyped(KeyEvent e) {}

@@ -37,6 +37,7 @@ public class ImagePanel extends JPanel implements FileDroppedCallback {
         if (image == null) {
             throw new IOException();
         }
+        ImageSelectionFactory.setOriginalImage(image);
         System.err.println("File '" + path + "' read, size=" + image.getWidth() + "x" + image.getHeight());
     }
 
