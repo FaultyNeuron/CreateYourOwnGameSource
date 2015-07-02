@@ -13,14 +13,14 @@
   "enemies" : [
     //{"id" : "standard_walking", "count" : 4},
     //{"id" : "standard_flying", "count" : 2},
-    {"id" : "cat", "count" : 30}
+    {"id" : "cat", "count" : 15}
     //{"id" : "standard_shooting", "count" : 1},
     //{"id" : "standard_boss", "count" : 1}
   ],
 
   "platforms":[
-    {"id" : "standard_moving_horizontally", "count" : 20},
-    {"id" : "standard", "count" : 20}
+    {"id" : "gras_moving_horizontally", "count" : 10},
+    {"id" : "gras", "count" : 30}
   ],
 
   "goal" : {
