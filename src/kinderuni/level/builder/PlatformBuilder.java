@@ -20,8 +20,8 @@ import java.util.Random;
  */
 public class PlatformBuilder extends GameObjectBuilder {
 
-    private double horizontalDistance = 50;
-    private double verticalDistance = 100;
+    private double horizontalDistance = 70;
+    private double verticalDistance = 150;
 
 
     public PlatformBuilder(System system, Random random) {

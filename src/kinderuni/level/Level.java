@@ -2,7 +2,7 @@ package kinderuni.level;
 
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.desktop.Info;
+import kinderuni.ui.Info;
 import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
