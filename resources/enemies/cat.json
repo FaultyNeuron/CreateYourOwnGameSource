@@ -1,22 +1,21 @@
 {
+
+
     "graphics" : {
-        //"id" : "enemies",
-        "line_colour" : [0, 0, 0],
-        "bg_colour" : [64, 179, 118],
+        "id" : "cat",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [64, 179, 118],
         "width" : 60,
-        "height" : 80
+        "height" : 42
     },
     "hp" : 1,
     "damage" : 1,
-    "walking_speed" : 1,
-    "flying_speed" : 0,
-
-    "gravity_factor" : 1,
-    "jump_power" : 0,
-    "jump_pause" : 0,
+    "walking_speed" : 0,
+    "jump_power" : 4,
+    "jump_pause" : 50,
     "drop" : [
-        {"id" : "coin", "probability" : 7},
-        {"id" : "heart", "probability" : 4},
+        {"id" : "coin", "probability" : 5},
+        {"id" : "heart", "probability" : 3},
         {"id" : "life", "probability" : 1},
         {"id" : "minus_gravity", "probability" : 1},
         {"id" : "plus_gravity", "probability" : 1},
