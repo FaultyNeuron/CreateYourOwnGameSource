@@ -150,7 +150,7 @@ public class Player extends LivingObject {
     public boolean takeDamage(int damage, LivingObject source) {
         int hp = getHp();
         boolean killed = super.takeDamage(damage, source);
-        if(damage>0 && hp < getHp()){
+        if(damage>0 && hp > getHp() ){
             if(!killed) {
                 if(source!=null) {
                     DoubleTupel throwBack = getCenter().sub(source.getCenter()).add(0, 5);
