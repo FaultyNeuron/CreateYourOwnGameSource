@@ -35,9 +35,13 @@ public class Enemy extends LivingObject {
         }else{
             direction = HorizontalDirection.LEFT;
         }
-        walk(direction);
+        if(getWalkingSpeed()>0){
+            walk(direction);
+        }else{
+            setDirection(direction);
+        }
 //            move(playerDelta.toLength(1));
-        if(!inAir() && jumpPause--<=0){
+        if(!inAir() && jumpPause--<=0 && getJumpPower()>0){
             DoubleTupel jumpDir = direction.toVector().add(0, 1).toLength(getJumpPower());
             jump(jumpDir);
             jumpPause = initialJumpPause;

@@ -99,9 +99,6 @@ public class Player extends LivingObject {
 
     @Override
     public void update(int time) {
-        if(!inAir()){
-            getGraphics().setState(GraphicsObject.State.STANDING);
-        }
         consumeMovement();
         super.update(time);
         shoot();

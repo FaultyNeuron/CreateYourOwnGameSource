@@ -7,6 +7,7 @@ import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.InvinciblePower;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
 import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
+import kinderuni.gameLogic.objects.solid.SolidObject;
 import kinderuni.ui.graphics.GraphicsObject;
 
 import java.util.Collection;
@@ -42,7 +43,13 @@ public abstract class LivingObject extends PhysicsObject{
         //todo move object back into world, if moved out of it
     }
 
-
+    @Override
+    public void initUpdateCycle() {
+        super.initUpdateCycle();
+        if(!inAir()){
+            getGraphics().setState(GraphicsObject.State.STANDING);
+        }
+    }
 
     public double getJumpPower() {
         return jumpPower;
@@ -96,6 +103,7 @@ public abstract class LivingObject extends PhysicsObject{
 
     @Override
     public void update(int time) {
+
         super.update(time);
         for(Effect effect : new LinkedList<>(activeEffects)){
             effect.update(time);
@@ -103,6 +111,12 @@ public abstract class LivingObject extends PhysicsObject{
         if(hasGun()){
             gun.update(time);
         }
+    }
+
+    @Override
+    public void stickToBase(SolidObject base) {
+        super.stickToBase(base);
+
     }
 
     public void kill(){

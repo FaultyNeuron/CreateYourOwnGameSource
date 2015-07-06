@@ -1,6 +1,6 @@
 package kinderuni.pictureEditor;
 
-import net.iharder.dnd.FileDrop;
+//import net.iharder.dnd.FileDrop;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,12 +21,12 @@ public class DragAndDropComponent extends JComponent {
         this.setSize(new Dimension(width, height));
         this.callback = callback;
         this.setEnabled(false);
-        new FileDrop(this, new FileDrop.Listener() {
-            @Override
-            public void filesDropped(File[] files) {
-                callback.filesDropped(files);
-            }
-        });
+//        new FileDrop(this, new FileDrop.Listener() {
+//            @Override
+//            public void filesDropped(File[] files) {
+//                callback.filesDropped(files);
+//            }
+//        });
 
         this.setBackground(color);
         this.setBorder(BorderFactory.createDashedBorder(null));
