@@ -99,17 +99,16 @@ public class DesktopFileGraphics extends DesktopGraphics {
                 ImageIcon[] imageIcons;
                 if(images.containsKey(getState())){
                     imageIcons = images.get(getState());
+                    image = imageIcons[getCurrentFrame()].getImage();
                 }else{
-                    imageIcons = images.get(State.STANDING);
+                    imageIcons = images.get(State.IDLE);
+                    image = imageIcons[getCurrentFrame(State.IDLE)].getImage();
                 }
-                image = imageIcons[getCurrentFrame()].getImage();
                 boolean right = getDirection() == HorizontalDirection.RIGHT;
                 int width = (int) Math.round(graphicsBounding.getWidth() * (right ? 1 : -1));
                 int left = (int) Math.round(graphicsBounding.getLeft() + (right ? 0 : -width));
-                drawTo.drawImage(image,
-                        left,
-                        -(int) graphicsBounding.getUpper(),
-                        width,
+                drawTo.drawImage(image, left,
+                        -(int) graphicsBounding.getUpper(), width,
                         (int) graphicsBounding.getHeight(),
                         null);
             }

@@ -17,6 +17,8 @@
         {"id" : "coin", "probability" : 7},
         {"id" : "heart", "probability" : 4},
         {"id" : "life", "probability" : 1},
+        {"id" : "ice_flower", "probability" : 100},
+        {"id" : "fire_flower", "probability" : 1},
         {"id" : "minus_gravity", "probability" : 1},
         {"id" : "plus_gravity", "probability" : 1},
         {"id" : "speed_boost", "probability" : 1},

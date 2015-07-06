@@ -1,5 +1,8 @@
 package kinderuni.level.builder;
 
+import functionalJava.data.shape.box.Box;
+import functionalJava.data.shape.box.FastAccessBox;
+import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.solid.MovingPlatform;
 import kinderuni.gameLogic.objects.solid.Platform;

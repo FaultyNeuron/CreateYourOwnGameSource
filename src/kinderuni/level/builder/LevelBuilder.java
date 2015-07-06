@@ -3,7 +3,6 @@ package kinderuni.level.builder;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.Goal;
-import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.DropBuilder;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.gameLogic.objects.solid.Platform;
@@ -14,7 +13,6 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
-import java.net.IDN;
 import java.util.Random;
 
 /**
@@ -77,7 +75,7 @@ public class LevelBuilder {
         //todo: if we want to place collectibles at the beginning of the game, we have to add logic to this builder as well
         //todo: and call the code somewhere below..
 
-        Box levelBox = level.getGameWorld().getBounds();
+        Box levelBox = level.getWorld().getBounds();
 
         enemyBuilder.setBoundingForRandomPlacement(levelBox);
         collectibleBuilder.setBoundingForRandomPlacement(levelBox);
@@ -97,7 +95,7 @@ public class LevelBuilder {
             double width = graphicsObject.getDimensions().getFirst();
             DoubleTupel position = new DoubleTupel(lastEnd + width / 2, floorY);
             Platform floor = platformBuilder.build(floorSettings);
-            level.getGameWorld().add(floor);
+            level.getWorld().add(floor);
             floor.setCenter(position);
             lastEnd += width + floorSettings.getGapWidth();
         }
@@ -115,9 +113,9 @@ public class LevelBuilder {
             }
             for (int i = 0; i < idSettings.getCount(); i++) {
                 if(idSettings.hasEnemy()){
-                    level.getGameWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
+                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
                 }else{
-                    level.getGameWorld().add(enemyBuilder.build(enemySettings));
+                    level.getWorld().add(enemyBuilder.build(enemySettings));
                 }
             }
         }
@@ -133,7 +131,7 @@ public class LevelBuilder {
                 }else{
                     newPlatform = platformBuilder.build(platformSettings);
                 }
-                level.getGameWorld().add(newPlatform);
+                level.getWorld().add(newPlatform);
             }
         }
 

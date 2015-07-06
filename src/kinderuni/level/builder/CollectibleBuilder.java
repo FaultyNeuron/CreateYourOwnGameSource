@@ -1,11 +1,13 @@
 package kinderuni.level.builder;
 
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.GameObject;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
 import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
 import kinderuni.settings.levelSettings.objectSettings.CollectibleSettings;
+import kinderuni.settings.levelSettings.objectSettings.GameObjectSettings;
 
 import java.lang.System;
 import java.util.Random;
@@ -21,34 +23,40 @@ public class CollectibleBuilder extends PhysicsObjectBuilder{
         this.effectBuilder = new EffectBuilder(system, random);
     }
 
-    public Collectible build(CollectibleSettings collectibleSettings) {
-        return build(collectibleSettings, CollectibleSettings.DEFAULT, false);
+    public Collectible build(CollectibleSettings settings) {
+        Collectible toReturn = new Collectible();
+        attach(toReturn, settings);
+
+//        ReversibleEffect.Reverser reverser = null;
+//        if(settings.hasEffectDuration()){
+//            reverser = new TimeBasedReverser(settings.getEffectDuration());
+//        }
+//        Effect effect = effectBuilder.buildEffects(settings.getEffects(), reverser);
+//        if(effect!=null){
+//            toReturn = new Collectible(effect, dropAcceleration);
+//        }else{
+//            toReturn = new Collectible(dropAcceleration);
+//        }
+//        attach(toReturn, settings);
+        return toReturn;
     }
 
-    public Collectible build(CollectibleSettings settings, CollectibleSettings defaultSettings) {
-        return build(settings, defaultSettings, true);
-    }
-
-    public Collectible build(CollectibleSettings settings, CollectibleSettings defaultSettings, boolean keepDefault) {
-        double dropAcceleration = settings.hasDropAcceleration()?settings.getDropAcceleration():defaultSettings.getDropAcceleration();
+    public void attach(Collectible collectible, CollectibleSettings settings) {
+        if(settings.hasDropAcceleration()){
+            collectible.setDropAcceleration(settings.getDropAcceleration());
+        }
         ReversibleEffect.Reverser reverser = null;
         if(settings.hasEffectDuration()){
             reverser = new TimeBasedReverser(settings.getEffectDuration());
         }
-        Effect effect = effectBuilder.buildEffects(settings.getEffects(), reverser);
-        System.out.println("created: "+effect);
-        Collectible toReturn;
-        if(effect!=null){
-            toReturn = new Collectible(effect, dropAcceleration);
-        }else{
-            toReturn = new Collectible(dropAcceleration);
+        if (settings.hasEffects()) {
+            Effect effect = effectBuilder.buildEffects(settings.getEffects(), reverser);
+            if(effect!=null){
+                collectible.setEffect(effect);
+            }
         }
-        if(keepDefault){
-            attach(toReturn, settings, defaultSettings);
-        }else{
-            attach(toReturn, settings);
-        }
-        return toReturn;
+
+        super.attach(collectible, settings);
     }
 
     public EffectBuilder getEffectBuilder() {

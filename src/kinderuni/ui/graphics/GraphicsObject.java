@@ -25,6 +25,6 @@ public interface GraphicsObject {
 //    public void draw(Screen screen);
 
     public enum State {
-        STANDING, WALKING, JUMPING, FLYING,
+        IDLE, WALKING, JUMPING, FLYING,
     }
 }

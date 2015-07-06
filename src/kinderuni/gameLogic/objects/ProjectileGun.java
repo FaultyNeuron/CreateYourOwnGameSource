@@ -1,11 +1,10 @@
 package kinderuni.gameLogic.objects;
 
+import functionalJava.data.HorizontalDirection;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.*;
 import kinderuni.System;
 import kinderuni.level.builder.ProjectileBuilder;
-import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
-import kinderuni.settings.levelSettings.objectSettings.GraphicsSettings;
+import kinderuni.settings.levelSettings.objectSettings.ProjectileSettings;
 
 import java.util.Collection;
 import java.util.Random;
@@ -15,15 +14,21 @@ import java.util.Random;
  */
 public class ProjectileGun extends ProjectileBuilder{
     private GameObject holder;
-    private String projectileId;
-    private int initialShootCoolDown;
+//    private String projectileId;
+    private int initialShootCoolDown = 0;
+    private DoubleTupel shootDelta = DoubleTupel.ONES;
     private int shootCoolDown;
-    private EffectSettings effectSettings;
+    private ProjectileSettings projectileSettings;
 
-    public ProjectileGun(System system, String projectileId, EffectSettings effectSettings) {
+    public ProjectileGun(System system, ProjectileSettings projectileSettings) {
         super(system, new Random());
-        this.projectileId = projectileId;
-        this.effectSettings = effectSettings;
+        this.projectileSettings = projectileSettings;
+        if(projectileSettings.hasCoolDown()){
+            setInitialShootCoolDown(projectileSettings.getCoolDown());
+        }
+        if(projectileSettings.hasShootingDelta()){
+            shootDelta = projectileSettings.getShootingDelta();
+        }
     }
 
     public void update(int time){
@@ -31,20 +36,17 @@ public class ProjectileGun extends ProjectileBuilder{
     }
 
     public void shoot(final Collection<? extends LivingObject> targets) {
-        Projectile projectile = new Projectile(getEffectBuilder().buildEffect(effectSettings)) {
-            @Override
-            public Collection<? extends LivingObject> getTargets() {
-                return targets;
-            }
-        };
-
-        if(shootCoolDown<0 && holder!=null) {
-            attach(projectile);
+        if(shootCoolDown<=0 && holder!=null) {
+            Projectile projectile = new Projectile(){//getEffectBuilder().buildEffects(effectSettings), 1000) {
+                @Override
+                public Collection<? extends LivingObject> getTargets() {
+                    return targets;
+                }
+            };
+            attach(projectile, projectileSettings);
             projectile.setCenter(holder.getCenter());
-            projectile.setSpeed(holder.getDirection().toVector().add(0, 1).toLength(5));
-            projectile.setGraphics(getSystem().createGraphics(projectileId, 20, 20));
-            projectile.setBounciness(0.5);
-            projectile.setBounding(new DoubleTupel(20, 20));
+            DoubleTupel correctedShootDelta = holder.getDirection()== HorizontalDirection.RIGHT?shootDelta:shootDelta.mult(-1, 1);
+            projectile.setSpeed(correctedShootDelta);
             holder.getWorld().addObject(projectile);
             shootCoolDown = initialShootCoolDown;
         }
@@ -56,5 +58,18 @@ public class ProjectileGun extends ProjectileBuilder{
 
     public void setHolder(GameObject holder) {
         this.holder = holder;
+    }
+
+    public void setShootDelta(DoubleTupel shootDelta) {
+        this.shootDelta = shootDelta;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectileGun{" +
+                "initialShootCoolDown=" + initialShootCoolDown +
+                ", shootDelta=" + shootDelta +
+                ", effect=" + projectileSettings.getEffects() +
+                '}';
     }
 }

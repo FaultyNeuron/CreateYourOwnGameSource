@@ -3,7 +3,7 @@ package kinderuni.level;
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.desktop.Info;
-import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.World;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
@@ -24,7 +24,7 @@ public class Level implements Paintable {
     private InputRetriever inputRetriever;
     private double initialAirFriction;
     private double initialGravity;
-    private GameWorld gameWorld;
+    private World world;
 //    private boolean isRunning = false;
 //    private Thread thread;
     private DoubleTupel initPlayerPosition;
@@ -54,7 +54,7 @@ public class Level implements Paintable {
         this.initialAirFriction = initialAirFriction;
         this.initialGravity = gravity;
         this.initPlayerPosition = initPlayerPosition;
-        gameWorld = new GameWorld(new ModifiableBox(dimensions.div(2), dimensions), screenWidth, this.initialAirFriction, this.initialGravity);
+        world = new World(new ModifiableBox(dimensions.div(2), dimensions), screenWidth, this.initialAirFriction, this.initialGravity);
         if(activeEffect!=null){
             addLevelStateListener(new LevelStateListener() {
                 @Override
@@ -66,28 +66,32 @@ public class Level implements Paintable {
 
     public void update(int time) {
         this.time = time;
-        Player player = gameWorld.getPlayer();
+        Player player = world.getPlayer();
         if (player != null) {
-            if (inputRetriever.goRight()) {
+            if (inputRetriever.right()) {
                 player.moveRight();
-            } else if (inputRetriever.goLeft()) {
+            } else if (inputRetriever.left()) {
                 player.moveLeft();
             }
-            if (inputRetriever.jump()) {
+            if (inputRetriever.up()) {
                 player.jump();
+            }
+
+            if (inputRetriever.action()) {
+                player.shoot();
             }
         }
 
-        if(state == Level.State.IN_PROGRESS && getGameWorld().getPlayer()!=null){
-            if(getGameWorld().getPlayer().getLifeCount() <= 0){
+        if(state == Level.State.IN_PROGRESS && getWorld().getPlayer()!=null){
+            if(getWorld().getPlayer().getLifeCount() <= 0){
                 changeState(Level.State.LOST);
-            }else if((goal!=null && goal.getBoundingBox().collides(getGameWorld().getPlayer().getBoundingBox())) ||
+            }else if((goal!=null && goal.getBoundingBox().collides(getWorld().getPlayer().getBoundingBox())) ||
                     inputRetriever.skipLevelAndConsume()){
                 System.out.println("skipping level");
                 changeState(Level.State.WON);
             }
         }
-        gameWorld.update(time);
+        world.update(time);
     }
 
     private void changeState(State newState){
@@ -103,15 +107,15 @@ public class Level implements Paintable {
     public void paint(Painter painter) {
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
-        gameWorld.paint(painter);
+        world.paint(painter);
         double left = -painter.getRenderScreen().getCompSize().getFirst()/2;
         double top = painter.getRenderScreen().getCompSize().getSecond()/2;
-        for (int i = 0; i < getGameWorld().getPlayer().getHp(); i++) {
+        for (int i = 0; i < getWorld().getPlayer().getHp(); i++) {
             painter.paint(heartGraphics, new DoubleTupel(left + iconDelta + i*(heartDim.getFirst()+iconDelta), top-iconDelta));
         }
-        List<ReversibleEffect> effects = getGameWorld().getPlayer().getActiveEffects();
+        List<ReversibleEffect> effects = getWorld().getPlayer().getActiveEffects();
         double pos = left + iconDelta;
-        for (Effect effect : effects) {
+        for (Effect effect : new LinkedList<>(effects)) {
             GraphicsObject graphic = effect.getGraphics();
             if (graphic != null){
                 painter.paint(graphic, new DoubleTupel(pos, top - iconDelta*2 - heartDim.getSecond()));
@@ -124,9 +128,9 @@ public class Level implements Paintable {
     public List<Info> getInfos() {
         List<Info> toReturn = new LinkedList<>();
         toReturn.add(new Info("level", name));
-        if(gameWorld!=null && gameWorld.getPlayer()!=null) {
-            toReturn.add(new Info("life", String.valueOf(getGameWorld().getPlayer().getLifeCount())));
-            toReturn.add(new Info("coins", String.valueOf(getGameWorld().getPlayer().getCoins())));
+        if(world !=null && world.getPlayer()!=null) {
+            toReturn.add(new Info("life", String.valueOf(getWorld().getPlayer().getLifeCount())));
+            toReturn.add(new Info("coins", String.valueOf(getWorld().getPlayer().getCoins())));
         }
         return toReturn;
     }
@@ -156,8 +160,8 @@ public class Level implements Paintable {
 //        }
 //    }
 
-    public GameWorld getGameWorld() {
-        return gameWorld;
+    public World getWorld() {
+        return world;
     }
 
 //    public boolean isRunning() {
@@ -174,12 +178,12 @@ public class Level implements Paintable {
         }
         player.setCenter(initPlayerPosition);
         player.setSpawnPoint(initPlayerPosition);
-        getGameWorld().set(player);
+        getWorld().set(player);
     }
 
     public void set(Goal goal) {
         this.goal = goal;
-        gameWorld.addObject(goal);
+        world.addObject(goal);
     }
 
 //    public void stop() {

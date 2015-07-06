@@ -6,7 +6,7 @@
     },
     "bounciness" : 0.5,
     "effects" : [
-        {"id":"plus_coins", "value" : 1}
+        {"id":"coins", "value" : 1}
 //        {"id":"speed", "factor" : 4},
 //        {"id":"gravity", "factor" : 0.1}
     ]

@@ -6,10 +6,10 @@ import kinderuni.gameLogic.objects.Player;
 /**
  * Created by Georg Plaz.
  */
-public class PlusCoins extends Effect {
-    public static final String ID = "plus_coins";
+public class Coins extends Effect {
+    public static final String ID = "coins";
     private int coins;
-    public PlusCoins(int coins) {
+    public Coins(int coins) {
         this.coins = coins;
     }
 

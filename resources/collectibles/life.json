@@ -7,6 +7,6 @@
     "bounciness" : 0.9,
     "gravity_factor" : 0.5,
     "effects" : [
-        {"id":"plus_life", "value" : 1}
+        {"id":"life", "value" : 1}
     ]
 }

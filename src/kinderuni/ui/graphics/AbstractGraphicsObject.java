@@ -25,7 +25,7 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     }
     public AbstractGraphicsObject(DoubleTupel dimensions) {
         this.dimensions = dimensions;
-        state = State.STANDING;
+        state = State.IDLE;
     }
 
     public void addState(State state, AnimationLogic animationLogic){
@@ -99,7 +99,10 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
     }
 
     public int getCurrentFrame(){
-        return animationLogicMap.get(getState()).getCurrentFrame();
+        return getCurrentFrame(getState());
+    }
+    public int getCurrentFrame(State state){
+        return animationLogicMap.get(state).getCurrentFrame();
     }
 
     @Override

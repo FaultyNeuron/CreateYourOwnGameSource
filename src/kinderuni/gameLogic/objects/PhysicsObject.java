@@ -6,8 +6,6 @@ import functionalJava.data.tupel.DoubleTupel;
 import functionalJava.data.Axis;
 import functionalJava.data.tupel.SymTupel;
 import functionalJava.data.tupel.Tupel;
-import kinderuni.ui.graphics.GraphicsObject;
-import kinderuni.gameLogic.GameWorld;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
 import java.util.Set;
@@ -17,8 +15,9 @@ import java.util.Set;
  */
 public abstract class PhysicsObject extends AbstractGameObject {
     private DoubleTupel speed = DoubleTupel.ZEROS;
-    private double bounciness;
-    private double gravityFactor;
+    private double bounciness = 0;
+    private double gravityFactor = 1;
+    private double frictionCoefficient = 1;
 
     public DoubleTupel getSpeed() {
         return speed;
@@ -41,6 +40,7 @@ public abstract class PhysicsObject extends AbstractGameObject {
         super.update(time);
         accelerate(0, -getWorld().getGravity() * gravityFactor);
         move(speed);
+        setSpeed(getSpeed().mult(1-(getWorld().getAirFriction()*getFrictionCoefficient())));
     }
 
     public void accelerate(double x, double y){
@@ -88,12 +88,12 @@ public abstract class PhysicsObject extends AbstractGameObject {
         }else{
             unStick();
         }
+        double airFriction = getWorld().getAirFriction()*getFrictionCoefficient();
         if(isSticking()){
-//            speed = speed.div((1+getStickingTo().getFriction())*(1+getWorld().getAirFriction()), (1+getWorld().getAirFriction()));
-            speed = speed.sub(speed.mult(getStickingTo().getFriction() + getWorld().getAirFriction(), getWorld().getAirFriction()));
+            double floorFriction = getStickingTo().getFriction()*getFrictionCoefficient() + airFriction;
+            speed = speed.sub(speed.mult(floorFriction, airFriction));
         }else{
-//            speed = speed.div(1+getWorld().getAirFriction());
-            speed = speed.sub(speed.mult(getWorld().getAirFriction()));
+            speed = speed.sub(speed.mult(airFriction));
         }
     }
 
@@ -116,7 +116,8 @@ public abstract class PhysicsObject extends AbstractGameObject {
 //            inAir = false;
         }
         if(isBouncy()) {
-            accelerate(oldSpeed.mult(bounciness, -bounciness));
+            DoubleTupel bouncyVec = DoubleTupel.ONES.mult(collisionSide.toAxis(), -bounciness);
+            speed = oldSpeed.mult(bouncyVec);
         }
 
     }
@@ -141,5 +142,13 @@ public abstract class PhysicsObject extends AbstractGameObject {
 
     public void setBounciness(double bounciness) {
         this.bounciness = bounciness;
+    }
+
+    public void setFrictionCoefficient(double frictionCoefficient) {
+        this.frictionCoefficient = frictionCoefficient;
+    }
+
+    public double getFrictionCoefficient() {
+        return frictionCoefficient;
     }
 }

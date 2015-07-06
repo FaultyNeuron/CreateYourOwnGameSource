@@ -6,14 +6,14 @@ import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.Painter;
-import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.World;
 
 /**
  * Created by Georg Plaz.
  */
 public interface GameObject {
-    public GameWorld getWorld();
-    public void setWorld(GameWorld world);
+    public World getWorld();
+    public void setWorld(World world);
 
     public DoubleTupel getCenter();
     public void setCenter(DoubleTupel newPosition);

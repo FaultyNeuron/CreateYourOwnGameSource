@@ -1,6 +1,6 @@
 {
     "graphics": {
-        "id": "fire_flower",
+        "id": "ice_flower",
         "width" : 30,
         "height" : 30
     },
@@ -9,7 +9,7 @@
     "effects" : [
         {"id":"gun", "projectile":{
             "graphics": {
-                "id": "fire_ball",
+                "id": "ice_ball",
                 "width" : 30,
                 "height" : 30
             },
@@ -18,8 +18,9 @@
             "cool_down" : 30,
             "shooting_x" : 2,
             "shooting_y" : 3,
+            "duration" : 100,
             "effects" : [
-                {"id":"hp", "value" : -1}
+                {"id":"bounciness", "factor" : 2}
             ]
         }}
 //        {"id":"speed", "factor" : 4},

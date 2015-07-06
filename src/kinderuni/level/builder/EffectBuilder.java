@@ -3,6 +3,7 @@ package kinderuni.level.builder;
 import kinderuni.gameLogic.objects.ProjectileGun;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
+import kinderuni.settings.levelSettings.objectSettings.ProjectileSettings;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,14 +46,14 @@ public class EffectBuilder extends Builder{
         int value = effectSettings.hasValue()?effectSettings.getValue():defaultSettings.getValue();
         Effect effect;
         switch (effectSettings.getId()){
-            case PlusHp.ID:
-                effect = new PlusHp(value);
+            case Hp.ID:
+                effect = new Hp(value);
                 break;
-            case PlusLife.ID:
-                effect = new PlusLife(value);
+            case Life.ID:
+                effect = new Life(value);
                 break;
-            case PlusCoins.ID:
-                effect = new PlusCoins(value);
+            case Coins.ID:
+                effect = new Coins(value);
                 break;
             default:
                 effect = createReversibleEffect(effectSettings, defaultSettings, reverser);
@@ -73,8 +74,8 @@ public class EffectBuilder extends Builder{
         double factor = effectSettings.hasFactor()?effectSettings.getFactor():defaultSettings.getFactor();
         ReversibleEffect effect;
         switch (effectSettings.getId()){
-            case SpeedPower.ID:
-                effect = new SpeedPower(factor);
+            case Speed.ID:
+                effect = new Speed(factor);
                 break;
             case InvinciblePower.ID:
                 effect = new InvinciblePower();
@@ -83,12 +84,14 @@ public class EffectBuilder extends Builder{
                 effect = new GravityChangePower(factor);
                 break;
             case AddGunEffect.ID:
-                EffectSettings projectileSettings = new EffectSettings();
-                projectileSettings.setId("plus_hp");
-                projectileSettings.setValue(-1);
-                ProjectileGun gun = new ProjectileGun(getSystem(), "black_hole", projectileSettings);
-                gun.setInitialShootCoolDown(100);
+//                System.out.println(effectSettings.getProjectileSettings().getEffects());
+                ProjectileSettings projectileSettings = effectSettings.getProjectileSettings();
+                ProjectileGun gun = new ProjectileGun(getSystem(), projectileSettings);
                 effect = new AddGunEffect(gun);
+                break;
+            case Bounciness.ID:
+//                System.out.println(effectSettings.getProjectileSettings().getEffects());
+                effect = new Bounciness(effectSettings.getFactor());
                 break;
             default:
                 throw new RuntimeException("no effect with id \""+effectSettings.getId()+"\" exists!");

@@ -204,6 +204,9 @@ public class DoubleTupel extends NumberTupel<Double>{
             throw new NumberFormatException("could not parse \""+toParse+"\" to a DoubleTupel!");
         }
     }
+    public DoubleTupel div(double c) {
+        return div(c, c);
+    }
 
     public DoubleTupel mult(double c) {
         return mult(c, c);
@@ -211,10 +214,6 @@ public class DoubleTupel extends NumberTupel<Double>{
 
     public double length() {
         return Math.sqrt(getFirst()*getFirst()+getSecond()*getSecond());
-    }
-
-    public DoubleTupel div(double c) {
-        return div(c, c);
     }
 
     public DoubleTupel signum(){

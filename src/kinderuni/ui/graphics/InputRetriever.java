@@ -4,11 +4,15 @@ package kinderuni.ui.graphics;
  * Created by Georg Plaz.
  */
 public interface InputRetriever {
-    boolean goRight();
+    boolean right();
 
-    boolean goLeft();
+    boolean left();
 
-    boolean jump();
+    boolean up();
+
+    boolean down();
+
+    boolean action();
 
     public boolean skipLevelAndConsume();
 
