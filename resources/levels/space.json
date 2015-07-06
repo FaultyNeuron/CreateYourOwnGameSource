@@ -19,6 +19,8 @@
     {"id" : "standard_boss", "count" : 1}
   ],
 
+  "bg_colour" : [30, 30, 30],
+
   "platforms":[
     {"id" : "moon_moving_vertically", "count" : 20,
       "graphics" : {

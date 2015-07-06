@@ -12,7 +12,9 @@ import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.InputRetriever;
 import kinderuni.ui.graphics.Paintable;
 import kinderuni.ui.graphics.Painter;
+import util.TickTock;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class Level implements Paintable {
     private GraphicsObject playerGraphics;
     private Effect activeEffect;
     private List<LevelStateListener> levelStateListeners = new LinkedList<>();
+    private Color backgroundColour;
 
     public Level(String name, DoubleTupel dimensions,
                  double screenWidth, InputRetriever inputRetriever,
@@ -105,6 +108,9 @@ public class Level implements Paintable {
     }
 
     public void paint(Painter painter) {
+        TickTock tickTock = new TickTock();
+        tickTock.tick();
+        painter.paintCanvas(backgroundColour);
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
         world.paint(painter);
@@ -122,6 +128,7 @@ public class Level implements Paintable {
                 pos += graphic.getDimensions().getFirst() + iconDelta;
             }
         }
+        System.out.println(tickTock.tockFormatted());
     }
 
     @Override
@@ -203,6 +210,14 @@ public class Level implements Paintable {
     @Override
     public boolean tracksTime() {
         return true;
+    }
+
+    public void setBackgroundColour(Color backgroundColour) {
+        this.backgroundColour = backgroundColour;
+    }
+
+    public Color getBackgroundColour() {
+        return backgroundColour;
     }
 
     public enum State{

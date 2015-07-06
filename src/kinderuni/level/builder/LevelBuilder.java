@@ -13,6 +13,7 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -58,10 +59,19 @@ public class LevelBuilder {
     private Level buildEnvironment(LevelSettings levelSettings, Random random) {
         EffectBuilder effectBuilder = new EffectBuilder(system, random);
         Effect effect = effectBuilder.buildEffects(levelSettings.getActiveEffects());
-        return new Level(levelSettings.getLevelName(), levelSettings.getDimensions(),
+        Level toReturn = new Level(levelSettings.getLevelName(), levelSettings.getDimensions(),
                 screenWidth, inputRetriever,
                 levelSettings.getAirFriction(), levelSettings.getGravity(),
                 levelSettings.getPlayerInitPos(), system, effect);
+        Color bgColour;
+        if(levelSettings.hasBgColour()){
+            bgColour = levelSettings.getBgColour();
+        }else{
+            bgColour = Color.WHITE;
+        }
+        toReturn.setBackgroundColour(bgColour);
+
+        return toReturn;
     }
 
     private void buildObjects(Level level, LevelSettings levelSettings, Random random) {

@@ -102,6 +102,9 @@ public abstract class AbstractGraphicsObject implements GraphicsObject {
         return getCurrentFrame(getState());
     }
     public int getCurrentFrame(State state){
+        if(!animationLogicMap.containsKey(state)){
+            state = State.IDLE;
+        }
         return animationLogicMap.get(state).getCurrentFrame();
     }
 
