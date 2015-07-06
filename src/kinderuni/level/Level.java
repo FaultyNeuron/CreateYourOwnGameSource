@@ -12,6 +12,7 @@ import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.InputRetriever;
 import kinderuni.ui.graphics.Paintable;
 import kinderuni.ui.graphics.Painter;
+import util.TickTock;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -107,6 +108,8 @@ public class Level implements Paintable {
     }
 
     public void paint(Painter painter) {
+        TickTock tickTock = new TickTock();
+        tickTock.tick();
         painter.paintCanvas(backgroundColour);
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
@@ -125,6 +128,7 @@ public class Level implements Paintable {
                 pos += graphic.getDimensions().getFirst() + iconDelta;
             }
         }
+        System.out.println(tickTock.tockFormatted());
     }
 
     @Override
