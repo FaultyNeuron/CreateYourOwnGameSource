@@ -16,7 +16,7 @@ public interface Painter {
     public void paint(GraphicsObject graphics, DoubleTupel center);
     public void paint(GraphicsObject graphics, DoubleTupel center, double distanceFactor);
 
-    public void paintCanvas(Color color);
+    public void paintCanvas(int[] color);
 
     public GraphicsComponent getRenderScreen();
 }

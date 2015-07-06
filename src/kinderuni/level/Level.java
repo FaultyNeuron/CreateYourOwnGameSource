@@ -39,7 +39,7 @@ public class Level implements Paintable {
     private GraphicsObject playerGraphics;
     private Effect activeEffect;
     private List<LevelStateListener> levelStateListeners = new LinkedList<>();
-    private Color backgroundColour;
+    private int[] backgroundColour;
 
     public Level(String name, DoubleTupel dimensions,
                  double screenWidth, InputRetriever inputRetriever,
@@ -216,11 +216,11 @@ public class Level implements Paintable {
         return true;
     }
 
-    public void setBackgroundColour(Color backgroundColour) {
+    public void setBackgroundColour(int[] backgroundColour) {
         this.backgroundColour = backgroundColour;
     }
 
-    public Color getBackgroundColour() {
+    public int[] getBackgroundColour() {
         return backgroundColour;
     }
 

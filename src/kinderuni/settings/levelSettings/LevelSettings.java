@@ -115,8 +115,8 @@ public class LevelSettings {
     public boolean hasBgColour(){
         return bg_colour!=null;
     }
-    public Color getBgColour() {
-        return new Color(bg_colour[0], bg_colour[1], bg_colour[2]);
+    public int[] getBgColour() {
+        return bg_colour;
     }
 
     public List<IdParametersSettings> getBackGroundObjects() {

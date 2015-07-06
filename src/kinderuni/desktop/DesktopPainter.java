@@ -64,9 +64,9 @@ public class DesktopPainter implements Painter{
     }
 
     @Override
-    public void paintCanvas(Color color) {
+    public void paintCanvas(int[] color) {
         Box screenArea = getRenderScreen().getScreenArea();
-        g.setColor(color);
+        g.setColor(new Color(color[0], color[1], color[2]));
         g.fillRect(0, 0, (int) screenArea.getWidth() + 1, (int) screenArea.getHeight() + 1);
     }
 
