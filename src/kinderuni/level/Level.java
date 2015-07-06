@@ -68,8 +68,8 @@ public class Level implements Paintable {
     }
 
     public void update(int time) {
-        TickTock tickTock = new TickTock();
-        tickTock.tick();
+//        TickTock tickTock = new TickTock();
+//        tickTock.tick();
         this.time = time;
         Player player = world.getPlayer();
         if (player != null) {
@@ -97,7 +97,7 @@ public class Level implements Paintable {
             }
         }
         world.update(time);
-        System.out.println("update: "+tickTock.tockFormatted());
+//        System.out.println("update: "+tickTock.tockFormatted());
 
     }
 
@@ -112,8 +112,8 @@ public class Level implements Paintable {
     }
 
     public void paint(Painter painter) {
-        TickTock tickTock = new TickTock();
-        tickTock.tick();
+//        TickTock tickTock = new TickTock();
+//        tickTock.tick();
         painter.paintCanvas(backgroundColour);
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
@@ -132,7 +132,7 @@ public class Level implements Paintable {
                 pos += graphic.getDimensions().getFirst() + iconDelta;
             }
         }
-        System.out.println("render: "+tickTock.tockFormatted());
+//        System.out.println("render: "+tickTock.tockFormatted());
     }
 
     @Override

@@ -1,0 +1,12 @@
+{
+    "graphics" : {
+        "id" : "earth",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [64, 179, 118],
+        "width" : 800,
+        "height" : 800
+    },
+
+    "y_range" : [3000, 3000],
+    "distance_factor" : 0.2
+}

@@ -4,6 +4,7 @@ import functionalJava.data.HorizontalDirection;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
+import functionalJava.data.tupel.IntTupel;
 import kinderuni.desktop.ui.Util;
 import kinderuni.ui.graphics.AnimationLogicImpl;
 import kinderuni.ui.graphics.GraphicsInfo;
@@ -12,6 +13,8 @@ import kinderuni.ui.graphics.GraphicsObject;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -70,12 +73,21 @@ public class DesktopFileGraphics extends DesktopGraphics {
                         addState(state, new AnimationLogicImpl(graphicsInfo.getFps(), graphicsInfo.getLoopType(), files.size()));
                     }
                     try {
-                        BufferedImage[] imageIcon = new BufferedImage[files.size()];
+                        BufferedImage[] bufferedImages = new BufferedImage[files.size()];
                         int counter = 0;
+                        IntTupel intDim = dimensions.roundToIntTupel();
                         for (File f : files) {
-                            imageIcon[counter++] = ImageIO.read(f);
+                            BufferedImage before = ImageIO.read(f);
+                            int w = before.getWidth();
+                            int h = before.getHeight();
+
+                            BufferedImage after = new BufferedImage(intDim.getFirst(), intDim.getSecond(), BufferedImage.TYPE_INT_ARGB);
+                            AffineTransform at = new AffineTransform();
+                            at.scale(dimensions.getFirst()/w, dimensions.getSecond()/h);
+                            AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                            bufferedImages[counter++] = scaleOp.filter(before, after);
                         }
-                        images.put(state, imageIcon);
+                        images.put(state, bufferedImages);
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -88,15 +100,15 @@ public class DesktopFileGraphics extends DesktopGraphics {
 
     @Override
     public void drawTo(Graphics drawTo, DoubleTupel center) {
-        Box graphicsBounding = new FastAccessBox(center, getDimensions());
+//        Box graphicsBounding = new FastAccessBox(center, getDimensions());
         if(!isBlinking() || blinkShow()) {
-            Box boundingBox = new FastAccessBox(center, getDimensions());
+            Box graphicsBounding = new FastAccessBox(center, getDimensions());
             if(bgColour!=null) {
                 drawTo.setColor(Util.toColor(bgColour));
-                drawTo.fillRect((int) boundingBox.getLeft(),
-                        -(int) boundingBox.getUpper(),
-                        (int) boundingBox.getWidth(),
-                        (int) boundingBox.getHeight());
+                drawTo.fillRect((int) graphicsBounding.getLeft(),
+                        -(int) graphicsBounding.getUpper(),
+                        (int) graphicsBounding.getWidth(),
+                        (int) graphicsBounding.getHeight());
                 drawTo.setColor(Color.BLACK);
             }
             if(images!=null) {
@@ -112,21 +124,23 @@ public class DesktopFileGraphics extends DesktopGraphics {
                 boolean right = getDirection() == HorizontalDirection.RIGHT;
                 int width = (int) Math.round(graphicsBounding.getWidth() * (right ? 1 : -1));
                 int left = (int) Math.round(graphicsBounding.getLeft() + (right ? 0 : -width));
-                drawTo.drawImage(image, left,
-                        -(int) graphicsBounding.getUpper(), width,
+                drawTo.drawImage(image,
+                        left,
+                        -(int) graphicsBounding.getUpper(),
+                        width,
                         (int) graphicsBounding.getHeight(),
                         null);
             }
             if(lineColour!=null){
                 drawTo.setColor(Util.toColor(lineColour));
-                drawTo.drawRect((int) boundingBox.getLeft(),
-                        -(int) boundingBox.getUpper(),
-                        (int) boundingBox.getWidth(),
-                        (int) boundingBox.getHeight());
+                drawTo.drawRect((int) graphicsBounding.getLeft(),
+                        -(int) graphicsBounding.getUpper(),
+                        (int) graphicsBounding.getWidth(),
+                        (int) graphicsBounding.getHeight());
                 drawTo.setColor(Color.BLACK);
             }
             if (text != null) {
-                drawTo.drawString(text, (int) boundingBox.getLeft() + 2, -(int) boundingBox.getUpper() + 13);
+                drawTo.drawString(text, (int) graphicsBounding.getLeft() + 2, -(int) graphicsBounding.getUpper() + 13);
             }
             System.out.println("Drawing FileGraphics to x=" + (int) boundingBox.getLeft() + " y=" +  (int) boundingBox.getUpper() + " width=" + (int) boundingBox.getWidth() + " height=" + (int) boundingBox.getLeft());
 

@@ -10,12 +10,13 @@ import java.awt.*;
  * Created by Georg Plaz.
  */
 public interface Painter {
-    public void paint(GameObject abstractGameObject);
+    public void paint(GameObject gameObject);
+    public void paint(GameObject gameObject, DoubleTupel center);
 
-    void paint(GameObject abstractGameObject, DoubleTupel center);
+    public void paint(GraphicsObject graphics, DoubleTupel center);
+    public void paint(GraphicsObject graphics, DoubleTupel center, double distanceFactor);
 
-    void paint(GraphicsObject graphics, DoubleTupel center);
-    void paintCanvas(Color color);
+    public void paintCanvas(Color color);
 
     public GraphicsComponent getRenderScreen();
 }

@@ -1,8 +1,8 @@
 package kinderuni.settings;
 
 import com.google.gson.Gson;
-import javafx.util.Pair;
 import kinderuni.settings.levelSettings.LevelSettings;
+import kinderuni.settings.levelSettings.objectSettings.BackGroundObjectSettings;
 import kinderuni.settings.levelSettings.objectSettings.CollectibleSettings;
 import kinderuni.settings.levelSettings.objectSettings.EnemySettings;
 import kinderuni.settings.levelSettings.objectSettings.PlatformSettings;
@@ -22,6 +22,7 @@ public class Settings {
     private Map<String, EnemySettings> enemySettings = new HashMap<>();
     private Map<String, CollectibleSettings> collectibleSettings = new HashMap<>();
     private Map<String, PlatformSettings> platformSettings = new HashMap<>();
+    private Map<String, BackGroundObjectSettings> backGroundObjectsSettings;
 
     public PlayerSettings getPlayerSettings() {
         return playerSettings;
@@ -41,6 +42,7 @@ public class Settings {
         toReturn.collectibleSettings = toMap(resources, "collectibles", CollectibleSettings.class);
         toReturn.enemySettings = toMap(resources, "enemies", EnemySettings.class);
         toReturn.platformSettings = toMap(resources, "platforms", PlatformSettings.class);
+        toReturn.backGroundObjectsSettings = toMap(resources, "back_ground_objects", BackGroundObjectSettings.class);
         return toReturn;
     }
 
@@ -65,6 +67,10 @@ public class Settings {
         return enemySettings.containsKey(id);
     }
 
+    public boolean hasBackGroundObjectsSettings(String id){
+        return backGroundObjectsSettings.containsKey(id);
+    }
+
     public PlatformSettings getPlatformSettings(String id) {
         return platformSettings.get(id);
     }
@@ -87,5 +93,9 @@ public class Settings {
 
     public boolean hasLevelSettings(String id){
         return levelSettings.containsKey(id);
+    }
+
+    public BackGroundObjectSettings getBackGroundSettings(String id) {
+        return backGroundObjectsSettings.get(id);
     }
 }

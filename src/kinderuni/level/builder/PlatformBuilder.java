@@ -35,7 +35,10 @@ public class PlatformBuilder extends GameObjectBuilder {
     public Platform build(PlatformSettings platformSettings, PlatformSettings defaultSettings) {
         return build(platformSettings, defaultSettings, true);
     }
+
     public Platform build(PlatformSettings platformSettings, PlatformSettings defaultSettings, boolean keepDefault) {
+
+
         double friction = platformSettings.hasFriction()?platformSettings.getFriction():defaultSettings.getFriction();
         double speed = platformSettings.hasSpeed()?platformSettings.getSpeed():defaultSettings.getSpeed();
         DoubleTupel delta = platformSettings.hasDelta()?platformSettings.getDelta():defaultSettings.getDelta();

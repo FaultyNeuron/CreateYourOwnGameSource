@@ -99,10 +99,16 @@ public class ModifiableBox implements Box {
 
     @Override
     public boolean collides(Box second) {
-        return getRight() > second.getLeft() &&
-                getLeft() < second.getRight() &&
-                getUpper() > second.getLower() &&
-                getLower() < second.getUpper();
+        boolean right = getRight() > second.getLeft();
+        boolean left = getLeft() < second.getRight();
+        boolean upper = getUpper() > second.getLower();
+        boolean lower = getLower() < second.getUpper();
+
+        return right && left && upper && lower;
+//        return getRight() > second.getLeft() &&
+//                getLeft() < second.getRight() &&
+//                getUpper() > second.getLower() &&
+//                getLower() < second.getUpper();
     }
 
     public ModifiableBox move(double x, double y) {
