@@ -47,7 +47,7 @@ public abstract class LivingObject extends PhysicsObject{
     public void initUpdateCycle() {
         super.initUpdateCycle();
         if(!inAir()){
-            getGraphics().setState(GraphicsObject.State.STANDING);
+            getGraphics().setState(GraphicsObject.State.IDLE);
         }
     }
 

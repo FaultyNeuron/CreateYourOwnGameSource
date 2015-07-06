@@ -80,6 +80,8 @@ public class LevelBuilder {
         enemyBuilder.setBoundingForRandomPlacement(levelBox);
         collectibleBuilder.setBoundingForRandomPlacement(levelBox);
         platformBuilder.setBoundingForRandomPlacement(levelBox);
+        platformBuilder.setVerticalDistance(levelSettings.getVerticalDistance());
+        platformBuilder.setHorizontalDistance(levelSettings.getHorizontalDistance());
 
         FloorSettings floorSettings = levelSettings.getFloorSettings();
         double floorY = levelBox.getLower();
@@ -111,13 +113,14 @@ public class LevelBuilder {
 //                Collectible collectible = collectibleBuilder.build();
                 dropBuilder.addBluePrint(drop.getProbability(), system.getSettings().getCollectibleSettings(drop.getId()));
             }
-            for (int i = 0; i < idSettings.getCount(); i++) {
-                if(idSettings.hasEnemy()){
-                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
-                }else{
-                    level.getWorld().add(enemyBuilder.build(enemySettings));
-                }
-            }
+            level.getWorld().add(enemyBuilder.build(idSettings, enemySettings));
+//            for (int i = 0; i < idSettings.getCount(); i++) {
+//                if(idSettings.hasEnemy()){
+//                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
+//                }else{
+//                    level.getWorld().add(enemyBuilder.build(enemySettings));
+//                }
+//            }
         }
         /*for (IdParametersSettings idSettings : levelSettings.getPlatforms()) {
             if(!system.getSettings().hasPlatformSettings(idSettings.getId())){
@@ -137,6 +140,7 @@ public class LevelBuilder {
 
         for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
             level.getWorld().add(newPlatform);
+
         }
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();

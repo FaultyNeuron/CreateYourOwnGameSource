@@ -20,8 +20,8 @@ import java.util.Random;
  */
 public class PlatformBuilder extends GameObjectBuilder {
 
-    private double horizontalDistance = 70;
-    private double verticalDistance = 150;
+    private double horizontalDistance;
+    private double verticalDistance;
 
 
     public PlatformBuilder(System system, Random random) {
@@ -143,4 +143,11 @@ public class PlatformBuilder extends GameObjectBuilder {
             return moveUp;
     }
 
+    public void setHorizontalDistance(double horizontalDistance) {
+        this.horizontalDistance = horizontalDistance;
+    }
+
+    public void setVerticalDistance(double verticalDistance) {
+        this.verticalDistance = verticalDistance;
+    }
 }

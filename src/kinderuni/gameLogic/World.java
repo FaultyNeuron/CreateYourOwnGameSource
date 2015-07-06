@@ -217,6 +217,12 @@ public class World {
         addObject(toAdd);
     }
 
+    public void add(List<Enemy> toAdd){
+        for(Enemy enemy : toAdd){
+            add(enemy);
+        }
+    }
+
     public void add(SolidObject toAdd){
         solidObjects.add(toAdd);
         addObject(toAdd);

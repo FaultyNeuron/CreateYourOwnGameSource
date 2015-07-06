@@ -10,6 +10,9 @@
   "player_x" : 50,
   "player_y" : 50,
 
+  "vertical_distance" : 75,
+  "horizontal_distance" : 100,
+
   "enemies" : [
     //{"id" : "standard_walking", "count" : 4},
     //{"id" : "standard_flying", "count" : 2},

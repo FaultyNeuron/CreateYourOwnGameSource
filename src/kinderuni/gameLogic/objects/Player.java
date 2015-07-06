@@ -7,7 +7,6 @@ import functionalJava.data.tupel.Tupel;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.effects.InvinciblePower;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
-import kinderuni.gameLogic.objects.collectible.effects.PlusHp;
 import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
 import kinderuni.level.builder.ProjectileBuilder;
 import kinderuni.ui.graphics.GraphicsObject;
@@ -100,7 +99,7 @@ public class Player extends LivingObject {
     @Override
     public void update(int time) {
         if(!inAir()){
-            getGraphics().setState(GraphicsObject.State.STANDING);
+            getGraphics().setState(GraphicsObject.State.IDLE);
         }
         consumeMovement();
         super.update(time);
@@ -149,8 +148,9 @@ public class Player extends LivingObject {
 
     @Override
     public boolean takeDamage(int damage, LivingObject source) {
+        int hp = getHp();
         boolean killed = super.takeDamage(damage, source);
-        if(damage>0){
+        if(damage>0 && hp < getHp()){
             if(!killed) {
                 if(source!=null) {
                     DoubleTupel throwBack = getCenter().sub(source.getCenter()).add(0, 5);
@@ -220,7 +220,7 @@ public class Player extends LivingObject {
         public void update(int time) {}
     }
 
-    private class PlayerProjectile extends Projectile{
+    /*private class PlayerProjectile extends Projectile{
         protected PlayerProjectile(Effect effect) {
             super(effect);
         }
@@ -229,5 +229,5 @@ public class Player extends LivingObject {
         public Collection<? extends LivingObject> getTargets() {
             return getWorld().getEnemiesActive();
         }
-    }
+    }*/
 }

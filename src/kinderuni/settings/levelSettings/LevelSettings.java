@@ -25,6 +25,9 @@ public class LevelSettings {
     private double player_x;
     private double player_y;
 
+    private double vertical_distance;
+    private double horizontal_distance;
+
     private List<IdParametersSettings> enemies = new LinkedList<>();
     private List<IdParametersSettings> platforms = new LinkedList<>();
     private GoalSettings goal;
@@ -95,5 +98,13 @@ public class LevelSettings {
 
     public List<EffectSettings> getActiveEffects() {
         return active_effects;
+    }
+
+    public double getVerticalDistance() {
+        return vertical_distance;
+    }
+
+    public double getHorizontalDistance() {
+        return horizontal_distance;
     }
 }
