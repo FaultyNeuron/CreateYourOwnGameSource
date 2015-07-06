@@ -13,6 +13,7 @@ public class IdParametersSettings {
 //    private GraphicsSettings graphics;
     private EnemySettings enemy;
     private PlatformSettings platform;
+    private GraphicsSettings graphics;
 
     public String getId() {
         return id;
@@ -36,5 +37,13 @@ public class IdParametersSettings {
 
     public boolean hasEnemy(){
         return enemy!=null;
+    }
+
+    public GraphicsSettings getGraphics() {
+        return graphics;
+    }
+
+    public boolean hasGraphics() {
+        return graphics!=null;
     }
 }

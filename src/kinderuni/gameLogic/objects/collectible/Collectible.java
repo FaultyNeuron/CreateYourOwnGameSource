@@ -16,18 +16,9 @@ import java.util.Collections;
  * Created by Georg Plaz.
  */
 public class Collectible extends PhysicsObject {
+    private int lifeTime = -1;
     private Effect effect;
-    private double dropAcceleration;
-    public Collectible(Effect effect, double dropAcceleration) {
-        this.dropAcceleration = dropAcceleration;
-        if(effect != null) {
-            this.effect = effect;
-        }
-    }
-
-    public Collectible(double dropAcceleration) {
-        this.dropAcceleration = dropAcceleration;
-    }
+    private double dropAcceleration = 5;
 
     @Override
     public void checkCollision() {
@@ -36,6 +27,14 @@ public class Collectible extends PhysicsObject {
         Collection<? extends LivingObject> collided = getWorld().collidesWith(getBoundingBox(), targets);
         if(!collided.isEmpty()){
             collect(collided.iterator().next());
+        }
+    }
+
+    @Override
+    public void update(int time) {
+        super.update(time);
+        if(lifeTime--==0){
+            destroy();
         }
     }
 
@@ -74,5 +73,21 @@ public class Collectible extends PhysicsObject {
 
     public Collection<? extends LivingObject> getTargets() {
         return Collections.singleton(getWorld().getPlayer());
+    }
+
+    public void setDropAcceleration(double dropAcceleration) {
+        this.dropAcceleration = dropAcceleration;
+    }
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
+    }
+
+    public int getLifeTime() {
+        return lifeTime;
+    }
+
+    public void setLifeTime(int lifeTime) {
+        this.lifeTime = lifeTime;
     }
 }

@@ -1,8 +1,7 @@
 package kinderuni.gameLogic.objects.collectible.effects;
 
-import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.World;
 import kinderuni.gameLogic.objects.LivingObject;
-import kinderuni.gameLogic.objects.Player;
 
 /**
 * Created by Georg Plaz.
@@ -27,8 +26,8 @@ public class GravityChangePower extends ReversibleEffect {
         getTarget().setGravityFactor(getTarget().getGravityFactor() / factor);
     }
 
-    private void multGravity(GameWorld gameWorld, double factor){
-        gameWorld.setGravity(factor*gameWorld.getGravity());
+    private void multGravity(World world, double factor){
+        world.setGravity(factor* world.getGravity());
     }
 
     @Override

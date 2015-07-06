@@ -1,8 +1,6 @@
 package kinderuni.gameLogic.objects.solid;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.ui.graphics.GraphicsObject;
-import kinderuni.gameLogic.GameWorld;
 
 /**
  * Created by Georg Plaz.
@@ -41,9 +39,9 @@ public class MovingPlatform extends Platform {
 
     @Override
     public void setCenter(DoubleTupel position) {
-        if(startingPosition==null){
+        //if(startingPosition==null){
             startingPosition = position;
-        }
+        //}
         super.setCenter(position);
     }
 }

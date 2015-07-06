@@ -1,8 +1,8 @@
 {
     "graphics" : {
-        "line_colour" : [0, 0, 0],
-        "bg_colour" : [115, 191, 201],
-        "text" : "ice",
+        "id" : "ice_platform",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [115, 191, 201],
         "width" : 200,
         "height" : 20
     },

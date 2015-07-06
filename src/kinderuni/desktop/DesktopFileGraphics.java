@@ -9,9 +9,12 @@ import kinderuni.ui.graphics.AnimationLogicImpl;
 import kinderuni.ui.graphics.GraphicsInfo;
 import kinderuni.ui.graphics.GraphicsObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +25,7 @@ import java.util.Map;
  * Created by Georg Plaz.
  */
 public class DesktopFileGraphics extends DesktopGraphics {
-    private Map<State, ImageIcon[]> images;
+    private Map<State, BufferedImage[]> images;
     private File path;
     private int[] bgColour;
     private int[] lineColour;
@@ -67,13 +70,15 @@ public class DesktopFileGraphics extends DesktopGraphics {
                         addState(state, new AnimationLogicImpl(graphicsInfo.getFps(), graphicsInfo.getLoopType(), files.size()));
                     }
                     try {
-                        ImageIcon[] imageIcon = new ImageIcon[files.size()];
+                        BufferedImage[] imageIcon = new BufferedImage[files.size()];
                         int counter = 0;
                         for (File f : files) {
-                            imageIcon[counter++] = new ImageIcon(f.toURI().toURL());
+                            imageIcon[counter++] = ImageIO.read(f);
                         }
                         images.put(state, imageIcon);
                     } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -96,20 +101,19 @@ public class DesktopFileGraphics extends DesktopGraphics {
             }
             if(images!=null) {
                 Image image;// = imageIcon[animationLogic.getCurrentFrame()].getImage();
-                ImageIcon[] imageIcons;
+                BufferedImage[] imageIcons;
                 if(images.containsKey(getState())){
                     imageIcons = images.get(getState());
+                    image = imageIcons[getCurrentFrame()];
                 }else{
-                    imageIcons = images.get(State.STANDING);
+                    imageIcons = images.get(State.IDLE);
+                    image = imageIcons[getCurrentFrame(State.IDLE)];
                 }
-                image = imageIcons[getCurrentFrame()].getImage();
                 boolean right = getDirection() == HorizontalDirection.RIGHT;
                 int width = (int) Math.round(graphicsBounding.getWidth() * (right ? 1 : -1));
                 int left = (int) Math.round(graphicsBounding.getLeft() + (right ? 0 : -width));
-                drawTo.drawImage(image,
-                        left,
-                        -(int) graphicsBounding.getUpper(),
-                        width,
+                drawTo.drawImage(image, left,
+                        -(int) graphicsBounding.getUpper(), width,
                         (int) graphicsBounding.getHeight(),
                         null);
             }
@@ -128,7 +132,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
 
         }
     }
-    private ImageIcon[] getIcons(State state){
+    private BufferedImage[] getIcons(State state){
         return images.get(state);
     }
 

@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Created by Georg Plaz.
  */
-public class GameWorld {
+public class World {
     /** distance for the objects to move off screen and still be active*/
     private static final double ACTIVE_DISTANCE = 100;
     private double airFriction;
@@ -38,7 +38,7 @@ public class GameWorld {
     private final Set<Enemy> enemiesActive = new LinkedHashSet<Enemy>();
     private final Set<Collectible> collectiblesActive = new LinkedHashSet<Collectible>();
 
-    public GameWorld(Box worldBounds, double screenWidth, double airFriction, double gravity) {
+    public World(Box worldBounds, double screenWidth, double airFriction, double gravity) {
         this.worldBounds = worldBounds;
         this.airFriction = airFriction;
         this.gravity = gravity;
@@ -215,6 +215,12 @@ public class GameWorld {
     public void add(Enemy toAdd){
         enemies.add(toAdd);
         addObject(toAdd);
+    }
+
+    public void add(List<Enemy> toAdd){
+        for(Enemy enemy : toAdd){
+            add(enemy);
+        }
     }
 
     public void add(SolidObject toAdd){

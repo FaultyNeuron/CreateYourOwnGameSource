@@ -1,0 +1,13 @@
+{
+    "graphics" : {
+        "id" : "moon_platform",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [115, 191, 201],
+        "width" : 200,
+        "height" : 20
+    },
+    "friction" : 0.8,
+    "speed" : 1,
+    "delta_x" : 0,
+    "delta_y" : 0
+}

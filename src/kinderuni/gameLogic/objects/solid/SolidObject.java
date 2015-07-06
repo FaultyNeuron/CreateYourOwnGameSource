@@ -1,9 +1,7 @@
 package kinderuni.gameLogic.objects.solid;
 
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.gameLogic.objects.AbstractGameObject;
-import kinderuni.gameLogic.GameWorld;
 
 /**
  * Created by Georg Plaz.

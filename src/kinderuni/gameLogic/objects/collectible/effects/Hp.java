@@ -6,10 +6,10 @@ import kinderuni.gameLogic.objects.Player;
 /**
  * Created by Georg Plaz.
  */
-public class PlusHp extends Effect {
-    public static final String ID = "plus_hp";
+public class Hp extends Effect {
+    public static final String ID = "hp";
     private int hp;
-    public PlusHp(int hp) {
+    public Hp(int hp) {
         this.hp = hp;
     }
 

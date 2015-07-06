@@ -105,6 +105,9 @@ public class ModifiableBox implements Box {
                 getLower() < second.getUpper();
     }
 
+    public ModifiableBox move(double x, double y) {
+        return move(new DoubleTupel(x, y));
+    }
 
     @Override
     public ModifiableBox move(DoubleTupel delta) {

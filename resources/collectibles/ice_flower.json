@@ -1,0 +1,29 @@
+{
+    "graphics": {
+        "id": "ice_flower",
+        "width" : 30,
+        "height" : 30
+    },
+    "bounciness" : 0.5,
+    "effect_duration" : 750,
+    "effects" : [
+        {"id":"gun", "projectile":{
+            "graphics": {
+                "id": "ice_ball",
+                "width" : 30,
+                "height" : 30
+            },
+            "bounciness" : 1,
+            "friction_coefficient" : 0,
+            "cool_down" : 30,
+            "shooting_x" : 2,
+            "shooting_y" : 3,
+            "duration" : 100,
+            "effects" : [
+                {"id":"bounciness", "factor" : 2}
+            ]
+        }}
+//        {"id":"speed", "factor" : 4},
+//        {"id":"gravity", "factor" : 0.1}
+    ]
+}

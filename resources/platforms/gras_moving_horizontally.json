@@ -1,0 +1,13 @@
+{
+
+    "graphics" : {
+        "id" : "gras_platform",
+        //"line_colour" : [0, 0, 0],
+        "width" : 200,
+        "height" : 20
+    },
+    "friction" : 0.8,
+    "speed" : 1,
+    "delta_x" : 300,
+    "delta_y" : 0
+}

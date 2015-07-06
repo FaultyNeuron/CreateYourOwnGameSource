@@ -22,7 +22,6 @@ public class CollectibleSettings extends PhysicsObjectSettings{
         return effects;
     }
 
-
     public int getEffectDuration() {
         return effect_duration;
     }
@@ -37,5 +36,13 @@ public class CollectibleSettings extends PhysicsObjectSettings{
 
     public boolean hasDropAcceleration() {
         return drop_acceleration!=null;
+    }
+
+    public void setEffects(List<EffectSettings> effects) {
+        this.effects = effects;
+    }
+
+    public boolean hasEffects() {
+        return effects!=null && effects.size()>0;
     }
 }

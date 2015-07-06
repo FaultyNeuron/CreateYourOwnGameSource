@@ -10,7 +10,7 @@ import functionalJava.data.tupel.SymTupel;
 import functionalJava.data.tupel.Tupel;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.Painter;
-import kinderuni.gameLogic.GameWorld;
+import kinderuni.gameLogic.World;
 import kinderuni.gameLogic.objects.solid.SolidObject;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.Set;
 public abstract class AbstractGameObject implements GameObject {
     private Set<GameObject> sticking;
     private GraphicsObject graphics;
-    private GameWorld gameWorld;
+    private World world;
     private ModifiableBox boundingBox = new ModifiableBox(DoubleTupel.ZEROS, DoubleTupel.ZEROS);;
     private boolean isDestroyed = false;
     private SolidObject stickingTo;
@@ -82,14 +82,14 @@ public abstract class AbstractGameObject implements GameObject {
         return boundingBox.getDimensions();
     }
 
-    public GameWorld getWorld() {
-        return gameWorld;
+    public World getWorld() {
+        return world;
     }
 
     @Override
     public void destroy() {
         isDestroyed = true;
-        gameWorld.destroy(this);
+        world.destroy(this);
     }
 
     @Override
@@ -250,8 +250,8 @@ public abstract class AbstractGameObject implements GameObject {
     }
 
     @Override
-    public void setWorld(GameWorld world) {
-        this.gameWorld = world;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     @Override

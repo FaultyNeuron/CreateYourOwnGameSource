@@ -1,0 +1,13 @@
+{
+    "graphics" : {
+        "id" : "bubble_platform",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [115, 191, 201],
+        "width" : 200,
+        "height" : 20
+    },
+    "friction" : 0.5,
+    "speed" : 0.8,
+    "delta_x" : 0,
+    "delta_y" : 0
+}

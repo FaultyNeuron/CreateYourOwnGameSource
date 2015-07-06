@@ -14,6 +14,7 @@ public class EffectSettings {
     private Integer value;
     private Double factor;
     private Integer effect_duration;
+    private ProjectileSettings projectile;
 
     public String getId() {
         return id;
@@ -49,5 +50,23 @@ public class EffectSettings {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public ProjectileSettings getProjectileSettings() {
+        return projectile;
+    }
+
+    public void setProjectileSettings(ProjectileSettings projectileSettings) {
+        this.projectile = projectileSettings;
+    }
+
+    @Override
+    public String toString() {
+        return "EffectSettings{" +
+                "id='" + id + '\'' +
+                ", value=" + value +
+                ", factor=" + factor +
+                ", effect_duration=" + effect_duration +
+                '}';
     }
 }

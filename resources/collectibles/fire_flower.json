@@ -5,8 +5,23 @@
         "height" : 30
     },
     "bounciness" : 0.5,
+    "effect_duration" : 750,
     "effects" : [
-        {"id":"add_gun"}
+        {"id":"gun", "projectile":{
+            "graphics": {
+                "id": "fire_ball",
+                "width" : 30,
+                "height" : 30
+            },
+            "bounciness" : 1,
+            "friction_coefficient" : 0,
+            "cool_down" : 30,
+            "shooting_x" : 2,
+            "shooting_y" : 3,
+            "effects" : [
+                {"id":"hp", "value" : -1}
+            ]
+        }}
 //        {"id":"speed", "factor" : 4},
 //        {"id":"gravity", "factor" : 0.1}
     ]

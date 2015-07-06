@@ -97,4 +97,20 @@ public enum Direction2D {
                 return null;
         }
     }
+
+    public Direction2D toPositive() {
+        if(isPositive()){
+            return this;
+        }else{
+            return reverse();
+        }
+    }
+
+    public Direction2D toNegative() {
+        if(!isPositive()){
+            return this;
+        }else{
+            return reverse();
+        }
+    }
 }
