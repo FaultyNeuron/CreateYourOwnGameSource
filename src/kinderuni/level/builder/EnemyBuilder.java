@@ -15,8 +15,8 @@ import java.util.Random;
  */
 public class EnemyBuilder extends LivingObjectBuilder {
     private DropBuilder dropBuilder;
-    public EnemyBuilder(kinderuni.System system, Random random) {
-        super(system, random);
+    public EnemyBuilder(kinderuni.System system, long seed) {
+        super(system, new Random(seed));
     }
 
     public Enemy build(EnemySettings enemySettings) {

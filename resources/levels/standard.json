@@ -22,7 +22,7 @@
   ],
 
   "back_ground_objects" : [
-    {"id" : "cloud", "count" : 20},
+    {"id" : "cloud", "count" : 40},
     {"id" : "tree", "count" : 10}
   ],
 
@@ -49,8 +49,9 @@
     "gap_width" : 100,
     "friction" : 0.8,
     "graphics" : {
-      "bg_colour" : [54, 201, 59],
-      "line_colour" : [0, 0, 0],
+      //"bg_colour" : [54, 201, 59],
+      //"line_colour" : [0, 0, 0],
+      "id" : "gras_platform",
       "width" : 500,
       "height" : 15
     }

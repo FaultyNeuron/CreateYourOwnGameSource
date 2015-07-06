@@ -10,8 +10,8 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class GunBuilder extends ProjectileBuilder{
-    public GunBuilder(System system, Random random) {
-        super(system, random);
+    public GunBuilder(System system, long seed) {
+        super(system, seed);
     }
 
     public ProjectileGun build(ProjectileSettings projectileSettings){

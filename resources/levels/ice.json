@@ -47,8 +47,10 @@
     "friction" : 0.01,
     //"tile_width" : 500,
     "graphics" : {
-      "line_colour" : [0, 0, 0],
-      "bg_colour" : [115, 191, 201],
+//      "line_colour" : [0, 0, 0],
+//      "bg_colour" : [115, 191, 201],
+      "id" : "ice_platform",
+
       "width" : 500,
       "height" : 15
     }

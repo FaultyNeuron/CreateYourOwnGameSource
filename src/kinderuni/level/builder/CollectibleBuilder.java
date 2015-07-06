@@ -18,9 +18,9 @@ import java.util.Random;
 public class CollectibleBuilder extends PhysicsObjectBuilder{
     private EffectBuilder effectBuilder;
 
-    public CollectibleBuilder(kinderuni.System system, Random random) {
-        super(system, random);
-        this.effectBuilder = new EffectBuilder(system, random);
+    public CollectibleBuilder(kinderuni.System system, long seed) {
+        super(system, new Random(seed));
+        this.effectBuilder = new EffectBuilder(system, getRandom());
     }
 
     public Collectible build(CollectibleSettings settings) {

@@ -18,8 +18,8 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class BackGroundObjectBuilder extends GameObjectBuilder {
-    public BackGroundObjectBuilder(System system, Random random) {
-        super(system, random);
+    public BackGroundObjectBuilder(System system, long seed) {
+        super(system, new Random(seed));
     }
 
     public BackGroundObject build(BackGroundObjectSettings backGroundObjectSettings) {
