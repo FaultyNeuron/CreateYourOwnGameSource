@@ -14,6 +14,8 @@
   "vertical_distance" : 75,
   "horizontal_distance" : 100,
 
+  "bg_colour" : [180, 180, 255],
+
   "enemies" : [
     {"id" : "standard_walking", "count" : 5},
     {"id" : "standard_jumping", "count" : 5},

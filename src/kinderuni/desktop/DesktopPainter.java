@@ -1,5 +1,6 @@
 package kinderuni.desktop;
 
+import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.Painter;
@@ -39,6 +40,13 @@ public class DesktopPainter implements Painter{
         DesktopGraphics desktopGraphics = (DesktopGraphics) graphics;
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
         desktopGraphics.drawTo(g, center.add(screenDelta));
+    }
+
+    @Override
+    public void paintCanvas(Color color) {
+        Box screenArea = getRenderScreen().getScreenArea();
+        g.setColor(color);
+        g.fillRect(0, 0, (int) screenArea.getWidth() + 1, (int) screenArea.getHeight() + 1);
     }
 
     @Override

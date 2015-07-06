@@ -6,6 +6,7 @@ import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
 import kinderuni.settings.levelSettings.objectSettings.FloorSettings;
 import kinderuni.settings.levelSettings.objectSettings.GoalSettings;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class LevelSettings {
 
     private double player_x;
     private double player_y;
+
+    private int[] bg_colour;
 
     private double vertical_distance;
     private double horizontal_distance;
@@ -106,5 +109,12 @@ public class LevelSettings {
 
     public double getHorizontalDistance() {
         return horizontal_distance;
+    }
+
+    public boolean hasBgColour(){
+        return bg_colour!=null;
+    }
+    public Color getBgColour() {
+        return new Color(bg_colour[0], bg_colour[1], bg_colour[2]);
     }
 }
