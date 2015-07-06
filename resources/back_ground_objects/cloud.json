@@ -7,6 +7,6 @@
         "height" : 50
     },
 
-    "y_range" : [500, 800],
+    "y_range" : [500, 1500],
     "distance_factor" : 0.5
 }

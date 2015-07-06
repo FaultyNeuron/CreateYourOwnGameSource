@@ -60,8 +60,9 @@
 
   "floor" : {
     "graphics" : {
-      "line_colour" : [0, 0, 0],
-      "bg_colour" : [122, 122, 122],
+      "id" : "moon_platform",
+//      "line_colour" : [0, 0, 0],
+//      "bg_colour" : [122, 122, 122],
 //      "bg_colour" : [115, 191, 201],
       "width" : 500,
       "height" : 20

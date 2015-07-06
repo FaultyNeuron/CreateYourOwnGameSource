@@ -67,7 +67,7 @@ public class LevelBuilder {
         if(levelSettings.hasBgColour()){
             bgColour = levelSettings.getBgColour();
         }else{
-            bgColour = new int[]{255,255,255};
+            bgColour = new int[]{255, 255, 255};
         }
         toReturn.setBackgroundColour(bgColour);
 
@@ -75,14 +75,14 @@ public class LevelBuilder {
     }
 
     private void buildObjects(Level level, LevelSettings levelSettings, Random random) {
-        PlatformBuilder platformBuilder = new PlatformBuilder(system, random);
-        EnemyBuilder enemyBuilder = new EnemyBuilder(system, random);
+        PlatformBuilder platformBuilder = new PlatformBuilder(system, random.nextLong());
+        EnemyBuilder enemyBuilder = new EnemyBuilder(system, random.nextLong());
         //todo: do the same for enemies. we dont want enemies to spawn inside of the user or have them
         //todo: falling onto the user at the beginning of the level
-        CollectibleBuilder collectibleBuilder = new CollectibleBuilder(system, random);
+        CollectibleBuilder collectibleBuilder = new CollectibleBuilder(system, random.nextLong());
         //todo: if we want to place collectibles at the beginning of the game, we have to add logic to this builder as well
         //todo: and call the code somewhere below..
-        BackGroundObjectBuilder bgObjectBuilder = new BackGroundObjectBuilder(system, random);
+        BackGroundObjectBuilder bgObjectBuilder = new BackGroundObjectBuilder(system, random.nextLong());
 
         Box levelBox = level.getWorld().getBounds();
 
@@ -117,7 +117,7 @@ public class LevelBuilder {
                 throw new IdNotFoundException("enemy", idSettings.getId());
             }
             EnemySettings enemySettings = system.getSettings().getEnemySettings(idSettings.getId());
-            DropBuilder dropBuilder = new DropBuilder(system, random);
+            DropBuilder dropBuilder = new DropBuilder(system, random.nextLong());
             enemyBuilder.setDropBuilder(dropBuilder);
             for(EnemySettings.Drop drop : enemySettings.getDrop()){
 //                Collectible collectible = collectibleBuilder.build();

@@ -11,8 +11,8 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class ProjectileBuilder extends CollectibleBuilder {
-    public ProjectileBuilder(kinderuni.System system, Random random) {
-        super(system, random);
+    public ProjectileBuilder(kinderuni.System system, long seed) {
+        super(system, seed);
     }
 
 //    public Projectile build(ProjectileSettings projectileSettings) {

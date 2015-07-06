@@ -21,7 +21,7 @@ public class ProjectileGun extends ProjectileBuilder{
     private ProjectileSettings projectileSettings;
 
     public ProjectileGun(System system, ProjectileSettings projectileSettings) {
-        super(system, new Random());
+        super(system, new Random().nextLong());
         this.projectileSettings = projectileSettings;
         if(projectileSettings.hasCoolDown()){
             setInitialShootCoolDown(projectileSettings.getCoolDown());

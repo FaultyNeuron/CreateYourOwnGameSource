@@ -19,13 +19,12 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class PlatformBuilder extends GameObjectBuilder {
-
     private double horizontalDistance;
     private double verticalDistance;
 
 
-    public PlatformBuilder(System system, Random random) {
-        super(system, random);
+    public PlatformBuilder(System system, long seed) {
+        super(system, new Random(seed));
     }
 
     public Platform build(PlatformSettings platformSettings) {
