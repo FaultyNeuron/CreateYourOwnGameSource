@@ -119,20 +119,24 @@ public class LevelBuilder {
                 }
             }
         }
-        for (IdParametersSettings idSettings : levelSettings.getPlatforms()) {
+        /*for (IdParametersSettings idSettings : levelSettings.getPlatforms()) {
             if(!system.getSettings().hasPlatformSettings(idSettings.getId())){
                 throw new IdNotFoundException("platform", idSettings.getId());
             }
             PlatformSettings platformSettings = system.getSettings().getPlatformSettings(idSettings.getId());
             for (int i = 0; i < idSettings.getCount(); i++) {
+                PlatformSettings p = idSettings.getPlatform();
                 Platform newPlatform;
                 if(idSettings.hasPlatform()){
                     newPlatform = platformBuilder.build(platformSettings, idSettings.getPlatform());
                 }else{
                     newPlatform = platformBuilder.build(platformSettings);
                 }
-                level.getWorld().add(newPlatform);
             }
+        }*/
+
+        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
+            level.getWorld().add(newPlatform);
         }
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();
@@ -146,9 +150,6 @@ public class LevelBuilder {
             super("no "+type+" with id \""+id+"\" was found!");
         }
     }
-
-
-
 
 
 }

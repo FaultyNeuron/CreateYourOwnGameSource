@@ -39,9 +39,9 @@ public class MovingPlatform extends Platform {
 
     @Override
     public void setCenter(DoubleTupel position) {
-        if(startingPosition==null){
+        //if(startingPosition==null){
             startingPosition = position;
-        }
+        //}
         super.setCenter(position);
     }
 }

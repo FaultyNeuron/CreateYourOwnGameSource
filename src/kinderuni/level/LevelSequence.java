@@ -1,6 +1,6 @@
 package kinderuni.level;
 
-import kinderuni.desktop.Info;
+import kinderuni.ui.Info;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.level.builder.LevelBuilder;
 import kinderuni.settings.levelSettings.LevelSettings;

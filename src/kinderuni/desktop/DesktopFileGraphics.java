@@ -50,7 +50,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
             images = new HashMap<>();
             GraphicsInfo graphicsInfo = GraphicsInfo.createInfo(path);
             for (State state : State.values()) {
-                File stateFolder = new File(path, state.name().toLowerCase());
+                File stateFolder =  new File(path, state.name().toLowerCase());
                 if (stateFolder.exists()) {
                     List<File> files = new LinkedList<>();
                     for (int i = 0; ; i++) {

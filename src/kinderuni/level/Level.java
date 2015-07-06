@@ -2,12 +2,12 @@ package kinderuni.level;
 
 import functionalJava.data.shape.box.ModifiableBox;
 import functionalJava.data.tupel.DoubleTupel;
-import kinderuni.desktop.Info;
 import kinderuni.gameLogic.World;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
+import kinderuni.ui.Info;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.InputRetriever;
 import kinderuni.ui.graphics.Paintable;

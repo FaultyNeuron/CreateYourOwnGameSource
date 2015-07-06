@@ -1,4 +1,4 @@
-package kinderuni.desktop;
+package kinderuni.ui;
 
 /**
  * Created by Georg Plaz.

@@ -1,6 +1,6 @@
 package kinderuni.ui.graphics;
 
-import kinderuni.desktop.Info;
+import kinderuni.ui.Info;
 
 import java.util.List;
 
