@@ -68,6 +68,8 @@ public class Level implements Paintable {
     }
 
     public void update(int time) {
+        TickTock tickTock = new TickTock();
+        tickTock.tick();
         this.time = time;
         Player player = world.getPlayer();
         if (player != null) {
@@ -95,6 +97,8 @@ public class Level implements Paintable {
             }
         }
         world.update(time);
+        System.out.println("update: "+tickTock.tockFormatted());
+
     }
 
     private void changeState(State newState){
@@ -128,7 +132,7 @@ public class Level implements Paintable {
                 pos += graphic.getDimensions().getFirst() + iconDelta;
             }
         }
-        System.out.println(tickTock.tockFormatted());
+        System.out.println("render: "+tickTock.tockFormatted());
     }
 
     @Override
