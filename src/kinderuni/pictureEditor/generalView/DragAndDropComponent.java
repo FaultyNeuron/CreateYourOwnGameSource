@@ -1,5 +1,6 @@
-package kinderuni.pictureEditor;
+package kinderuni.pictureEditor.generalView;
 
+import kinderuni.pictureEditor.generalView.FileDroppedCallback;
 import net.iharder.dnd.FileDrop;
 
 import javax.swing.*;

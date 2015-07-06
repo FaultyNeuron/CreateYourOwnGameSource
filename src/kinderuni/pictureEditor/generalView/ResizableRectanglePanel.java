@@ -1,4 +1,8 @@
-package kinderuni.pictureEditor;
+package kinderuni.pictureEditor.generalView;
+
+import kinderuni.pictureEditor.ImageSnippet;
+import kinderuni.pictureEditor.ImageSnippetFactory;
+import kinderuni.pictureEditor.TaskFinishedCallback;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +60,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
 
     private void addRectangle(Rectangle rectangle) {
         this.deactivateAllResizables();
-        ImageSnippet selection = ImageSelectionFactory.getImageSelection();
+        ImageSnippet selection = ImageSnippetFactory.getImageSelection();
         selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()));
         Resizable resizable = selection.getResizable();
         resizable.setResizableContainerCallback(this);

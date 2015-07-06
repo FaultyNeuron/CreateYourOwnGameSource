@@ -1,4 +1,4 @@
-package kinderuni.pictureEditor;
+package kinderuni.pictureEditor.generalView;
 
 import java.awt.*;
 

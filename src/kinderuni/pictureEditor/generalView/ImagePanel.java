@@ -1,14 +1,15 @@
-package kinderuni.pictureEditor;
+package kinderuni.pictureEditor.generalView;
+
+import kinderuni.pictureEditor.ImageSnippetFactory;
+import kinderuni.pictureEditor.language.Language;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by markus on 25.06.15.
@@ -37,7 +38,7 @@ public class ImagePanel extends JPanel implements FileDroppedCallback {
         if (image == null) {
             throw new IOException();
         }
-        ImageSelectionFactory.setOriginalImage(image);
+        ImageSnippetFactory.setOriginalImage(image);
         System.err.println("File '" + path + "' read, size=" + image.getWidth() + "x" + image.getHeight());
     }
 

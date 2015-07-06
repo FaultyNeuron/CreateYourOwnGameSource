@@ -9,13 +9,13 @@ import java.util.ArrayList;
 /**
  * Created by markus on 26.06.15.
  */
-public class DetailPanel extends JPanel implements DetailPanelCallback {
+public class DetailView extends JPanel implements DetailPanelCallback {
     private AnimationTablePanel animationTablePanel;
     private FrameSettingsPanel frameSettingsPanel;
     private PreviewSettingsPanel previewSettingsPanel;
     private ArrayList<ImageSnippet> imageSnippets;
 
-    public DetailPanel (ArrayList<ImageSnippet> imageSnippets) {
+    public DetailView(ArrayList<ImageSnippet> imageSnippets) {
         this.imageSnippets = imageSnippets;
 
 //        this.setLayout(new SpringLayout());
