@@ -4,31 +4,33 @@
   "width" : 5000,
   "height" : 600,
 
-  "gravity" : 0.03,
+  "gravity" : 0.07,
   "airFriction" : 0.001,
 
   "player_x" : 50,
   "player_y" : 50,
 
   "enemies" : [
-    {"id" : "standard_walking", "count" : 5},
-    {"id" : "standard_jumping", "count" : 5},
+    {"id" : "alien_walking", "count" : 5},
+    {"id" : "astronaut_jumping", "count" : 5},
     {"id" : "standard_boss", "count" : 1}
   ],
 
   "platforms":[
-    {"id" : "standard_moving_vertically", "count" : 20,
+    {"id" : "moon_moving_vertically", "count" : 20,
       "graphics" : {
-        "bg_colour" : [122, 122, 122],
-        "line_colour" : [0, 0, 0],
+        "id" : "moon",
+        //"bg_colour" : [122, 122, 122],
+        //"line_colour" : [0, 0, 0],
         "width": 200,
         "height": 20
       }
     },
-    {"id" : "standard", "count" : 20,
+    {"id" : "moon", "count" : 20,
       "graphics" : {
-       "bg_colour" : [122, 122, 122],
-       "line_colour" : [0, 0, 0],
+        "id" : "moon",
+       //"bg_colour" : [122, 122, 122],
+       //"line_colour" : [0, 0, 0],
        "width": 200,
        "height": 20
       }
