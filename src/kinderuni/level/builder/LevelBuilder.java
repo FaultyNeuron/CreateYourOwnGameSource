@@ -63,11 +63,11 @@ public class LevelBuilder {
                 screenWidth, inputRetriever,
                 levelSettings.getAirFriction(), levelSettings.getGravity(),
                 levelSettings.getPlayerInitPos(), system, effect);
-        Color bgColour;
+        int[] bgColour;
         if(levelSettings.hasBgColour()){
             bgColour = levelSettings.getBgColour();
         }else{
-            bgColour = Color.WHITE;
+            bgColour = new int[]{255,255,255};
         }
         toReturn.setBackgroundColour(bgColour);
 
