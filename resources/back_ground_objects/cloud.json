@@ -1,0 +1,12 @@
+{
+    "graphics" : {
+        "id" : "cloud",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [64, 179, 118],
+        "width" : 100,
+        "height" : 50
+    },
+
+    "y_range" : [500, 800],
+    "distance_factor" : 0.5
+}

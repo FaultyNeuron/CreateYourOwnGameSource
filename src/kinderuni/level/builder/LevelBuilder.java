@@ -76,18 +76,18 @@ public class LevelBuilder {
 
     private void buildObjects(Level level, LevelSettings levelSettings, Random random) {
         PlatformBuilder platformBuilder = new PlatformBuilder(system, random);
-        //todo: modify PlatformBuilder, so the Platforms get placed nicely.
-        //todo: in order to do that, add methods and fields to PlatformBuilder as needed and call them here
         EnemyBuilder enemyBuilder = new EnemyBuilder(system, random);
         //todo: do the same for enemies. we dont want enemies to spawn inside of the user or have them
         //todo: falling onto the user at the beginning of the level
         CollectibleBuilder collectibleBuilder = new CollectibleBuilder(system, random);
         //todo: if we want to place collectibles at the beginning of the game, we have to add logic to this builder as well
         //todo: and call the code somewhere below..
+        BackGroundObjectBuilder bgObjectBuilder = new BackGroundObjectBuilder(system, random);
 
         Box levelBox = level.getWorld().getBounds();
 
         enemyBuilder.setBoundingForRandomPlacement(levelBox);
+        bgObjectBuilder.setBoundingForRandomPlacement(levelBox);
         collectibleBuilder.setBoundingForRandomPlacement(levelBox);
         platformBuilder.setBoundingForRandomPlacement(levelBox);
         platformBuilder.setVerticalDistance(levelSettings.getVerticalDistance());
@@ -123,7 +123,7 @@ public class LevelBuilder {
 //                Collectible collectible = collectibleBuilder.build();
                 dropBuilder.addBluePrint(drop.getProbability(), system.getSettings().getCollectibleSettings(drop.getId()));
             }
-            level.getWorld().add(enemyBuilder.build(idSettings, enemySettings));
+            level.getWorld().addEnemies(enemyBuilder.build(idSettings, enemySettings));
 //            for (int i = 0; i < idSettings.getCount(); i++) {
 //                if(idSettings.hasEnemy()){
 //                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
@@ -148,10 +148,17 @@ public class LevelBuilder {
             }
         }*/
 
-        for (Platform newPlatform : platformBuilder.buildAll(levelSettings)) {
-            level.getWorld().add(newPlatform);
-
+        for (IdParametersSettings idSettings : levelSettings.getBackGroundObjects()){
+            if(!system.getSettings().hasBackGroundObjectsSettings(idSettings.getId())){
+                throw new IdNotFoundException("back ground object", idSettings.getId());
+            }
+            BackGroundObjectSettings bgSettings = system.getSettings().getBackGroundSettings(idSettings.getId());
+            for (int i = 0; i < idSettings.getCount(); i++) {
+                level.getWorld().add(bgObjectBuilder.build(bgSettings));
+            }
         }
+
+        level.getWorld().addSolids(platformBuilder.buildAll(levelSettings));
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();
         Goal goal = new Goal(); //todo create goal builder

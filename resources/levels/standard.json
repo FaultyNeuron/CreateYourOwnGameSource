@@ -10,8 +10,8 @@
   "player_x" : 50,
   "player_y" : 50,
 
-  "vertical_distance" : 125,
-  "horizontal_distance" : 100,
+  "vertical_platform_distance" : 125,
+  "horizontal_platform_distance" : 100,
 
   "enemies" : [
     //{"id" : "standard_walking", "count" : 4},
@@ -21,10 +21,16 @@
     //{"id" : "standard_boss", "count" : 1}
   ],
 
+  "back_ground_objects" : [
+    {"id" : "cloud", "count" : 20},
+    {"id" : "tree", "count" : 10}
+  ],
+
   "platforms":[
     {"id" : "gras_moving_horizontally", "count" : 10},
     {"id" : "gras", "count" : 30}
   ],
+
 
   "bg_colour" : [220, 220, 255],
 

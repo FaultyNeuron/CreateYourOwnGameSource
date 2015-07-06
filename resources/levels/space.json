@@ -10,13 +10,18 @@
   "player_x" : 50,
   "player_y" : 50,
 
-  "vertical_distance" : 75,
-  "horizontal_distance" : 100,
+  "vertical_platform_distance" : 200,
+  "horizontal_platform_distance" : 100,
 
   "enemies" : [
     {"id" : "alien_walking", "count" : 5},
     {"id" : "astronaut_jumping", "count" : 5},
     {"id" : "standard_boss", "count" : 1}
+  ],
+
+  "back_ground_objects" : [
+    {"id" : "earth", "count" : 1},
+    {"id" : "star", "count" : 10}
   ],
 
   "bg_colour" : [30, 30, 30],

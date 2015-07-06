@@ -27,11 +27,13 @@ public class World {
     private final Set<SolidObject> solidObjects = new LinkedHashSet<SolidObject>();
     private final Set<Enemy> enemies = new LinkedHashSet<Enemy>();
     private final Set<Collectible> collectibles = new LinkedHashSet<Collectible>();
+    private final Set<GameObject> backgroundObjects = new LinkedHashSet<GameObject>();
 
     private final Set<GameObject> gameObjectsToDestroy = new LinkedHashSet<GameObject>();
     private final Set<SolidObject> solidObjectsToDestroy = new LinkedHashSet<SolidObject>();
     private final Set<Enemy> enemiesToDestroy = new LinkedHashSet<Enemy>();
     private final Set<Collectible> collectiblesToDestroy = new LinkedHashSet<Collectible>();
+    private final Set<GameObject> backgroundObjectsToDestroy = new LinkedHashSet<GameObject>();
 
     private final Set<GameObject> gameObjectsActive = new LinkedHashSet<GameObject>();
     private final Set<SolidObject> solidObjectsActive = new LinkedHashSet<SolidObject>();
@@ -84,13 +86,18 @@ public class World {
         destroy(solidObjects, solidObjectsActive, solidObjectsToDestroy);
         destroy(enemies, enemiesActive, enemiesToDestroy);
         destroy(collectibles, collectiblesActive, collectiblesToDestroy);
+        destroy(backgroundObjects, null, backgroundObjectsToDestroy);
     }
 
     private <A> void destroy(Set<A> base, Set<A> baseActive, Set<A> toDestroy){
         synchronized(base) {
-            synchronized(baseActive) {
+            if(baseActive!=null) {
+                synchronized (baseActive) {
+                    base.removeAll(toDestroy);
+                    baseActive.removeAll(toDestroy);
+                }
+            }else{
                 base.removeAll(toDestroy);
-                baseActive.removeAll(toDestroy);
             }
         }
     }
@@ -152,9 +159,16 @@ public class World {
 
     public void paint(Painter painter){
         painter.getRenderScreen().setRenderCenter(player.getCenter());
-        synchronized (gameObjectsActive){
-            for(GameObject gameObject : gameObjectsActive){
-                if(isOnScreen(gameObject, painter.getRenderScreen()) && !gameObject.isDestroyed()){
+        synchronized (backgroundObjects){
+            for(GameObject bgObject : backgroundObjects){
+                if(!bgObject.isDestroyed()){
+                    painter.paint(bgObject);
+                }
+            }
+        }
+        synchronized (gameObjects){
+            for(GameObject gameObject : gameObjects){
+                if(!gameObject.isDestroyed()){
                     painter.paint(gameObject);
                 }
             }
@@ -217,9 +231,21 @@ public class World {
         addObject(toAdd);
     }
 
-    public void add(List<Enemy> toAdd){
+    public void add(BackGroundObject toAdd){
+        backgroundObjects.add(toAdd);
+        //addObject(toAdd);
+        toAdd.setWorld(this);
+    }
+
+    public void addEnemies(List<Enemy> toAdd){
         for(Enemy enemy : toAdd){
             add(enemy);
+        }
+    }
+
+    public void addSolids(List<? extends SolidObject> toAdd){
+        for(SolidObject solid : toAdd){
+            add(solid);
         }
     }
 

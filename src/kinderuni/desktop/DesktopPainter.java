@@ -1,6 +1,7 @@
 package kinderuni.desktop;
 
 import functionalJava.data.shape.box.Box;
+import functionalJava.data.shape.box.FastAccessBox;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.Painter;
@@ -31,15 +32,35 @@ public class DesktopPainter implements Painter{
 
     @Override
     public void paint(GameObject abstractGameObject, DoubleTupel center) {
-        paint(abstractGameObject.getGraphics(), center);
+        paint(abstractGameObject.getGraphics(), center, abstractGameObject.getDistanceFactor());
     }
 
     @Override
     public void paint(GraphicsObject graphics, DoubleTupel center) {
-        DoubleTupel screenDelta = graphicsComponent.getCompSize().div(2, -2);
+        paint(graphics, center, 1);
+    }
+
+    @Override
+    public void paint(GraphicsObject graphics, DoubleTupel center, double distanceFactor) {
+        DoubleTupel screenDim = graphicsComponent.getCompSize();
+        DoubleTupel screenDelta = screenDim.div(2, -2);
         DesktopGraphics desktopGraphics = (DesktopGraphics) graphics;
 //        DoubleTupel center = abstractGameObject.getBoundingBox().getCenter();
-        desktopGraphics.drawTo(g, center.add(screenDelta));
+        DoubleTupel newCenter = center.mult(distanceFactor).add(screenDelta);
+//        Box graphicsBounding = new FastAccessBox(newCenter, graphics.getDimensions());
+//        Box screenArea = new FastAccessBox(screenDim.div(2), screenDim);
+//        if(newCenter.getFirst()<600){
+//            System.out.println("bla");
+//        }
+//        if(screenArea.collides(graphicsBounding)) {
+            desktopGraphics.drawTo(g, newCenter);
+//            g.setColor(Color.BLUE);
+            //g.fillRect((int)screenArea.getLeft()+10, (int)screenArea.getLower()+10, (int)screenArea.getWidth()-20, (int)screenArea.getHeight()-20);
+//        }else{
+//            desktopGraphics.drawTo(g, newCenter);
+//            int i = 0;
+//            desktopGraphics.drawTo(g, newCenter);
+//        }
     }
 
     @Override

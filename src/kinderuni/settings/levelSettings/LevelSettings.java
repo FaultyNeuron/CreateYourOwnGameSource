@@ -28,14 +28,15 @@ public class LevelSettings {
 
     private int[] bg_colour;
 
-    private double vertical_distance;
-    private double horizontal_distance;
+    private double vertical_platform_distance;
+    private double horizontal_platform_distance;
 
     private List<IdParametersSettings> enemies = new LinkedList<>();
     private List<IdParametersSettings> platforms = new LinkedList<>();
     private GoalSettings goal;
     private FloorSettings floor;
     private List<EffectSettings> active_effects = new LinkedList<>();
+    private List<IdParametersSettings> back_ground_objects = new LinkedList<>();
 
     public double getAirFriction() {
         return airFriction;
@@ -104,11 +105,11 @@ public class LevelSettings {
     }
 
     public double getVerticalDistance() {
-        return vertical_distance;
+        return vertical_platform_distance;
     }
 
     public double getHorizontalDistance() {
-        return horizontal_distance;
+        return horizontal_platform_distance;
     }
 
     public boolean hasBgColour(){
@@ -116,5 +117,9 @@ public class LevelSettings {
     }
     public Color getBgColour() {
         return new Color(bg_colour[0], bg_colour[1], bg_colour[2]);
+    }
+
+    public List<IdParametersSettings> getBackGroundObjects() {
+        return back_ground_objects;
     }
 }

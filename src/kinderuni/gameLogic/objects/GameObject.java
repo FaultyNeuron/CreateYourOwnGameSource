@@ -22,6 +22,7 @@ public interface GameObject {
     public void moveTo(DoubleTupel delta);
     public DoubleTupel getDimensions();
     public Box getBoundingBox();
+    public double getDistanceFactor();
 
     public boolean isSolid();
 

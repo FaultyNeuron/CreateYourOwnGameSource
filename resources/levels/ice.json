@@ -11,8 +11,8 @@
   "player_x" : 50,
   "player_y" : 50,
 
-  "vertical_distance" : 75,
-  "horizontal_distance" : 100,
+  "vertical_platform_distance" : 100,
+  "horizontal_platform_distance" : 100,
 
   "bg_colour" : [180, 180, 255],
 
@@ -20,6 +20,10 @@
     {"id" : "standard_walking", "count" : 5},
     {"id" : "standard_jumping", "count" : 5},
     {"id" : "standard_boss", "count" : 1}
+  ],
+
+  "back_ground_objects" : [
+    {"id" : "cloud", "count" : 20}
   ],
 
   "platforms":[

@@ -31,6 +31,7 @@ public abstract class AbstractGameObject implements GameObject {
     private Object stickyLock = new Object();
     private int lastTimeMeasured;
     private HorizontalDirection direction = HorizontalDirection.RIGHT;
+    private double distanceFactor = 1;
 
     @Override
     public void update(int time) {
@@ -110,6 +111,11 @@ public abstract class AbstractGameObject implements GameObject {
     @Override
     public Box getBoundingBox() {
         return boundingBox;
+    }
+
+    @Override
+    public double getDistanceFactor() {
+        return distanceFactor;
     }
 
     @Override
@@ -267,5 +273,9 @@ public abstract class AbstractGameObject implements GameObject {
     @Override
     public boolean hasGraphics() {
         return graphics!=null;
+    }
+
+    public void setDistanceFactor(double distanceFactor) {
+        this.distanceFactor = distanceFactor;
     }
 }
