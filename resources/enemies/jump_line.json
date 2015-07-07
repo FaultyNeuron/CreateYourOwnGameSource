@@ -1,0 +1,30 @@
+{
+    "graphics" : {
+        "id" : "jump_line",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [64, 179, 118],
+        "width" : 60,
+        "height" : 80
+    },
+
+    "width" : 5,
+    "hp" : 1,
+    "damage" : 1,
+    "walking_speed" : 0.8,
+    "flying_speed" : 0,
+
+    "gravity_factor" : 1,
+    "jump_power" : 0,
+    "jump_pause" : 0,
+    "drop" : [
+        {"id" : "coin", "probability" : 7},
+        {"id" : "heart", "probability" : 4},
+        {"id" : "life", "probability" : 1},
+        {"id" : "ice_flower", "probability" : 100},
+        {"id" : "fire_flower", "probability" : 1},
+        {"id" : "minus_gravity", "probability" : 1},
+        {"id" : "plus_gravity", "probability" : 1},
+        {"id" : "speed_boost", "probability" : 1},
+        {"id" : "star", "probability" : 1}
+    ]
+}
