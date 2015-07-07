@@ -109,7 +109,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
                         -(int) graphicsBounding.getUpper(),
                         (int) graphicsBounding.getWidth(),
                         (int) graphicsBounding.getHeight());
-                drawTo.setColor(Color.BLACK);
+                //drawTo.setColor(Color.BLACK);
             }
             if(images!=null) {
                 Image image;// = imageIcon[animationLogic.getCurrentFrame()].getImage();
@@ -137,7 +137,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
                         -(int) graphicsBounding.getUpper(),
                         (int) graphicsBounding.getWidth(),
                         (int) graphicsBounding.getHeight());
-                drawTo.setColor(Color.BLACK);
+                //drawTo.setColor(Color.BLACK);
             }
             if (text != null) {
                 drawTo.drawString(text, (int) graphicsBounding.getLeft() + 2, -(int) graphicsBounding.getUpper() + 13);

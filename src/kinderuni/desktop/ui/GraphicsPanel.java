@@ -103,6 +103,7 @@ public class GraphicsPanel extends JPanel implements GraphicsComponent, SystemCo
     private void paintInfo(Graphics g, Info info, int cursorHeight){
         int valueDelta = 35;
         int cursorDelta = 15;
+        g.setColor(Color.BLACK);
         g.drawString(info.getKey(), cursorDelta, cursorHeight);
         g.drawString(info.getValue(), cursorDelta + valueDelta, cursorHeight);
     }

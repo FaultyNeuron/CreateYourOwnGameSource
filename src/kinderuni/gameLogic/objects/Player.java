@@ -165,8 +165,10 @@ public class Player extends LivingObject {
     @Override
     public void stickToBase(SolidObject base) {
         super.stickToBase(base);
-        setSpawnPoint(getCenter());
-        spawnPoint.stickToBase(base);
+        if(spawnPoint.getCenter().sub(getCenter()).length()>500) {
+            setSpawnPoint(getCenter());
+            spawnPoint.stickToBase(base);
+        }
     }
 
     @Override
@@ -180,17 +182,13 @@ public class Player extends LivingObject {
         deActivateEffects();
         if (lifeCount > 0) {
             stop();
-            if(source==null) {
-                setCenter(spawnPoint.getCenter());
-            }
+            setCenter(spawnPoint.getCenter());
             new InvinciblePower(new TimeBasedReverser(200)).activate(this);
             setHp(startingHp);
         } else {
             destroy();
         }
     }
-
-
 
     public int getLifeCount() {
         return lifeCount;
