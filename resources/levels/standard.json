@@ -23,7 +23,7 @@
 
   "back_ground_objects" : [
     {"id" : "cloud", "count" : 40},
-    {"id" : "tree", "count" : 10}
+    {"id" : "simple_tree", "count" : 10}
   ],
 
   "platforms":[

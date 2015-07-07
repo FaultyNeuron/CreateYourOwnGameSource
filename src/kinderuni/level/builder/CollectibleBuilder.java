@@ -6,10 +6,13 @@ import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
 import kinderuni.gameLogic.objects.collectible.effects.TimeBasedReverser;
+import kinderuni.gameLogic.objects.solid.Platform;
 import kinderuni.settings.levelSettings.objectSettings.CollectibleSettings;
 import kinderuni.settings.levelSettings.objectSettings.GameObjectSettings;
 
 import java.lang.System;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -41,6 +44,34 @@ public class CollectibleBuilder extends PhysicsObjectBuilder{
         return toReturn;
     }
 
+    public List<Collectible> buildCoinsForPlatform(Platform platform) {
+
+        int cnt = 3;
+        CollectibleSettings collectibleSettings = ; //Coins
+
+        return buildForPlatform(platform, cnt, collectibleSettings);
+    }
+
+    public List<Collectible> buildForPlatform(Platform platform, int cnt, CollectibleSettings collectibleSettings) {
+        List<Collectible> collectibleList = new LinkedList<>();
+        DoubleTupel center = platform.getCenter();
+        DoubleTupel dim = platform.getDimensions();
+        double leftSide = center.getFirst() - dim.getFirst()/2;
+        double yCollectible = center.getSecond() + dim.getSecond()/2 + collectibleSettings.getDimensions().getSecond()/2;
+        double xDistance = dim.getFirst()/(cnt+1);
+
+        for(int i = 0; i < cnt; i++){
+            double xCollectible = leftSide + (i+1) * xDistance;
+
+            Collectible collectible = build(collectibleSettings);
+            collectible.setCenter(new DoubleTupel(xCollectible, yCollectible));
+
+            collectibleList.add(collectible);
+        }
+
+        return collectibleList;
+    }
+
     public void attach(Collectible collectible, CollectibleSettings settings) {
         if(settings.hasDropAcceleration()){
             collectible.setDropAcceleration(settings.getDropAcceleration());
@@ -62,4 +93,6 @@ public class CollectibleBuilder extends PhysicsObjectBuilder{
     public EffectBuilder getEffectBuilder() {
         return effectBuilder;
     }
+
+
 }
