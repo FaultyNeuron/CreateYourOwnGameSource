@@ -142,7 +142,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
             if (text != null) {
                 drawTo.drawString(text, (int) graphicsBounding.getLeft() + 2, -(int) graphicsBounding.getUpper() + 13);
             }
-            System.out.println("Drawing FileGraphics to x=" + (int) boundingBox.getLeft() + " y=" +  (int) boundingBox.getUpper() + " width=" + (int) boundingBox.getWidth() + " height=" + (int) boundingBox.getLeft());
+//            System.out.println("Drawing FileGraphics to x=" + (int) boundingBox.getLeft() + " y=" +  (int) boundingBox.getUpper() + " width=" + (int) boundingBox.getWidth() + " height=" + (int) boundingBox.getLeft());
 
         }
     }

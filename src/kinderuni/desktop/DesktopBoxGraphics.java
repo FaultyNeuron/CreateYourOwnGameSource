@@ -59,7 +59,7 @@ public class DesktopBoxGraphics extends DesktopGraphics {
                     drawTo.drawString(text, (int) boundingBox.getLeft() + 2, -(int) boundingBox.getUpper() + 13);
                 }
             }
-            System.out.println("Drawing BoxGraphics to x=" + (int) boundingBox.getLeft() + " y=" +  (int) boundingBox.getUpper() + " width=" + (int) boundingBox.getWidth() + " height=" + (int) boundingBox.getLeft());
+//            System.out.println("Drawing BoxGraphics to x=" + (int) boundingBox.getLeft() + " y=" +  (int) boundingBox.getUpper() + " width=" + (int) boundingBox.getWidth() + " height=" + (int) boundingBox.getLeft());
         }
     }
 

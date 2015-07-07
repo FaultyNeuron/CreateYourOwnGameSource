@@ -2,8 +2,8 @@ package kinderuni.pictureEditor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
+//import java.util.Spliterator;
+//import java.util.function.Consumer;
 
 /**
  * Created by markus on 29.06.15.

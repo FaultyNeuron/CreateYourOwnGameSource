@@ -25,7 +25,7 @@ public class DragAndDropComponent extends JComponent {
         new FileDrop(this, new FileDrop.Listener() {
             @Override
             public void filesDropped(File[] files) {
-                callback.filesDropped(files);
+                DragAndDropComponent.this.callback.filesDropped(files);
             }
         });
 

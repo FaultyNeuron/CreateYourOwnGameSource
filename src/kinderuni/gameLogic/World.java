@@ -90,15 +90,16 @@ public class World {
     }
 
     private <A> void destroy(Set<A> base, Set<A> baseActive, Set<A> toDestroy){
-        synchronized(base) {
-            if(baseActive!=null) {
-                synchronized (baseActive) {
-                    base.removeAll(toDestroy);
-                    baseActive.removeAll(toDestroy);
-                }
-            }else{
+        if(toDestroy.size()>0) {
+            synchronized (base) {
                 base.removeAll(toDestroy);
             }
+            if (baseActive != null) {
+                synchronized (baseActive) {
+                    baseActive.removeAll(toDestroy);
+                }
+            }
+            toDestroy.clear();
         }
     }
 
@@ -166,11 +167,10 @@ public class World {
                 }
             }
         }
-        synchronized (gameObjects){
-            for(GameObject gameObject : gameObjects){
-                if(!gameObject.isDestroyed()){
-                    painter.paint(gameObject);
-                }
+        //synchronized (gameObjects){
+        for(GameObject gameObject : new LinkedList<>(gameObjects)){
+            if(!gameObject.isDestroyed()){
+                painter.paint(gameObject);
             }
         }
     }
