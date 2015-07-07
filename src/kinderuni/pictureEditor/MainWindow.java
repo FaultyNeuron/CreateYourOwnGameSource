@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class MainWindow extends JFrame implements TaskFinishedCallback {
     private GeneralView generalView;
     private DetailView detailView;
-    private DragAndDropComponent dragAndDropComponent;
+    //private DragAndDropComponent dragAndDropComponent;
     private ArrayList<ImageSnippet> imageSnippets = new ArrayList<>();
 
     public MainWindow() {
