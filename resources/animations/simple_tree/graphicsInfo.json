@@ -1,5 +1,5 @@
 {
     "fps" : 10,
     "file_type" : "gif",
-    "loop_type" : "BACK_AND_FORTH"
+    "loop_type" : "START_OVER"
 }

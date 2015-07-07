@@ -1,0 +1,12 @@
+{
+    "graphics" : {
+        "id" : "simple_tree",
+        //"line_colour" : [0, 0, 0],
+        //"bg_colour" : [64, 179, 118],
+        "width" : 100,
+        "height" : 200
+    },
+
+    "y_range" : [100, 100],
+    "distance_factor" : 1
+}
