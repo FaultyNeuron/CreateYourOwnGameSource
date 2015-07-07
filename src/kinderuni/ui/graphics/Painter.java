@@ -4,7 +4,6 @@ import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.GameObject;
 import kinderuni.ui.GraphicsComponent;
 
-import java.awt.*;
 
 /**
  * Created by Georg Plaz.
