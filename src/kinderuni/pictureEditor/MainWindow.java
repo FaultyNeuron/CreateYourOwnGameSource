@@ -29,6 +29,7 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
         this.setMinimumSize(new Dimension(800, 500));
         this.generalView = new GeneralView(imageSnippets);
         try {
+//            generalView.setImage("/home/markus/Downloads/test.png");
             generalView.setImage("/home/markus/Downloads/roller.jpg");
         } catch (IOException e) {
             e.printStackTrace();

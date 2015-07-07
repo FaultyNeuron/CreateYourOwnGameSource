@@ -59,15 +59,16 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     private void addRectangle(Rectangle rectangle) {
-        this.deactivateAllResizables();
         ImageSnippet selection = ImageSnippetFactory.getImageSelection();
-        selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()));
-        Resizable resizable = selection.getResizable();
-        resizable.setResizableContainerCallback(this);
-        resizable.addKeyListener(this);
-        resizable.setActive(true);
-        this.imageSnippets.add(selection);
-        this.add(resizable);
+        if (selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()))) {
+            this.deactivateAllResizables();
+            Resizable resizable = selection.getResizable();
+            resizable.setResizableContainerCallback(this);
+            resizable.addKeyListener(this);
+            resizable.setActive(true);
+            this.imageSnippets.add(selection);
+            this.add(resizable);
+        }
         this.setTmpRectangle(null);
     }
 
