@@ -3,6 +3,7 @@ package kinderuni.level.builder;
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.Goal;
+import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.DropBuilder;
 import kinderuni.gameLogic.objects.collectible.effects.*;
 import kinderuni.gameLogic.objects.solid.Platform;
@@ -13,6 +14,8 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -98,9 +101,9 @@ public class LevelBuilder {
 //        DoubleTupel bounding = new DoubleTupel(500, 25);
         while (lastEnd < levelBox.getRight()) {
             GraphicsObject graphicsObject;
-            if(floorSettings.getGraphicsSettings()==null){
+            if (floorSettings.getGraphicsSettings() == null) {
                 graphicsObject = system.createTextBoxGraphics(500, 25, "floor");
-            }else{
+            } else {
                 graphicsObject = system.createGraphics(floorSettings.getGraphicsSettings());
             }
             double width = graphicsObject.getDimensions().getFirst();
@@ -131,6 +134,9 @@ public class LevelBuilder {
 //                }
 //            }
         }
+
+
+
         /*for (IdParametersSettings idSettings : levelSettings.getPlatforms()) {
             if(!system.getSettings().hasPlatformSettings(idSettings.getId())){
                 throw new IdNotFoundException("platform", idSettings.getId());
@@ -157,7 +163,36 @@ public class LevelBuilder {
             }
         }
 
-        level.getWorld().addSolids(platformBuilder.buildAll(levelSettings));
+
+        List<Platform> platformList = platformBuilder.buildAll(levelSettings);
+        level.getWorld().addSolids(platformList);
+
+        // Add collectables
+        for (IdParametersSettings idSettings : levelSettings.getCollectibles()) {
+            if (!system.getSettings().hasEnemySettings(idSettings.getId())) {
+                throw new IdNotFoundException("collectible", idSettings.getId());
+            }
+            CollectibleSettings collectibleSettings = system.getSettings().getCollectibleSettings(idSettings.getId());
+            // darf ich hier mit der Liste so arbeiten?
+
+            if (!platformList.isEmpty()) {
+                Collections.shuffle(platformList);
+                Platform platform = platformList.get(0);
+                platformList.remove(platform);
+
+                for (Collectible collectible : collectibleBuilder.buildForPlatform(platform, 1 ,collectibleSettings)) {
+                    level.getWorld().add(collectible);
+                }
+            }
+        }
+
+        //List<Collectible> collectibleList = collectibleBuilder.buildCoinsForPlatform(platform);
+        //for(Collectible collectible : collectibleList){
+        //   level.getWorld().add(collectible);
+        //}
+
+
+        //level.getWorld().addSolids(platformBuilder.buildAll(levelSettings));
 
         GoalSettings goalSettings = levelSettings.getGoalSettings();
         Goal goal = new Goal(); //todo create goal builder
