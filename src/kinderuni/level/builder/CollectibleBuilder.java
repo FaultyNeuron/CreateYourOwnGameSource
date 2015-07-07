@@ -47,9 +47,10 @@ public class CollectibleBuilder extends PhysicsObjectBuilder{
     public List<Collectible> buildCoinsForPlatform(Platform platform) {
 
         int cnt = 3;
-        CollectibleSettings collectibleSettings = ; //Coins
+        //CollectibleSettings collectibleSettings = ; //Coins
 
-        return buildForPlatform(platform, cnt, collectibleSettings);
+        //return buildForPlatform(platform, cnt, collectibleSettings);
+        return null;
     }
 
     public List<Collectible> buildForPlatform(Platform platform, int cnt, CollectibleSettings collectibleSettings) {
