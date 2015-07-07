@@ -1,6 +1,5 @@
 package kinderuni.settings.levelSettings.objectSettings;
 
-import java.awt.*;
 
 /**
  * Created by Georg Plaz.

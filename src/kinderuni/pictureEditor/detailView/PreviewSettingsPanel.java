@@ -1,7 +1,7 @@
 package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
-import kinderuni.pictureEditor.Language;
+import kinderuni.pictureEditor.language.Language;
 
 import javax.swing.*;
 import java.awt.*;
