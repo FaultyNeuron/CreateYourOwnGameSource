@@ -1,4 +1,4 @@
-package kinderuni.pictureEditor;
+package kinderuni.pictureEditor.language;
 
 /**
  * Created by markus on 25.06.15.

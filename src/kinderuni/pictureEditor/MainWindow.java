@@ -1,6 +1,9 @@
 package kinderuni.pictureEditor;
 
-import kinderuni.pictureEditor.detailView.DetailPanel;
+import kinderuni.pictureEditor.detailView.DetailView;
+import kinderuni.pictureEditor.generalView.DragAndDropComponent;
+import kinderuni.pictureEditor.generalView.GeneralView;
+import kinderuni.pictureEditor.language.Language;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
  */
 public class MainWindow extends JFrame implements TaskFinishedCallback {
     private GeneralView generalView;
-    private DetailPanel detailView;
+    private DetailView detailView;
     private DragAndDropComponent dragAndDropComponent;
     private ArrayList<ImageSnippet> imageSnippets = new ArrayList<>();
 
@@ -71,7 +74,7 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
 
     @Override
     public void taskFinished(Object result) {
-        detailView = new DetailPanel(imageSnippets);
+        detailView = new DetailView(imageSnippets);
         this.remove(generalView);
         this.add(detailView);
         this.revalidate();
@@ -87,12 +90,12 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
             e.printStackTrace();
             return;
         }
-        ImageSelectionFactory.setOriginalImage(image);
+        ImageSnippetFactory.setOriginalImage(image);
         int width = 500;
         int height = 500;
         for (int h=height; h < image.getHeight(); h += height){
             for (int w=width; w < image.getWidth(); w += width) {
-                ImageSnippet imageSnippet = ImageSelectionFactory.getImageSelection();
+                ImageSnippet imageSnippet = ImageSnippetFactory.getImageSelection();
                 imageSnippet.setSnippetBounds(w - width, h - height, width, height);
                 imageSnippets.add(imageSnippet);
             }

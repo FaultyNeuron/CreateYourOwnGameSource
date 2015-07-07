@@ -1,5 +1,7 @@
 package kinderuni.pictureEditor;
 
+import kinderuni.pictureEditor.generalView.Resizable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
