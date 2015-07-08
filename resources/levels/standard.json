@@ -21,6 +21,10 @@
     //{"id" : "standard_boss", "count" : 1}
   ],
 
+  "collectibles" : [
+    {"id" : "coin", "count" : 100}
+  ],
+
   "back_ground_objects" : [
     {"id" : "cloud", "count" : 40},
     {"id" : "simple_tree", "count" : 10}

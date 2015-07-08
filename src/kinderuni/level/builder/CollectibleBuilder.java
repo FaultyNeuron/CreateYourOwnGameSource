@@ -58,7 +58,7 @@ public class CollectibleBuilder extends PhysicsObjectBuilder{
         DoubleTupel center = platform.getCenter();
         DoubleTupel dim = platform.getDimensions();
         double leftSide = center.getFirst() - dim.getFirst()/2;
-        double yCollectible = center.getSecond() + dim.getSecond()/2 + collectibleSettings.getDimensions().getSecond()/2;
+        double yCollectible = center.getSecond() + dim.getSecond()/2 + build(collectibleSettings).getDimensions().getSecond()/2;
         double xDistance = dim.getFirst()/(cnt+1);
 
         for(int i = 0; i < cnt; i++){

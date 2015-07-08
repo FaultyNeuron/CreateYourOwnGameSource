@@ -169,22 +169,26 @@ public class LevelBuilder {
 
         // Add collectables
         for (IdParametersSettings idSettings : levelSettings.getCollectibles()) {
-            if (!system.getSettings().hasEnemySettings(idSettings.getId())) {
+            if (!system.getSettings().hasCollectibleSettings(idSettings.getId())) {
                 throw new IdNotFoundException("collectible", idSettings.getId());
             }
             CollectibleSettings collectibleSettings = system.getSettings().getCollectibleSettings(idSettings.getId());
+            for (int i = 0; i < idSettings.getCount()/3; i++){
             // darf ich hier mit der Liste so arbeiten?
 
-            if (!platformList.isEmpty()) {
-                Collections.shuffle(platformList);
-                Platform platform = platformList.get(0);
-                platformList.remove(platform);
+                if (!platformList.isEmpty()) {
+                    Collections.shuffle(platformList);
+                    Platform platform = platformList.get(0);
+                    platformList.remove(platform);
 
-                for (Collectible collectible : collectibleBuilder.buildForPlatform(platform, 1 ,collectibleSettings)) {
-                    level.getWorld().add(collectible);
+                    for (Collectible collectible : collectibleBuilder.buildForPlatform(platform, 3, collectibleSettings)) {
+                        level.getWorld().add(collectible);
+                    }
                 }
             }
         }
+
+
 
         //List<Collectible> collectibleList = collectibleBuilder.buildCoinsForPlatform(platform);
         //for(Collectible collectible : collectibleList){
