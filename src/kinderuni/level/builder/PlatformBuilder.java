@@ -11,6 +11,7 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.LevelSettings;
 import kinderuni.settings.levelSettings.objectSettings.PlatformSettings;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -68,6 +69,7 @@ public class PlatformBuilder extends GameObjectBuilder {
             for (int cnt = 0; cnt < idSettings.getCount(); cnt++)
                 platformSettingsList.add(system.getSettings().getPlatformSettings(idSettings.getId()));
 
+        Collections.shuffle(platformSettingsList, getRandom());
         // iterate over all platforms in list
         for (PlatformSettings platformSettings : platformSettingsList){
             double yFound = -1;
