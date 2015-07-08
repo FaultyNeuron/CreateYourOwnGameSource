@@ -6,7 +6,6 @@ import kinderuni.settings.levelSettings.objectSettings.EffectSettings;
 import kinderuni.settings.levelSettings.objectSettings.FloorSettings;
 import kinderuni.settings.levelSettings.objectSettings.GoalSettings;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 

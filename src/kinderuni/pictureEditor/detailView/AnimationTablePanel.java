@@ -1,7 +1,8 @@
 package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
-import kinderuni.pictureEditor.Language;
+import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
+import kinderuni.pictureEditor.language.Language;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Created by markus on 26.06.15.
@@ -23,13 +25,13 @@ public class AnimationTablePanel extends JPanel {
     private Dimension imageIconSize = new Dimension(100, 100);
     private int selectedImageIndex = 0;
     private AnimationTableModel tableModel;
-    private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private DetailPanelCallback detailPanelCallback;
     private boolean leftButtonAction = false, rightButtonAction = false, deleteButtonAction = false;
 
-    public AnimationTablePanel(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
-        this.tableModel = new AnimationTableModel(imageSnippets);
+    public AnimationTablePanel() {
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
+        this.tableModel = new AnimationTableModel(imageSnippetContainer);
 
         this.setLayout(new BoxLayout(this, this.getWidth()));
 
@@ -77,8 +79,9 @@ public class AnimationTablePanel extends JPanel {
             }
         });
         animationTable.setRowSelectionAllowed(false);
+        System.err.println("Size of imageSnippetContainer: " + imageSnippetContainer.size());
+        animationTable.setRowHeight(((ImageIcon) tableModel.getValueAt(0, 0)).getIconHeight() + 10);
         setColumnWith();
-        animationTable.setRowHeight(((ImageIcon)tableModel.getValueAt(0, 0)).getIconHeight()+10);
 
         JPanel tableContainer = new JPanel();
         tableContainer.add(animationTable);
@@ -95,6 +98,8 @@ public class AnimationTablePanel extends JPanel {
         verticalBox.add(scrollPane);
         verticalBox.add(horizontalBox);
         this.add(verticalBox);
+
+        this.addKeyListener(SaveKeyListener.getInstance());
     }
 
     private void setColumnWith() {
@@ -106,8 +111,12 @@ public class AnimationTablePanel extends JPanel {
         }
     }
 
+    public void init() {
+//        animationTable.setRowHeight(((ImageIcon)tableModel.getValueAt(0, 0)).getIconHeight()+10);
+    }
+
     private void updateTableSelection() {
-        if (selectedImageIndex >= 0 && selectedImageIndex < imageSnippets.size()) {
+        if (selectedImageIndex >= 0 && selectedImageIndex < imageSnippetContainer.size()) {
             animationTable.clearSelection();
             animationTable.addColumnSelectionInterval(selectedImageIndex, selectedImageIndex);
             animationTable.addRowSelectionInterval(0, 0);
@@ -123,12 +132,12 @@ public class AnimationTablePanel extends JPanel {
     }
 
     private class AnimationTableModel extends AbstractTableModel {
-        private ArrayList<ImageSnippet> data;
+        private ThreadSaveImageSnippetContainer imageSnippetContainer;
 //        private static final int COLUMS = 1;
         private static final int ROWS = 1;
 
-        public AnimationTableModel(ArrayList<ImageSnippet> data) {
-            this.data = data;
+        public AnimationTableModel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+            this.imageSnippetContainer = imageSnippetContainer;
         }
 
         @Override
@@ -138,7 +147,7 @@ public class AnimationTablePanel extends JPanel {
 
         @Override
         public int getColumnCount() {
-            return data.size();
+            return imageSnippetContainer.size();
         }
 
         @Override
@@ -158,38 +167,46 @@ public class AnimationTablePanel extends JPanel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return data.get(columnIndex).getDefaultSizeImageIcon();
+            try {
+                return imageSnippetContainer.get(columnIndex).getDefaultSizeImageIcon();
+            } catch (NoSuchElementException e) {
+                return null;
+            }
         }
 
         public int moveLeft(int index) {
-            if (index < 1 || index > data.size()) {
+            if (index < 1 || index > imageSnippetContainer.size()) {
                 return index;
             }
-            ImageSnippet tmp = data.get(index-1);
-            data.set(index-1, data.get(index));
-            data.set(index, tmp);
-            fireTableStructureChanged();
-            return --index;
+            try {
+                ImageSnippet tmp = imageSnippetContainer.get(index - 1);
+                imageSnippetContainer.set(index - 1, imageSnippetContainer.get(index));
+                imageSnippetContainer.set(index, tmp);
+                fireTableStructureChanged();
+                return --index;
+            } catch (NoSuchElementException e) {
+                return index;
+            }
         }
 
         public int moveRight(int index) {
-            if (index < 0 || index >= data.size()-1) {
+            if (index < 0 || index >= imageSnippetContainer.size()-1) {
                 return index;
             }
-            ImageSnippet tmp = data.get(index+1);
-            data.set(index+1, data.get(index));
-            data.set(index, tmp);
+            ImageSnippet tmp = imageSnippetContainer.get(index+1);
+            imageSnippetContainer.set(index+1, imageSnippetContainer.get(index));
+            imageSnippetContainer.set(index, tmp);
             fireTableStructureChanged();
             return ++index;
         }
 
         public int delete(int index) {
-            if (index < 0 || index > data.size()) {
+            if (index < 0 || index > imageSnippetContainer.size()) {
                 return index;
             }
-            data.remove(index);
+            imageSnippetContainer.remove(index);
             fireTableStructureChanged();
-            if (index == data.size()) {
+            if (index == imageSnippetContainer.size()) {
                 return index-1;
             }
             return index;

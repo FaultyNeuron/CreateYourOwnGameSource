@@ -1,7 +1,8 @@
 package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
-import kinderuni.pictureEditor.Language;
+import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
+import kinderuni.pictureEditor.language.Language;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,8 @@ import java.util.ArrayList;
  * Created by markus on 27.06.15.
  */
 public class FrameSettingsPanel extends JPanel {
-    private ArrayList<ImageSnippet> imageSnippets;
+//    private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private int currentSnippet;
     private JPanel framePanel;
     private JScrollBar rThresholdScrollBar, gThresholdScrollBar, bThresholdScrollBar;
@@ -30,8 +32,9 @@ public class FrameSettingsPanel extends JPanel {
     private static final String SCROLL_BAR_VALUE_STRING = "r%d g%d  b%d";
     private int rThreshold = defaultThreshold, gThreshold = defaultThreshold, bThreshold = defaultThreshold;
 
-    public FrameSettingsPanel(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
+    public FrameSettingsPanel() {
+//        this.imageSnippets = imageSnippets;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
         this.currentSnippet = 0;
 
         framePanel = new FramePanel();
@@ -95,6 +98,8 @@ public class FrameSettingsPanel extends JPanel {
         this.add(horizontalBox);
 
         this.setBackground(Color.WHITE);
+
+        this.addKeyListener(SaveKeyListener.getInstance());
     }
 
     private void updateThresholdValueLabel() {
@@ -102,12 +107,12 @@ public class FrameSettingsPanel extends JPanel {
     }
 
     private void calculateTransparency() {
-        imageSnippets.get(currentSnippet).calculateFinalFrameTransparency(rThreshold, gThreshold, bThreshold);
+        imageSnippetContainer.get(currentSnippet).calculateFinalFrameTransparency(rThreshold, gThreshold, bThreshold);
         framePanel.repaint();
     }
 
     private void resetFinalFrame() {
-        imageSnippets.get(currentSnippet).resetFinalFrame();
+        imageSnippetContainer.get(currentSnippet).resetFinalFrame();
         framePanel.repaint();
     }
 
@@ -120,7 +125,7 @@ public class FrameSettingsPanel extends JPanel {
     }
 
     private boolean isIndexValid() {
-        return currentSnippet >= 0 && currentSnippet < imageSnippets.size();
+        return currentSnippet >= 0 && currentSnippet < imageSnippetContainer.size();
     }
 
     private class FramePanel extends JPanel {
@@ -136,7 +141,7 @@ public class FrameSettingsPanel extends JPanel {
                 Graphics2D graphics2D = (Graphics2D) g;
 //                Composite composite = AlphaComposite.getInstance(AlphaComposite.CLEAR, 0f);
 //                graphics2D.setComposite(composite);
-                graphics2D.drawImage(imageSnippets.get(currentSnippet).getFinalFrame(), 0, 0, null);
+                graphics2D.drawImage(imageSnippetContainer.get(currentSnippet).getFinalFrame(), 0, 0, null);
 //                graphics2D.dispose();
             }
         }

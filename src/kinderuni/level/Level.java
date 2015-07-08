@@ -12,9 +12,7 @@ import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.InputRetriever;
 import kinderuni.ui.graphics.Paintable;
 import kinderuni.ui.graphics.Painter;
-import util.TickTock;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 

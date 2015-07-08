@@ -53,6 +53,10 @@ public class SymTupel<A> extends Tupel<A, A> implements Iterable<A>{
         public A next() {
             return get(pos++);
         }
+
+        @Override
+        public void remove() {
+        }
     }
 
 }
