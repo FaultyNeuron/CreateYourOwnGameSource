@@ -15,6 +15,7 @@ import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -168,6 +169,8 @@ public class LevelBuilder {
         level.getWorld().addSolids(platformList);
 
         // Add collectables
+        Collections.shuffle(platformList);
+        Iterator<Platform> it = platformList.iterator();
         for (IdParametersSettings idSettings : levelSettings.getCollectibles()) {
             if (!system.getSettings().hasCollectibleSettings(idSettings.getId())) {
                 throw new IdNotFoundException("collectible", idSettings.getId());
@@ -176,14 +179,14 @@ public class LevelBuilder {
             for (int i = 0; i < idSettings.getCount()/3; i++){
             // darf ich hier mit der Liste so arbeiten?
 
-                if (!platformList.isEmpty()) {
-                    Collections.shuffle(platformList);
-                    Platform platform = platformList.get(0);
-                    platformList.remove(platform);
-
+                if (it.hasNext()) {
+                    Platform platform = it.next();
                     for (Collectible collectible : collectibleBuilder.buildForPlatform(platform, 3, collectibleSettings)) {
+                        collectible.stickToBase(platform);
                         level.getWorld().add(collectible);
                     }
+                }else{
+                    break;
                 }
             }
         }
