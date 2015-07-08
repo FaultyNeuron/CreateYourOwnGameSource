@@ -5,8 +5,6 @@ import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +16,7 @@ public class DetailView extends JPanel implements DetailPanelCallback, SaveCallb
     private PreviewSettingsPanel previewSettingsPanel;
     private ArrayList<ImageSnippet> imageSnippets;
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
+    private SavePanel savePanel;
 
     public DetailView() {
         this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
@@ -41,8 +40,12 @@ public class DetailView extends JPanel implements DetailPanelCallback, SaveCallb
         verticalBox.add(frameSettingsPanel);
         verticalBox.add(previewSettingsPanel);
 
+        savePanel = new SavePanel();
+
         this.add(animationTablePanel, BorderLayout.NORTH);
-        this.add(verticalBox, BorderLayout.CENTER);
+//        this.add(verticalBox, BorderLayout.CENTER);
+
+        this.add(savePanel, BorderLayout.CENTER);
 
         this.addKeyListener(SaveKeyListener.getInstance());
 
@@ -61,7 +64,7 @@ public class DetailView extends JPanel implements DetailPanelCallback, SaveCallb
 
     @Override
     public void save() {
-        SaveWindow saveWindow = new SaveWindow();
+        SavePanel savePanel = new SavePanel();
         System.err.println("Save callback called .....");
     }
 }

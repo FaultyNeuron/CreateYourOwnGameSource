@@ -18,46 +18,46 @@ import java.util.Enumeration;
 /**
  * Created by markus on 08.07.15.
  */
-public class SaveWindow extends JFrame {
+public class SavePanel extends JPanel {
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private ContentPanel contentPanel;
 
-    public SaveWindow() {
+    public SavePanel() {
         this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
-        this.setMinimumSize(new Dimension(800, 500));
+//        this.setMinimumSize(new Dimension(800, 500));
         this.contentPanel = new ContentPanel();
         this.add(contentPanel);
 
-        this.setVisible(true);
+//        this.setVisible(true);
     }
 
     private class ContentPanel extends JPanel {
         private JTextField fileEndingsField, folderField, fpsTextField;
-        private JLabel fileEndingsLabel, fpsLabel, selectFolderLabel;
+        private JLabel fileEndingsLabel, fpsLabel, selectFolderLabel, animationTypeLabel;
         private JButton saveButton;
         private JRadioButton idleButton, walkingButton, jumpingButton, startOverButton;
-        ButtonGroup buttonGroupLoopType, buttonGroupAnimationType;
-        ArrayList<JLabel> warnings = new ArrayList<>();
-        Box warningsBox = Box.createVerticalBox();
-
-
+        private ButtonGroup buttonGroupLoopType, buttonGroupAnimationType;
+        private ArrayList<JLabel> warnings = new ArrayList<>();
+        private Box warningsBox = Box.createVerticalBox();
 
         public ContentPanel() {
             fileEndingsLabel = new JLabel("Die Bilder werden wie folgt nummeriert sein:");
             fileEndingsField = new JTextField(getFileNameFieldText());
-            selectFolderLabel = new JLabel("Ordner der Animation auswählen");
+            selectFolderLabel = new JLabel("Ordner der Animation angeben");
             folderField = new JTextField();
+            animationTypeLabel = new JLabel("Animationstyp angeben");
             idleButton = new JRadioButton("idle");
             walkingButton = new JRadioButton("walking");
             jumpingButton = new JRadioButton("jumping");
-            fpsLabel = new JLabel("FPS");
-            fpsTextField = new JTextField("10");
-            startOverButton = new JRadioButton("START_OVER");
+//            fpsLabel = new JLabel("FPS");
+//            fpsTextField = new JTextField("10");
+//            startOverButton = new JRadioButton("START_OVER");
 
             buttonGroupAnimationType = new ButtonGroup();
             buttonGroupAnimationType.add(idleButton);
             buttonGroupAnimationType.add(walkingButton);
             buttonGroupAnimationType.add(jumpingButton);
+            idleButton.setSelected(true);
 
             buttonGroupLoopType = new ButtonGroup();
             buttonGroupLoopType.add(startOverButton);
@@ -69,11 +69,12 @@ public class SaveWindow extends JFrame {
             verticalBox.add(fileEndingsField);
             verticalBox.add(selectFolderLabel);
             verticalBox.add(folderField);
+            verticalBox.add(animationTypeLabel);
             verticalBox.add(idleButton);
             verticalBox.add(walkingButton);
             verticalBox.add(jumpingButton);
-            verticalBox.add(fpsLabel);
-            verticalBox.add(fpsTextField);
+//            verticalBox.add(fpsLabel);
+//            verticalBox.add(fpsTextField);
             verticalBox.add(saveButton);
             verticalBox.add(warningsBox);
 
@@ -81,7 +82,7 @@ public class SaveWindow extends JFrame {
 
             saveButton.addActionListener(new SaveButtonListener());
 
-            this.setBackground(Color.YELLOW);
+//            this.setBackground(Color.YELLOW);
         }
 
         private String getFileNameFieldText() {
