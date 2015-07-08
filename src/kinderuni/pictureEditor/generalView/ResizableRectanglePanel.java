@@ -3,27 +3,26 @@ package kinderuni.pictureEditor.generalView;
 import kinderuni.pictureEditor.ImageSnippet;
 import kinderuni.pictureEditor.ImageSnippetFactory;
 import kinderuni.pictureEditor.TaskFinishedCallback;
+import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by markus on 26.06.15.
  */
-public class ResizableRectanglePanel extends JPanel implements ResizableContainerCallback, KeyListener {
-    private ArrayList<Resizable> resizables = new ArrayList<>();
+public class ResizableRectanglePanel extends JPanel implements ResizableProperties {
     private Rectangle tmpRectangle = null;
     DrawRectangleMouseListener drawRectangleMouseListener = new DrawRectangleMouseListener(10, 10);
-    private int resizableBorderWidth = 7;
     private TaskFinishedCallback taskFinishedCallback = null;
-    private ArrayList<ImageSnippet> imageSnippets;
+//    private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
-    public ResizableRectanglePanel(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
+    public ResizableRectanglePanel() {
+//        this.imageSnippets = imageSnippets;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
 
         this.setBackground(Color.BLUE);
         this.setOpaque(false);
@@ -31,6 +30,11 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
         this.addMouseListener(drawRectangleMouseListener);
         this.addMouseMotionListener(drawRectangleMouseListener);
         this.addKeyListener(this);
+    }
+
+    public void refresh() {
+        this.removeAll();
+        this.repaint();
     }
 
     @Override
@@ -47,28 +51,64 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     public void releaseFocus(Point clickPoint) {
-        for (ImageSnippet selection: imageSnippets) {
-            Resizable resizable = selection.getResizable();
-            Rectangle tempRectangle = new Rectangle(resizable.getX(), resizable.getY(), resizable.getWidth(), resizable.getHeight());
-            Rectangle pointRectangle = new Rectangle((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1);
-            System.out.println("" + tempRectangle + pointRectangle);
-            Rectangle result = SwingUtilities.computeIntersection((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1, tempRectangle);
-            resizable.setActive(result.getWidth() > 0 && result.getHeight() > 0);
-            resizable.repaint();
-        }
+        imageSnippetContainer.releaseFocus(clickPoint);
+//        int size = imageSnippetContainer.size();
+//        try {
+//            for (int i = 0; i < size; i++) {
+//                ImageSnippet selection = imageSnippetContainer.get(i);
+//                Resizable resizable = selection.getResizable();
+//                Rectangle tempRectangle = new Rectangle(resizable.getX(), resizable.getY(), resizable.getWidth(), resizable.getHeight());
+//                Rectangle pointRectangle = new Rectangle((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1);
+//                System.out.println("" + tempRectangle + pointRectangle);
+//                Rectangle result = SwingUtilities.computeIntersection((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1, tempRectangle);
+//                resizable.setActive(result.getWidth() > 0 && result.getHeight() > 0);
+//                resizable.repaint();
+//                size = imageSnippetContainer.size();
+//            }
+//        } catch (NoSuchElementException e) {}
+
+//        for (ImageSnippet selection: imageSnippets) {
+//            Resizable resizable = selection.getResizable();
+//            Rectangle tempRectangle = new Rectangle(resizable.getX(), resizable.getY(), resizable.getWidth(), resizable.getHeight());
+//            Rectangle pointRectangle = new Rectangle((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1);
+//            System.out.println("" + tempRectangle + pointRectangle);
+//            Rectangle result = SwingUtilities.computeIntersection((int)clickPoint.getX(), (int)clickPoint.getY(), 1, 1, tempRectangle);
+//            resizable.setActive(result.getWidth() > 0 && result.getHeight() > 0);
+//            resizable.repaint();
+//        }
     }
 
-    private void addRectangle(Rectangle rectangle) {
-        this.deactivateAllResizables();
-        ImageSnippet selection = ImageSnippetFactory.getImageSelection();
-        selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()));
-        Resizable resizable = selection.getResizable();
-        resizable.setResizableContainerCallback(this);
-        resizable.addKeyListener(this);
-        resizable.setActive(true);
-        this.imageSnippets.add(selection);
-        this.add(resizable);
+    private void addRectangle(Rectangle rectangle, boolean isNew) {
+        System.err.println("Add rectangle called. isNew: " + isNew);
+        ImageSnippet selection = ImageSnippetFactory.getImageSnippet();
+        Rectangle snippet;
+//        System.err.println("Rectangle: " + rectangle);
+        if (!isNew || imageSnippetContainer.size() == 0) {
+            snippet = new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
+        } else {
+            Rectangle tmp = this.imageSnippetContainer.getBorderOfFirstSnippet();
+            snippet = new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) tmp.getWidth(), (int) tmp.getHeight());
+//            System.err.println("Tmp Rectangle: " + rectangle);
+//            System.err.println("Snippet Rectangle: " + snippet);
+        }
+        if (selection.setSnippetRectangle(snippet)) {
+//        if (selection.setSnippetRectangle(new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight()))) {
+            this.deactivateAllResizables();
+            Resizable resizable = selection.getResizable();
+//            resizable.setResizableContainerCallback(this);
+//            resizable.addKeyListener(this);
+            resizable.setActive(true);
+            this.imageSnippetContainer.add(selection);
+//            this.imageSnippets.add(selection);
+            this.add(resizable);
+        }
         this.setTmpRectangle(null);
+    }
+
+    public void replaceImageSnippet(ImageSnippet old, Rectangle newSnippet) {
+        this.remove(old.getResizable());
+        this.imageSnippetContainer.remove(old);
+        addRectangle(newSnippet, false);
     }
 
     private void setTmpRectangle(Rectangle rectangle) {
@@ -77,20 +117,45 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     private void deactivateAllResizables() {
-        for (ImageSnippet selection : imageSnippets) {
-            selection.getResizable().setActive(false);
-        }
+        imageSnippetContainer.deactivateAllResizables();
+//        int size = imageSnippetContainer.size();
+//        try {
+//            for (int i = 0; i < size; i++) {
+//                imageSnippetContainer.get(i).getResizable().setActive(false);
+//                size = imageSnippetContainer.size();
+//            }
+//        } catch (NoSuchElementException e) {}
+//        for (ImageSnippet selection : imageSnippets) {
+//            selection.getResizable().setActive(false);
+//        }
     }
 
     private void removeActiveResizables() {
-        Iterator<ImageSnippet> iterator = imageSnippets.iterator();
-        while (iterator.hasNext()) {
-            ImageSnippet selection = iterator.next();
-            if (selection.getResizable().hasFocus()) {
-                this.remove(selection.getResizable());
-                iterator.remove();
-            }
+        for(ImageSnippet snippet : imageSnippetContainer.removeSnippetsWithActiveResizables()) {
+            this.remove(snippet.getResizable());
         }
+
+//        int size = imageSnippetContainer.size();
+//        try {
+//            for (int i = 0; i < size; i++) {
+//                ImageSnippet selection = imageSnippetContainer.get(i);
+//                if (selection.getResizable().hasFocus()) {
+//                    this.remove(selection.getResizable());
+//                    imageSnippetContainer.remove(selection);
+//                }
+//                size = imageSnippetContainer.size();
+//            }
+//        } catch (NoSuchElementException e) {}
+
+
+//        Iterator<ImageSnippet> iterator = imageSnippets.iterator();
+//        while (iterator.hasNext()) {
+//            ImageSnippet selection = iterator.next();
+//            if (selection.getResizable().hasFocus()) {
+//                this.remove(selection.getResizable());
+//                iterator.remove();
+//            }
+//        }
 //        Resizable resizable = null;
 //        do {
 //            resizable = null;
@@ -105,16 +170,25 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
     }
 
     private void activateAllResizables() {
-        for (ImageSnippet selection : imageSnippets) {
-            selection.getResizable().setActive(true);
-        }
+        imageSnippetContainer.activateAllResizables();
+//        int size = imageSnippetContainer.size();
+//        try {
+//            for (int i = 0; i < size; i++) {
+//                ImageSnippet selection = imageSnippetContainer.get(i);
+//                selection.getResizable().setActive(true);
+//                size = imageSnippetContainer.size();
+//            }
+//        } catch (NoSuchElementException e) {}
+//        for (ImageSnippet selection : imageSnippets) {
+//            selection.getResizable().setActive(true);
+//        }
     }
 
     public void setTaskFinishedCallback(TaskFinishedCallback taskFinishedCallback) {
         this.taskFinishedCallback = taskFinishedCallback;
     }
 
-    private void callTaskFinishedCallback() { taskFinishedCallback.taskFinished(null); }
+    private void callTaskFinishedCallback() { taskFinishedCallback.taskFinished(); }
 
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -135,6 +209,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
             this.activateAllResizables();
             repaint = true;
         } else if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_ENTER)) {
+            System.err.println("Task finished. size = " + imageSnippetContainer.size());
             callTaskFinishedCallback();
         }
         if (repaint) {
@@ -153,12 +228,13 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
 
         public void mouseClicked(MouseEvent e) {
             ResizableRectanglePanel.this.releaseFocus(e.getPoint());
+            System.err.println("Releasing focus for point " + e.getPoint());
         }
 
         public void mousePressed(MouseEvent e) {
             x = origx = (int)e.getX();
             y = origy = (int)e.getY();
-            System.err.println("New rectangle point: " + x + " " + y);
+//            System.err.println("New rectangle point: " + x + " " + y);
             isMousePressed = true;
         }
 
@@ -172,7 +248,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
                 return;
             }
 
-            ResizableRectanglePanel.this.addRectangle(getRectangle());
+            ResizableRectanglePanel.this.addRectangle(getRectangle(), true);
             System.err.println("New rectangle");
         }
 
@@ -186,7 +262,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
                 calculateSize(e.getX(), e.getY());
                 Rectangle rectangle = getRectangle();
                 ResizableRectanglePanel.this.setTmpRectangle(rectangle);
-                System.err.println("Mouse moved. Rectangle: " + rectangle);
+//                System.err.println("Mouse moved. Rectangle: " + rectangle);
             }
         }
 

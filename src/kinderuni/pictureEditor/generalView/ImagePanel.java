@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ public class ImagePanel extends JPanel implements FileDroppedCallback {
 
         dragAndDropComponent = new DragAndDropComponent(Language.OPEN_IMAGE_SHORTCUT_HINT, this, 500, 500, this.getBackground());
         this.add(dragAndDropComponent);
+        this.setBorder(BorderFactory.createBevelBorder(0));
     }
 
     public void setImage(String path) throws IOException {
@@ -53,11 +55,14 @@ public class ImagePanel extends JPanel implements FileDroppedCallback {
 
         double xScaleFactor = (float) this.getWidth() / (float) image.getWidth();
         double yScaleFactor = (float) this.getHeight() / (float) image.getHeight();
-        double sf = Math.min(xScaleFactor, yScaleFactor);
+        double scaleFactor = Math.min(xScaleFactor, yScaleFactor);
+
+        ImageSnippetFactory.setScaleFactor(1/scaleFactor, scaleFactor);
+        ImageSnippetFactory.setDisplaySpaceCoordinateOffset((int) ((this.getWidth() - image.getWidth()*scaleFactor)/2), (int) ((this.getHeight() - image.getHeight()*scaleFactor)/2));
 
         graphics2D.translate(this.getWidth() / 2, this.getHeight() / 2);
-        graphics2D.translate(-image.getWidth() * sf / 2, -image.getHeight() * sf / 2);
-        graphics2D.drawImage(image, AffineTransform.getScaleInstance(sf, sf), null);
+        graphics2D.translate(-image.getWidth() * scaleFactor / 2, -image.getHeight() * scaleFactor / 2);
+        graphics2D.drawImage(image, AffineTransform.getScaleInstance(scaleFactor, scaleFactor), null);
 
         System.err.println("Image drawn.");
     }

@@ -1,5 +1,7 @@
 package kinderuni.pictureEditor.generalView;
 
+import kinderuni.pictureEditor.ImageSnippet;
+
 import java.awt.*;
 
 /**
@@ -7,4 +9,5 @@ import java.awt.*;
  */
 public interface ResizableContainerCallback {
     public void releaseFocus(Point clickPoint);
+    public void replaceImageSnippet(ImageSnippet old, Rectangle newSnippet);
 }

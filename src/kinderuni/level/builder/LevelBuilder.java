@@ -13,7 +13,6 @@ import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.*;
 import kinderuni.settings.levelSettings.objectSettings.*;
 
-import java.awt.*;
 import java.util.Random;
 
 /**

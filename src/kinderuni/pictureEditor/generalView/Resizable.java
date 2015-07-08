@@ -1,10 +1,8 @@
 package kinderuni.pictureEditor.generalView;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
+import kinderuni.pictureEditor.ImageSnippet;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
@@ -19,12 +17,14 @@ public class Resizable extends JComponent {
     private ResizableContainerCallback resizableContainerCallback = null;
     private boolean isActive = false;
     private int minsize = 20;
+    private ImageSnippet imageSnippet;
 
-    public Resizable(Component comp) {
-        this(comp, new ResizableBorder(8));
+    public Resizable(ImageSnippet imageSnippet, Component comp) {
+        this(imageSnippet, comp, new ResizableBorder(8));
     }
 
-    public Resizable(Component comp, ResizableBorder border) {
+    public Resizable(ImageSnippet imageSnippet, Component comp, ResizableBorder border) {
+        this.imageSnippet = imageSnippet;
         setLayout(new BorderLayout());
         if (comp != null) {
             add(comp);
@@ -51,40 +51,44 @@ public class Resizable extends JComponent {
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
+        this.repaint();
     }
 
     MouseInputListener resizeListener = new MouseInputAdapter() {
+        private Rectangle moveStart = null;
+        private boolean moved = false, resized = false;
+        private int cursor;
+        private Point startPos = null;
+
         public void mouseMoved(MouseEvent me) {
-            System.err.println("Resizable mouseInputListener mouseMoved");
+//            System.err.println("Resizable mouseInputListener mouseMoved");
             if (hasFocus()) {
                 ResizableBorder border = (ResizableBorder)getBorder();
                 setCursor(Cursor.getPredefinedCursor(border.getCursor(me)));
-                System.err.println("Resizable mouseInputListener mouseMoved and hasFocus");
+//                System.err.println("Resizable mouseInputListener mouseMoved and hasFocus");
             }
         }
 
         public void mouseExited(MouseEvent mouseEvent) {
-            System.err.println("Resizable mouseInputListener mouseExited");
+//            System.err.println("Resizable mouseInputListener mouseExited");
             setCursor(Cursor.getDefaultCursor());
         }
 
-        private int cursor;
-        private Point startPos = null;
-
         public void mousePressed(MouseEvent me) {
+            this.moveStart = new Rectangle(getBounds());
             Resizable.this.callReleaseFocusCallback(me.getPoint());
             ResizableBorder border = (ResizableBorder)getBorder();
             cursor = border.getCursor(me);
             startPos = me.getPoint();
             requestFocus();
             repaint();
-            System.err.println("Resizable resizeListener mousePressed");
+//            System.err.println("Resizable resizeListener mousePressed");
         }
 
         public void mouseDragged(MouseEvent me) {
-            System.err.println("Resizable mouseInputListener mousePressed");
+//            System.err.println("Resizable mouseInputListener mousePressed");
             if (startPos != null) {
-                System.err.println("Resizable mouseInputListener mousePressed and startPos != null");
+//                System.err.println("Resizable mouseInputListener mousePressed and startPos != null");
                 int x = getX();
                 int y = getY();
                 int w = getWidth();
@@ -97,6 +101,7 @@ public class Resizable extends JComponent {
                     case Cursor.N_RESIZE_CURSOR:
                         if (!(h - dy < minsize)) {
                             setBounds(x, y + dy, w, h - dy);
+                            resized = true;
                         }
                         break;
 
@@ -104,12 +109,14 @@ public class Resizable extends JComponent {
                         if (!(h + dy < minsize)) {
                             setBounds(x, y, w, h + dy);
                             startPos = me.getPoint();
+                            resized = true;
                         }
                         break;
 
                     case Cursor.W_RESIZE_CURSOR:
                         if (!(w - dx < minsize)) {
                             setBounds(x + dx, y, w - dx, h);
+                            resized = true;
                         }
                         break;
 
@@ -117,12 +124,14 @@ public class Resizable extends JComponent {
                         if (!(w + dx < minsize)) {
                             setBounds(x, y, w + dx, h);
                             startPos = me.getPoint();
+                            resized = true;
                         }
                         break;
 
                     case Cursor.NW_RESIZE_CURSOR:
                         if (!(w - dx < minsize) && !(h - dy < minsize)) {
                             setBounds(x + dx, y + dy, w - dx, h - dy);
+                            resized = true;
                         }
                         break;
 
@@ -130,6 +139,7 @@ public class Resizable extends JComponent {
                         if (!(w + dx < minsize) && !(h - dy < minsize)) {
                             setBounds(x, y + dy, w + dx, h - dy);
                             startPos = new Point(me.getX(), startPos.y);
+                            resized = true;
                         }
                         break;
 
@@ -137,6 +147,7 @@ public class Resizable extends JComponent {
                         if (!(w - dx < minsize) && !(h + dy < minsize)) {
                             setBounds(x + dx, y, w - dx, h + dy);
                             startPos = new Point(startPos.x, me.getY());
+                            resized = true;
                         }
                         break;
 
@@ -144,6 +155,7 @@ public class Resizable extends JComponent {
                         if (!(w + dx < minsize) && !(h + dy < minsize)) {
                             setBounds(x, y, w + dx, h + dy);
                             startPos = me.getPoint();
+                            resized = true;
                         }
                         break;
 
@@ -151,6 +163,15 @@ public class Resizable extends JComponent {
                         Rectangle bounds = getBounds();
                         bounds.translate(dx, dy);
                         setBounds(bounds);
+                        moved = true;
+//                        setBounds(imageSnippet.moveResizable(bounds));
+//                        System.err.println("Resizable bounding rectangle: " + bounds);
+//                        if (imageSnippet.moveResizable(bounds)) {
+//                            setBounds(bounds);
+//                            System.err.println("Resizable moved");
+//                        } else {
+//                            System.err.println("Resizable not moved.");
+//                        }
                 }
 
 
@@ -160,7 +181,27 @@ public class Resizable extends JComponent {
 
         public void mouseReleased(MouseEvent mouseEvent) {
             startPos = null;
-            System.err.println("Resizable mouseInputListener mouseReleased");
+            handleMove();
+            handleResize();
+
+
+//            System.err.println("Resizable mouseInputListener mouseReleased");
+        }
+
+        private void handleMove() {
+            if (moved) {
+                imageSnippet.moveResizable(getBounds());
+            }
+            moveStart = null;
+            moved = false;
+        }
+
+        private void handleResize() {
+            if (resized) {
+                imageSnippet.resizeResizable(getBounds());
+//                setBounds(imageSnippet.getResizable().getBounds());
+            }
+            resized = false;
         }
     };
 }
