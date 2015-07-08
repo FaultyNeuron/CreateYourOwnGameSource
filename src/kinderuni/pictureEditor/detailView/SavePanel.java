@@ -9,7 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class SavePanel extends JPanel {
         private JTextField fileEndingsField, folderField, fpsTextField;
         private JLabel fileEndingsLabel, fpsLabel, selectFolderLabel, animationTypeLabel;
         private JButton saveButton;
-        private JRadioButton idleButton, walkingButton, jumpingButton, startOverButton;
+        private JRadioButton idleButton, walkingButton, jumpingButton, flyButton, startOverButton;
         private ButtonGroup buttonGroupLoopType, buttonGroupAnimationType;
         private ArrayList<JLabel> warnings = new ArrayList<>();
         private Box warningsBox = Box.createVerticalBox();
@@ -49,6 +51,7 @@ public class SavePanel extends JPanel {
             idleButton = new JRadioButton("idle");
             walkingButton = new JRadioButton("walking");
             jumpingButton = new JRadioButton("jumping");
+            flyButton = new JRadioButton("flying");
 //            fpsLabel = new JLabel("FPS");
 //            fpsTextField = new JTextField("10");
 //            startOverButton = new JRadioButton("START_OVER");
@@ -57,6 +60,7 @@ public class SavePanel extends JPanel {
             buttonGroupAnimationType.add(idleButton);
             buttonGroupAnimationType.add(walkingButton);
             buttonGroupAnimationType.add(jumpingButton);
+            buttonGroupAnimationType.add(flyButton);
             idleButton.setSelected(true);
 
             buttonGroupLoopType = new ButtonGroup();
@@ -73,6 +77,7 @@ public class SavePanel extends JPanel {
             verticalBox.add(idleButton);
             verticalBox.add(walkingButton);
             verticalBox.add(jumpingButton);
+            verticalBox.add(flyButton);
 //            verticalBox.add(fpsLabel);
 //            verticalBox.add(fpsTextField);
             verticalBox.add(saveButton);
@@ -113,10 +118,26 @@ public class SavePanel extends JPanel {
                 ArrayList<BufferedImage> scaledImages = imageSnippetContainer.getFinalFrames();
                 ArrayList<String> fileNumbers = getFileNumbers();
                 File animationFolder = new File(folderField.getText());
-                File typeFolder = new File(animationFolder, "" + getSelectedButtonText(buttonGroupAnimationType));
-                if (!typeFolder.exists()) {
-                    typeFolder.mkdirs();
+                animationFolder.mkdirs();
+                BufferedWriter writer = null;
+                try {
+                    writer = new BufferedWriter(new FileWriter(new File(animationFolder, "graphicsInfo.json")));
+                    writer.write("{\n" +
+                            "    \"fps\" : 5,\n" +
+                            "    \"file_type\" : \"png\",\n" +
+                            "    \"loop_type\" : \"START_OVER\"\n" +
+                            "}");
+                }catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        // Close the writer regardless of what happens...
+                        writer.close();
+                    } catch (Exception e) {
+                    }
                 }
+                File typeFolder = new File(animationFolder, "" + getSelectedButtonText(buttonGroupAnimationType));
+                typeFolder.mkdirs();
                 String fileEnding = "png";
                 String fileName = "anim%s." + fileEnding;
 

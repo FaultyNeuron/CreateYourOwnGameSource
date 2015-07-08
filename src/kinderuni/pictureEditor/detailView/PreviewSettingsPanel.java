@@ -103,6 +103,8 @@ public class PreviewSettingsPanel extends JPanel {
         this.add(previewPanel, BorderLayout.CENTER);
         this.add(verticalBox, BorderLayout.EAST);
 
+
+
         this.addKeyListener(SaveKeyListener.getInstance());
     }
 

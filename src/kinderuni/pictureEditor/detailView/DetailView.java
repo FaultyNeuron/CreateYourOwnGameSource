@@ -2,6 +2,7 @@ package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
 import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
+import kinderuni.ui.graphics.Animation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,10 @@ public class DetailView extends JPanel implements DetailPanelCallback, SaveCallb
 //        this.add(verticalBox, BorderLayout.CENTER);
 
         this.add(savePanel, BorderLayout.CENTER);
+
+
+        AnimationSettingsPanel imagePanel = new AnimationSettingsPanel(imageSnippetContainer.getFinalFrames());
+        add(imagePanel, BorderLayout.SOUTH);
 
         this.addKeyListener(SaveKeyListener.getInstance());
 
