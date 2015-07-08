@@ -1,10 +1,12 @@
 package kinderuni.pictureEditor;
 
 import kinderuni.pictureEditor.generalView.Resizable;
-import org.w3c.dom.css.Rect;
+import kinderuni.pictureEditor.generalView.ResizableContainerCallback;
+import kinderuni.pictureEditor.generalView.ResizableProperties;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 /**
@@ -24,9 +26,13 @@ public class ImageSnippet {
     private int rThresholdDefault = 256, gThresholdDefault = 256, bThresholdDefault = 256; // Yes, 256, not 255.
     private int rThreshold = rThresholdDefault, gThreshold = gThresholdDefault, bThreshold = bThresholdDefault;
     private final Color transparencyColor = new Color(0, 0, 0, 0);
+    private ResizableContainerCallback resizableContainerCallback;
+    private KeyListener resizableKeyListener;
 
-    public ImageSnippet(BufferedImage originalImage) {
+    public ImageSnippet(BufferedImage originalImage, ResizableProperties resizableProperties) {
         this.originalImage = originalImage;
+        this.resizableContainerCallback = resizableProperties;
+        this.resizableKeyListener = resizableProperties;
     }
 
     public synchronized ImageIcon getImageIcon() {
@@ -164,12 +170,15 @@ public class ImageSnippet {
             defaultSizeImageIcon = getImageIcon(maxImageIconWidthDefault, maxImageIconHeightDefault);
             resizable = new Resizable(this, null);
             resizable.setBounds(getDisplaySpaceRectangle(snippetRectangleImageSpace));
+            resizable.setResizableContainerCallback(resizableContainerCallback);
+            resizable.addKeyListener(resizableKeyListener);
+//            resizableModifiedCallback.resizableChanged(this);
         } else {
             System.err.println("ImageSnippet: No snippetRectangleImageSpace available.");
         }
     }
 
-    public Rectangle moveResizable(Rectangle newPositionInDisplaySpace) {
+    public void moveResizable(Rectangle newPositionInDisplaySpace) {
         System.err.println("Moving resizable. Requested position: " + newPositionInDisplaySpace);
         Rectangle scaledImageSpaceRectangle = getImageSpaceRectangle(newPositionInDisplaySpace);
         scaledImageSpaceRectangle.x = Math.max((int) scaledImageSpaceRectangle.getX(), 0);
@@ -180,14 +189,19 @@ public class ImageSnippet {
         if (scaledImageSpaceRectangle.getY() + scaledImageSpaceRectangle.getHeight() > originalImage.getHeight()) {
             scaledImageSpaceRectangle.y = originalImage.getHeight() - (int) scaledImageSpaceRectangle.getHeight();
         }
-        System.err.println("Moving resizable. Final position: " + newPositionInDisplaySpace);
-        setNewSnippetRectangleImageSpace(scaledImageSpaceRectangle);
-        update();
-        int correctionValue = 1;
-        Rectangle displaySpaceRectangle = getDisplaySpaceRectangle(scaledImageSpaceRectangle);
-        displaySpaceRectangle.x = Math.max((int) displaySpaceRectangle.getX() - correctionValue, 0);
-        displaySpaceRectangle.y = Math.max((int) displaySpaceRectangle.getY() - correctionValue, 0);
-        return displaySpaceRectangle;
+        resizableContainerCallback.replaceImageSnippet(this, getDisplaySpaceRectangle(scaledImageSpaceRectangle));
+//        System.err.println("Moving resizable. Final position: " + newPositionInDisplaySpace);
+//        setNewSnippetRectangleImageSpace(scaledImageSpaceRectangle);
+//        update();
+//        int correctionValue = 1;
+//        Rectangle displaySpaceRectangle = getDisplaySpaceRectangle(scaledImageSpaceRectangle);
+//        displaySpaceRectangle.x = Math.max((int) displaySpaceRectangle.getX() - correctionValue, 0);
+//        displaySpaceRectangle.y = Math.max((int) displaySpaceRectangle.getY() - correctionValue, 0);
+//        return displaySpaceRectangle;
+    }
+
+    public void resizeResizable(Rectangle newPositionInDisplaySpace) {
+        resizableContainerCallback.replaceImageSnippet(this, newPositionInDisplaySpace);
     }
 
     private int cutValue(int min, int max, int value) {

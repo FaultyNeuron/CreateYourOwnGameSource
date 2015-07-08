@@ -51,6 +51,7 @@ public class Resizable extends JComponent {
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
+        this.repaint();
     }
 
     MouseInputListener resizeListener = new MouseInputAdapter() {
@@ -189,7 +190,7 @@ public class Resizable extends JComponent {
 
         private void handleMove() {
             if (moved) {
-                setBounds(imageSnippet.moveResizable(getBounds()));
+                imageSnippet.moveResizable(getBounds());
             }
             moveStart = null;
             moved = false;
@@ -197,8 +198,8 @@ public class Resizable extends JComponent {
 
         private void handleResize() {
             if (resized) {
-                imageSnippet.setSnippetRectangle(getBounds());
-                setBounds(imageSnippet.getResizable().getBounds());
+                imageSnippet.resizeResizable(getBounds());
+//                setBounds(imageSnippet.getResizable().getBounds());
             }
             resized = false;
         }

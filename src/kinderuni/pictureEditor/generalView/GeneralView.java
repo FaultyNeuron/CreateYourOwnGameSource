@@ -15,20 +15,24 @@ public class GeneralView extends JLayeredPane implements TaskFinishedCallback<Ar
     private ImagePanel imagePanel;
     private ResizableRectanglePanel resizableRectanglePanel;
     private TaskFinishedCallback taskFinishedCallback = null;
-    private ArrayList<ImageSnippet> imageSnippets;
+//    private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
-    public GeneralView(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
+    public GeneralView(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+//        this.imageSnippets = imageSnippets;
+        this.imageSnippetContainer = imageSnippetContainer;
 
         this.setLayout(null);
 
         this.imagePanel = new ImagePanel();
-        this.resizableRectanglePanel = new ResizableRectanglePanel(imageSnippets);
+        this.resizableRectanglePanel = new ResizableRectanglePanel(imageSnippetContainer);
         this.resizableRectanglePanel.setBackground(Color.CYAN);
         this.resizableRectanglePanel.setTaskFinishedCallback(this);
 
         this.add(imagePanel);
         this.add(resizableRectanglePanel);
+
+        ImageSnippetFactory.setResizableContainerCallback(resizableRectanglePanel);
 
         this.setComponentZOrder(resizableRectanglePanel, 0);
         this.setComponentZOrder(imagePanel, 1);

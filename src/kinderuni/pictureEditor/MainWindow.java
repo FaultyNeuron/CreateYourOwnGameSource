@@ -1,7 +1,6 @@
 package kinderuni.pictureEditor;
 
 import kinderuni.pictureEditor.detailView.DetailView;
-import kinderuni.pictureEditor.generalView.DragAndDropComponent;
 import kinderuni.pictureEditor.generalView.GeneralView;
 import kinderuni.pictureEditor.language.Language;
 
@@ -23,11 +22,13 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
     private DetailView detailView;
     //private DragAndDropComponent dragAndDropComponent;
     private ArrayList<ImageSnippet> imageSnippets = new ArrayList<>();
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
     public MainWindow() {
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.setMinimumSize(new Dimension(800, 500));
-        this.generalView = new GeneralView(imageSnippets);
+        this.imageSnippetContainer = new ThreadSaveImageSnippetContainer();
+        this.generalView = new GeneralView(imageSnippetContainer);
         try {
             generalView.setImage("/home/markus/Downloads/test.png");
 //            generalView.setImage("/home/markus/Downloads/roller.jpg");
@@ -96,7 +97,7 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
         int height = 500;
         for (int h=height; h < image.getHeight(); h += height){
             for (int w=width; w < image.getWidth(); w += width) {
-                ImageSnippet imageSnippet = ImageSnippetFactory.getImageSelection();
+                ImageSnippet imageSnippet = ImageSnippetFactory.getImageSnippet();
                 imageSnippet.setSnippetBounds(w - width, h - height, width, height);
                 imageSnippets.add(imageSnippet);
             }

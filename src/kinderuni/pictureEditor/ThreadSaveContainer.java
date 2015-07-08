@@ -2,6 +2,10 @@ package kinderuni.pictureEditor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 //import java.util.Spliterator;
 //import java.util.function.Consumer;
 
@@ -14,8 +18,17 @@ public class ThreadSaveContainer<A> {
     public final static int CYCLE_REVERSE = 1; // TODO use enum
 
     // Not thread save.
-    public synchronized A get(int index) {
-        return items.get(index);
+    public synchronized A get(int index) throws NoSuchElementException {
+        if (index < items.size()) {
+            return items.get(index);
+        }
+        throw new NoSuchElementException();
+    }
+
+    public synchronized int size() { return items.size(); }
+
+    public synchronized void add(A item) {
+        items.add(item);
     }
 
     private synchronized boolean hasNext() {
