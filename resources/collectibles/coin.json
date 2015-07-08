@@ -1,6 +1,6 @@
 {
     "graphics": {
-        "id": "coin",
+        "id": "simple_coin",
         "width" : 30,
         "height" : 30
     },
