@@ -9,7 +9,7 @@
   "height": 75,
 
   "graphics" : {
-    "id" : "player",
+    "id" : "stick_man",
     "width": 70,
     "height": 75
   }

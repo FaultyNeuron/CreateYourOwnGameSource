@@ -1,8 +1,10 @@
 package kinderuni.level.builder;
 
+import functionalJava.data.tupel.DoubleTupel;
 import kinderuni.gameLogic.objects.Enemy;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.DropBuilder;
+import kinderuni.gameLogic.objects.solid.Platform;
 import kinderuni.settings.IdParametersSettings;
 import kinderuni.settings.levelSettings.objectSettings.EnemySettings;
 
@@ -56,6 +58,19 @@ public class EnemyBuilder extends LivingObjectBuilder {
         }
         return toReturn;
     }
+
+    public List<Enemy> buildForPlatform(Platform platform, EnemySettings enemySettings) {
+        List<Enemy> enemyList = new LinkedList<>();
+        DoubleTupel center = platform.getCenter();
+        DoubleTupel dim = platform.getDimensions();
+        Enemy enemy = build(enemySettings);
+
+        double yEnemy = center.getSecond() + dim.getSecond()/2 + enemy.getDimensions().getSecond()/2;
+        enemy.setCenter(new DoubleTupel(center.getFirst(), yEnemy));
+        enemyList.add(enemy);
+        return enemyList;
+    }
+
 
     public void setDropBuilder(DropBuilder dropBuilder) {
         this.dropBuilder = dropBuilder;

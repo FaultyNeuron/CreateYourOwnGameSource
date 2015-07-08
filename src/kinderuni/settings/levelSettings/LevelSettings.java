@@ -31,6 +31,7 @@ public class LevelSettings {
     private double horizontal_platform_distance;
 
     private List<IdParametersSettings> enemies = new LinkedList<>();
+    private List<IdParametersSettings> collectibles = new LinkedList<>();
     private List<IdParametersSettings> platforms = new LinkedList<>();
     private GoalSettings goal;
     private FloorSettings floor;
@@ -61,6 +62,10 @@ public class LevelSettings {
         return enemies;
     }
 
+    public List<IdParametersSettings> getCollectibles() {
+        return collectibles;
+    }
+
     public List<IdParametersSettings> getPlatforms() {
         return platforms;
     }
@@ -89,6 +94,7 @@ public class LevelSettings {
                 ", player_x=" + player_x +
                 ", player_y=" + player_y +
                 ", enemies=" + enemies +
+                ", collectibles=" + collectibles +
                 ", platforms=" + platforms +
                 ", goal=" + goal +
                 ", floor=" + floor +
