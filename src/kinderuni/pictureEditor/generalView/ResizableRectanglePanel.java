@@ -159,7 +159,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
         public void mousePressed(MouseEvent e) {
             x = origx = (int)e.getX();
             y = origy = (int)e.getY();
-            System.err.println("New rectangle point: " + x + " " + y);
+//            System.err.println("New rectangle point: " + x + " " + y);
             isMousePressed = true;
         }
 
@@ -187,7 +187,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableContaine
                 calculateSize(e.getX(), e.getY());
                 Rectangle rectangle = getRectangle();
                 ResizableRectanglePanel.this.setTmpRectangle(rectangle);
-                System.err.println("Mouse moved. Rectangle: " + rectangle);
+//                System.err.println("Mouse moved. Rectangle: " + rectangle);
             }
         }
 

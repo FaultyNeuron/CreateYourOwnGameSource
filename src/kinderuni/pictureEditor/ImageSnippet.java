@@ -1,6 +1,7 @@
 package kinderuni.pictureEditor;
 
 import kinderuni.pictureEditor.generalView.Resizable;
+import org.w3c.dom.css.Rect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,11 +63,15 @@ public class ImageSnippet {
             return false;
         }
 
-        this.snippetRectangleImageSpace = scaledRectangle;
-        this.finalFrame = null;
-        this.finalFrameRectangle = null;
+        setNewSnippetRectangleImageSpace(scaledRectangle);
         update();
         return true;
+    }
+
+    private void setNewSnippetRectangleImageSpace(Rectangle rectangle) {
+        this.snippetRectangleImageSpace = rectangle;
+        this.finalFrame = null;
+        this.finalFrameRectangle = null;
     }
 
     private boolean cropRectangle(Rectangle rectangle) {
@@ -132,7 +137,7 @@ public class ImageSnippet {
                 (int) ((toScale.getY() - (float) yOffset) * scaleFactor),
                 (int) (toScale.getWidth()* scaleFactor),
                 (int) (toScale.getHeight()* scaleFactor));
-        System.err.println("Rectangle scaled from display to image space: " + toScale + " --> " + scaledRectangle);
+        System.err.println("Rectangle scaled from display to image space: " + toScale + " --> " + scaledRectangle + " originalImage size is " + originalImage.getWidth() + "x" + originalImage.getHeight());
         return scaledRectangle;
     }
 
@@ -140,12 +145,12 @@ public class ImageSnippet {
         double scaleFactor = ImageSnippetFactory.getImageSpaceToDisplaySpaceScaleFactor();
         int xOffset = ImageSnippetFactory.getxOffset();
         int yOffset = ImageSnippetFactory.getyOffset();
-        double correctionOffset = 1.75;
-        Rectangle scaledRectangle = new Rectangle((int) ((toScale.getX()*scaleFactor) + correctionOffset) + xOffset,
-                (int) ((toScale.getY()*scaleFactor) + correctionOffset) + yOffset,
-                (int) ((toScale.getWidth()*scaleFactor) + correctionOffset),
-                (int) ((toScale.getHeight()*scaleFactor) + correctionOffset));
-        System.err.println("Rectangle scaled from image to display space: " + toScale + " --> " + scaledRectangle);
+        double correctionValue = 1.75;
+        Rectangle scaledRectangle = new Rectangle((int) ((toScale.getX()*scaleFactor) + correctionValue) + xOffset,
+                (int) ((toScale.getY()*scaleFactor) + correctionValue) + yOffset,
+                (int) ((toScale.getWidth()*scaleFactor) + correctionValue),
+                (int) ((toScale.getHeight()*scaleFactor) + correctionValue));
+        System.err.println("Rectangle scaled from image to display space: " + toScale + " --> " + scaledRectangle + " originalImage size is " + originalImage.getWidth() + "x" + originalImage.getHeight());
         return scaledRectangle;
     }
 
@@ -157,11 +162,32 @@ public class ImageSnippet {
             subimage = originalImage.getSubimage((int) snippetRectangleImageSpace.getX(), (int) snippetRectangleImageSpace.getY(), (int) snippetRectangleImageSpace.getWidth(), (int) snippetRectangleImageSpace.getHeight());
             imageIcon = new ImageIcon(getSubimage());
             defaultSizeImageIcon = getImageIcon(maxImageIconWidthDefault, maxImageIconHeightDefault);
-            resizable = new Resizable(null);
+            resizable = new Resizable(this, null);
             resizable.setBounds(getDisplaySpaceRectangle(snippetRectangleImageSpace));
         } else {
             System.err.println("ImageSnippet: No snippetRectangleImageSpace available.");
         }
+    }
+
+    public Rectangle moveResizable(Rectangle newPositionInDisplaySpace) {
+        System.err.println("Moving resizable. Requested position: " + newPositionInDisplaySpace);
+        Rectangle scaledImageSpaceRectangle = getImageSpaceRectangle(newPositionInDisplaySpace);
+        scaledImageSpaceRectangle.x = Math.max((int) scaledImageSpaceRectangle.getX(), 0);
+        scaledImageSpaceRectangle.y = Math.max((int) scaledImageSpaceRectangle.getY(), 0);
+        if (scaledImageSpaceRectangle.getX() + scaledImageSpaceRectangle.getWidth() > originalImage.getWidth()) {
+            scaledImageSpaceRectangle.x = originalImage.getWidth() - (int) scaledImageSpaceRectangle.getWidth();
+        }
+        if (scaledImageSpaceRectangle.getY() + scaledImageSpaceRectangle.getHeight() > originalImage.getHeight()) {
+            scaledImageSpaceRectangle.y = originalImage.getHeight() - (int) scaledImageSpaceRectangle.getHeight();
+        }
+        System.err.println("Moving resizable. Final position: " + newPositionInDisplaySpace);
+        setNewSnippetRectangleImageSpace(scaledImageSpaceRectangle);
+        update();
+        int correctionValue = 1;
+        Rectangle displaySpaceRectangle = getDisplaySpaceRectangle(scaledImageSpaceRectangle);
+        displaySpaceRectangle.x = Math.max((int) displaySpaceRectangle.getX() - correctionValue, 0);
+        displaySpaceRectangle.y = Math.max((int) displaySpaceRectangle.getY() - correctionValue, 0);
+        return displaySpaceRectangle;
     }
 
     private int cutValue(int min, int max, int value) {
