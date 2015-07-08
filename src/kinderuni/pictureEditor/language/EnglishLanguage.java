@@ -17,6 +17,7 @@ public interface EnglishLanguage {
     public static final String DELETE = "Delete";
     public static final String START = "Start";
     public static final String STOP = "Stop";
+    public static final String SAVE = "Save";
     public static final String ANIMATION_SPEED_IN_MS = "Animation speed in ms";
     public static final String APPLY = "Apply";
     public static final String CROP = "Crop";

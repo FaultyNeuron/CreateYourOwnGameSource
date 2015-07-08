@@ -32,9 +32,9 @@ public class FrameSettingsPanel extends JPanel {
     private static final String SCROLL_BAR_VALUE_STRING = "r%d g%d  b%d";
     private int rThreshold = defaultThreshold, gThreshold = defaultThreshold, bThreshold = defaultThreshold;
 
-    public FrameSettingsPanel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+    public FrameSettingsPanel() {
 //        this.imageSnippets = imageSnippets;
-        this.imageSnippetContainer = imageSnippetContainer;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
         this.currentSnippet = 0;
 
         framePanel = new FramePanel();
@@ -98,6 +98,8 @@ public class FrameSettingsPanel extends JPanel {
         this.add(horizontalBox);
 
         this.setBackground(Color.WHITE);
+
+        this.addKeyListener(SaveKeyListener.getInstance());
     }
 
     private void updateThresholdValueLabel() {

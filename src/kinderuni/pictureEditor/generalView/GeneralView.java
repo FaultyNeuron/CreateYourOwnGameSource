@@ -18,14 +18,14 @@ public class GeneralView extends JLayeredPane implements TaskFinishedCallback<Ar
 //    private ArrayList<ImageSnippet> imageSnippets;
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
-    public GeneralView(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+    public GeneralView() {
 //        this.imageSnippets = imageSnippets;
-        this.imageSnippetContainer = imageSnippetContainer;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
 
         this.setLayout(null);
 
         this.imagePanel = new ImagePanel();
-        this.resizableRectanglePanel = new ResizableRectanglePanel(imageSnippetContainer);
+        this.resizableRectanglePanel = new ResizableRectanglePanel();
         this.resizableRectanglePanel.setBackground(Color.CYAN);
         this.resizableRectanglePanel.setTaskFinishedCallback(this);
 
@@ -58,6 +58,11 @@ public class GeneralView extends JLayeredPane implements TaskFinishedCallback<Ar
         });
     }
 
+    public void refresh() {
+        imagePanel.repaint();
+        resizableRectanglePanel.refresh();
+    }
+
     public void setImage(String path) throws IOException {
         imagePanel.setImage(path);
     }
@@ -66,12 +71,12 @@ public class GeneralView extends JLayeredPane implements TaskFinishedCallback<Ar
         this.taskFinishedCallback = taskFinishedCallback;
     }
 
-    private void callTaskFinishedCallback(Object result) {
-        taskFinishedCallback.taskFinished(null);
+    private void callTaskFinishedCallback() {
+        taskFinishedCallback.taskFinished();
     }
 
     @Override
-    public void taskFinished(ArrayList<Resizable> result) {
-        this.callTaskFinishedCallback(result);
+    public void taskFinished() {
+        this.callTaskFinishedCallback();
     }
 }

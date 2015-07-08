@@ -21,7 +21,7 @@ public class PreviewSettingsPanel extends JPanel {
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private PreviewPanel previewPanel;
     private JPanel buttonPanel;ArrayList<ImageSnippet> imageSnippets;
-    private JButton startButton, stopButton;
+    private JButton startButton, stopButton, saveButton;
     private JScrollBar speedScrollBar;
     private JLabel scrollBarTitle, scrollBarValue;
     private AnimationThread animationThread = null;
@@ -29,16 +29,18 @@ public class PreviewSettingsPanel extends JPanel {
     private int minAnimationSleepTime = 0;
     private int maxAnimationSleepTime = 1000;
     private static final String SCROLL_BAR_VALUE_STRING = "%d ms";
+    private SaveCallback saveCallback;
 
-    public PreviewSettingsPanel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
-        this.imageSnippetContainer = imageSnippetContainer;
+    public PreviewSettingsPanel(final SaveCallback saveCallback) {
+        this.saveCallback = saveCallback;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
 
         this.setLayout(new BorderLayout());
         this.previewPanel = new PreviewPanel();
-        this.previewPanel.setImage(imageSnippetContainer.get(0).getSubimage());
 
         this.startButton = new JButton(Language.START);
         this.stopButton = new JButton(Language.STOP);
+        this.saveButton = new JButton(Language.SAVE);
         this.buttonPanel = new JPanel(new BoxLayout(this, 0));
         this.speedScrollBar = new JScrollBar(JScrollBar.HORIZONTAL, getCurrentAnimationSpeed(), 0, minAnimationSleepTime, maxAnimationSleepTime);
         this.scrollBarTitle = new JLabel(Language.ANIMATION_SPEED_IN_MS);
@@ -68,6 +70,13 @@ public class PreviewSettingsPanel extends JPanel {
             }
         });
 
+        this.saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                saveCallback.save();
+            }
+        });
+
         this.speedScrollBar.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -86,12 +95,19 @@ public class PreviewSettingsPanel extends JPanel {
         verticalBox.add(scrollBarTitle);
         verticalBox.add(speedScrollBar);
         verticalBox.add(scrollBarValue);
+        verticalBox.add(saveButton);
 
         JPanel filler = new JPanel();
         filler.setBackground(Color.BLUE);
         this.add(filler, BorderLayout.WEST);
         this.add(previewPanel, BorderLayout.CENTER);
         this.add(verticalBox, BorderLayout.EAST);
+
+        this.addKeyListener(SaveKeyListener.getInstance());
+    }
+
+    public void init() {
+        this.previewPanel.setImage(imageSnippetContainer.get(0).getSubimage());
     }
 
     private synchronized void setCurrentAnimationSpeed(int value) {

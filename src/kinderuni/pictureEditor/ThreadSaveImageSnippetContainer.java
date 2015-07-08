@@ -4,6 +4,9 @@ import kinderuni.pictureEditor.generalView.Resizable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +17,16 @@ import java.util.NoSuchElementException;
  */
 public class ThreadSaveImageSnippetContainer {
     private ArrayList<ImageSnippet> items = new ArrayList<>();
+    private static ThreadSaveImageSnippetContainer instance = null;
+
+    private ThreadSaveImageSnippetContainer() {}
+
+    public static ThreadSaveImageSnippetContainer getInstance() {
+        if (instance == null) {
+            instance = new ThreadSaveImageSnippetContainer();
+        }
+        return instance;
+    }
 
     public synchronized void add(ImageSnippet item) {
         items.add(item);
@@ -92,6 +105,39 @@ public class ThreadSaveImageSnippetContainer {
 
     public synchronized void set(int index, ImageSnippet snippet) throws NoSuchElementException {
         items.set(index, snippet);
+    }
+
+    private synchronized int getMinPictureWidth() {
+        int min = Integer.MAX_VALUE;
+        for (ImageSnippet snippet : items) {
+            min = Math.min(snippet.getFinalFrame().getWidth(), min);
+        }
+        return min;
+    }
+
+    private synchronized int getMinPictureHeight() {
+        int min = Integer.MAX_VALUE;
+        for (ImageSnippet snippet : items) {
+            min = Math.min(snippet.getFinalFrame().getHeight(), min);
+        }
+        return min;
+    }
+
+    public synchronized ArrayList<BufferedImage> getFinalFrames() {
+        ArrayList<BufferedImage> images = new ArrayList<>(items.size());
+        int minHeight = getMinPictureHeight();
+
+        for (ImageSnippet snippet : items) {
+            double scaleFactor = (double) minHeight / (double) snippet.getFinalFrame().getHeight();
+            BufferedImage scaledImage = new BufferedImage((int) (snippet.getFinalFrame().getWidth()*scaleFactor), (int) (snippet.getFinalFrame().getHeight() * scaleFactor), BufferedImage.TYPE_4BYTE_ABGR);
+            AffineTransform affineTransform = new AffineTransform();
+            affineTransform.scale(scaleFactor, scaleFactor);
+            AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
+            scaledImage = affineTransformOp.filter(snippet.getFinalFrame(), scaledImage);
+            images.add(scaledImage);
+        }
+
+        return images;
     }
 
 

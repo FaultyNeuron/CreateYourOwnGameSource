@@ -23,23 +23,27 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
     //private DragAndDropComponent dragAndDropComponent;
     private ArrayList<ImageSnippet> imageSnippets = new ArrayList<>();
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
+    private boolean isGeneralViewActive;
 
     public MainWindow() {
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.setMinimumSize(new Dimension(800, 500));
-        this.imageSnippetContainer = new ThreadSaveImageSnippetContainer();
-        this.generalView = new GeneralView(imageSnippetContainer);
-        try {
-            generalView.setImage("/home/markus/Downloads/test.png");
-//            generalView.setImage("/home/markus/Downloads/roller.jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
+
+        this.generalView = new GeneralView();
         this.generalView.setTaskFinishedCallback(this);
+//        try {
+//            generalView.setImage("/home/markus/Downloads/test.png");
+////            generalView.setImage("/home/markus/Downloads/roller.jpg");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         this.setLayout(new BorderLayout());
         this.add(generalView, BorderLayout.CENTER);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.isGeneralViewActive = true;
 
         this.addKeyListener(new OpenFileKeyListener());
 
@@ -60,6 +64,7 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
                 e.printStackTrace();
             }
         }
+        generalView.refresh();
     }
 
     private File openImageFile() {
@@ -75,33 +80,22 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
     }
 
     @Override
-    public void taskFinished(Object result) {
-        detailView = new DetailView(imageSnippetContainer);
-        this.remove(generalView);
-        this.add(detailView);
+    public void taskFinished() {
+        System.err.println("MainWindow site = " + imageSnippetContainer.size());
+        if (isGeneralViewActive) {
+            this.detailView = new DetailView();
+            this.remove(generalView);
+            this.add(detailView);
+            this.isGeneralViewActive = false;
+            detailView.refresh();
+        } else {
+            this.remove(detailView);
+            this.add(generalView);
+            this.isGeneralViewActive = true;
+            generalView.refresh();
+        }
         this.revalidate();
-        System.err.println("MainWindow taskFinished finished");
-    }
-
-    public void createDefaultSelections() {
-        String path = "/home/markus/Downloads/roller.jpg";
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        ImageSnippetFactory.setOriginalImage(image);
-        int width = 500;
-        int height = 500;
-        for (int h=height; h < image.getHeight(); h += height){
-            for (int w=width; w < image.getWidth(); w += width) {
-                ImageSnippet imageSnippet = ImageSnippetFactory.getImageSnippet();
-                imageSnippet.setSnippetBounds(w - width, h - height, width, height);
-                imageSnippets.add(imageSnippet);
-            }
-        }
+        System.err.println("Task switched.");
     }
 
     private class ImageFileChooser extends JFileChooser {

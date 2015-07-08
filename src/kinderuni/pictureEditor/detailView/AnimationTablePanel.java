@@ -29,8 +29,8 @@ public class AnimationTablePanel extends JPanel {
     private DetailPanelCallback detailPanelCallback;
     private boolean leftButtonAction = false, rightButtonAction = false, deleteButtonAction = false;
 
-    public AnimationTablePanel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
-        this.imageSnippetContainer = imageSnippetContainer;
+    public AnimationTablePanel() {
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
         this.tableModel = new AnimationTableModel(imageSnippetContainer);
 
         this.setLayout(new BoxLayout(this, this.getWidth()));
@@ -79,8 +79,9 @@ public class AnimationTablePanel extends JPanel {
             }
         });
         animationTable.setRowSelectionAllowed(false);
+        System.err.println("Size of imageSnippetContainer: " + imageSnippetContainer.size());
+        animationTable.setRowHeight(((ImageIcon) tableModel.getValueAt(0, 0)).getIconHeight() + 10);
         setColumnWith();
-        animationTable.setRowHeight(((ImageIcon)tableModel.getValueAt(0, 0)).getIconHeight()+10);
 
         JPanel tableContainer = new JPanel();
         tableContainer.add(animationTable);
@@ -97,6 +98,8 @@ public class AnimationTablePanel extends JPanel {
         verticalBox.add(scrollPane);
         verticalBox.add(horizontalBox);
         this.add(verticalBox);
+
+        this.addKeyListener(SaveKeyListener.getInstance());
     }
 
     private void setColumnWith() {
@@ -106,6 +109,10 @@ public class AnimationTablePanel extends JPanel {
             animationTable.getColumnModel().getColumn(i).setMaxWidth((int) imageIconSize.getWidth());
             animationTable.getColumnModel().getColumn(i).setPreferredWidth((int) imageIconSize.getWidth());
         }
+    }
+
+    public void init() {
+//        animationTable.setRowHeight(((ImageIcon)tableModel.getValueAt(0, 0)).getIconHeight()+10);
     }
 
     private void updateTableSelection() {

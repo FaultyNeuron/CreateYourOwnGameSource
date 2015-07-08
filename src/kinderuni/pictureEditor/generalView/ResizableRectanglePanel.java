@@ -20,9 +20,9 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
 //    private ArrayList<ImageSnippet> imageSnippets;
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
-    public ResizableRectanglePanel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+    public ResizableRectanglePanel() {
 //        this.imageSnippets = imageSnippets;
-        this.imageSnippetContainer = imageSnippetContainer;
+        this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
 
         this.setBackground(Color.BLUE);
         this.setOpaque(false);
@@ -30,6 +30,11 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
         this.addMouseListener(drawRectangleMouseListener);
         this.addMouseMotionListener(drawRectangleMouseListener);
         this.addKeyListener(this);
+    }
+
+    public void refresh() {
+        this.removeAll();
+        this.repaint();
     }
 
     @Override
@@ -73,11 +78,12 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
 //        }
     }
 
-    private void addRectangle(Rectangle rectangle) {
+    private void addRectangle(Rectangle rectangle, boolean isNew) {
+        System.err.println("Add rectangle called. isNew: " + isNew);
         ImageSnippet selection = ImageSnippetFactory.getImageSnippet();
         Rectangle snippet;
 //        System.err.println("Rectangle: " + rectangle);
-        if (imageSnippetContainer.size() == 0) {
+        if (!isNew || imageSnippetContainer.size() == 0) {
             snippet = new Rectangle((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
         } else {
             Rectangle tmp = this.imageSnippetContainer.getBorderOfFirstSnippet();
@@ -102,7 +108,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
     public void replaceImageSnippet(ImageSnippet old, Rectangle newSnippet) {
         this.remove(old.getResizable());
         this.imageSnippetContainer.remove(old);
-        addRectangle(newSnippet);
+        addRectangle(newSnippet, false);
     }
 
     private void setTmpRectangle(Rectangle rectangle) {
@@ -182,7 +188,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
         this.taskFinishedCallback = taskFinishedCallback;
     }
 
-    private void callTaskFinishedCallback() { taskFinishedCallback.taskFinished(null); }
+    private void callTaskFinishedCallback() { taskFinishedCallback.taskFinished(); }
 
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -203,6 +209,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
             this.activateAllResizables();
             repaint = true;
         } else if (e.isControlDown() && (e.getKeyCode() == KeyEvent.VK_ENTER)) {
+            System.err.println("Task finished. size = " + imageSnippetContainer.size());
             callTaskFinishedCallback();
         }
         if (repaint) {
@@ -241,7 +248,7 @@ public class ResizableRectanglePanel extends JPanel implements ResizableProperti
                 return;
             }
 
-            ResizableRectanglePanel.this.addRectangle(getRectangle());
+            ResizableRectanglePanel.this.addRectangle(getRectangle(), true);
             System.err.println("New rectangle");
         }
 

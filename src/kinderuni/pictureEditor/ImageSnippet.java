@@ -231,20 +231,24 @@ public class ImageSnippet {
     }
 
     private synchronized void updateFinalFrame() {
-        finalFrame = new BufferedImage((int)finalFrameRectangle.getWidth(), (int)finalFrameRectangle.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        for (int w=0; w<finalFrame.getWidth(); w++ ) {
-            for (int h=0; h<finalFrame.getHeight(); h++) {
-                int x = w - (int)finalFrameRectangle.getX();
-                int y = h - (int)finalFrameRectangle.getY();
-//                System.err.println("finalFrameRectangle=" + finalFrameRectangle + "snippetRectangleImageSpace=" + snippetRectangleImageSpace + "w=" + w + " h=" + h + " x=" + x +" y=" + y);
-                Color originalColor = new Color(subimage.getRGB(x, y));
-                if (originalColor.getRed() > rThreshold && originalColor.getGreen() > gThreshold && originalColor.getBlue() > bThreshold) { // pixel is transparent
-                    finalFrame.setRGB(w, h, transparencyColor.getRGB());
-                } else {
-                    finalFrame.setRGB(w, h, new Color(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), 255).getRGB());
-                }
-            }
-        }
+//        finalFrame = new BufferedImage((int)finalFrameRectangle.getWidth(), (int)finalFrameRectangle.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        finalFrame = originalImage.getSubimage((int) snippetRectangleImageSpace.getX(),
+                (int) snippetRectangleImageSpace.getY(),
+                (int) snippetRectangleImageSpace.getWidth(),
+                (int) snippetRectangleImageSpace.getHeight());
+//        for (int w=0; w<finalFrame.getWidth(); w++ ) {
+//            for (int h=0; h<finalFrame.getHeight(); h++) {
+//                int x = w - (int)finalFrameRectangle.getX();
+//                int y = h - (int)finalFrameRectangle.getY();
+////                System.err.println("finalFrameRectangle=" + finalFrameRectangle + "snippetRectangleImageSpace=" + snippetRectangleImageSpace + "w=" + w + " h=" + h + " x=" + x +" y=" + y);
+//                Color originalColor = new Color(subimage.getRGB(x, y));
+//                if (originalColor.getRed() > rThreshold && originalColor.getGreen() > gThreshold && originalColor.getBlue() > bThreshold) { // pixel is transparent
+//                    finalFrame.setRGB(w, h, transparencyColor.getRGB());
+//                } else {
+//                    finalFrame.setRGB(w, h, new Color(originalColor.getRed(), originalColor.getGreen(), originalColor.getBlue(), 255).getRGB());
+//                }
+//            }
+//        }
     }
 
     public void resetFinalFrame() {
