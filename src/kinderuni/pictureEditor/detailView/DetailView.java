@@ -48,9 +48,9 @@ public class DetailView extends JPanel implements DetailPanelCallback, SaveCallb
 
         this.add(savePanel, BorderLayout.CENTER);
 
-
         AnimationSettingsPanel imagePanel = new AnimationSettingsPanel(imageSnippetContainer.getFinalFrames());
         add(imagePanel, BorderLayout.SOUTH);
+        savePanel.setAnimationPreviewPanel(imagePanel.getAnimationPreviewPanel());
 
         this.addKeyListener(SaveKeyListener.getInstance());
 

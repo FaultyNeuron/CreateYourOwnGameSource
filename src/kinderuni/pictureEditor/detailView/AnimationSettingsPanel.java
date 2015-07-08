@@ -15,10 +15,10 @@ import java.util.List;
  * Created by Georg Plaz.
  */
 public class AnimationSettingsPanel extends JPanel {
-    JScrollBar jScrollBar = new JScrollBar(JScrollBar.HORIZONTAL, 1, 10, 1, 300);
-    JLabel fpsDisplay;
-    AnimationPreviewPanel animationPreviewPanel;
-    JButton loopTypeButton = new JButton();
+    private JScrollBar jScrollBar = new JScrollBar(JScrollBar.HORIZONTAL, 1, 10, 1, 300);
+    private JLabel fpsDisplay;
+    private AnimationPreviewPanel animationPreviewPanel;
+    private JButton loopTypeButton = new JButton();
     public AnimationSettingsPanel(List<BufferedImage> images){
         this(images.toArray(new BufferedImage[images.size()]));
     }
@@ -50,5 +50,9 @@ public class AnimationSettingsPanel extends JPanel {
         });
         jScrollBar.setValue((int) Math.round(fps*10));
 
+    }
+
+    public AnimationPreviewPanel getAnimationPreviewPanel() {
+        return animationPreviewPanel;
     }
 }

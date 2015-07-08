@@ -40,7 +40,7 @@
 
   "goal" : {
     "graphics" : {
-      "id" : "goal",
+//      "id" : "goal",
       "line_colour" : [0, 0, 0],
       "bg_colour" : [219, 219, 9],
       "width": 20,

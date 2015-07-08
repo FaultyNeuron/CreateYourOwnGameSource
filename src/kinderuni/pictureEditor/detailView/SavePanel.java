@@ -23,6 +23,7 @@ import java.util.Enumeration;
 public class SavePanel extends JPanel {
     private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private ContentPanel contentPanel;
+    private AnimationPreviewPanel animationPreviewPanel;
 
     public SavePanel() {
         this.imageSnippetContainer = ThreadSaveImageSnippetContainer.getInstance();
@@ -31,6 +32,10 @@ public class SavePanel extends JPanel {
         this.add(contentPanel);
 
 //        this.setVisible(true);
+    }
+
+    public void setAnimationPreviewPanel(AnimationPreviewPanel animationPreviewPanel) {
+        this.animationPreviewPanel = animationPreviewPanel;
     }
 
     private class ContentPanel extends JPanel {
@@ -123,9 +128,9 @@ public class SavePanel extends JPanel {
                 try {
                     writer = new BufferedWriter(new FileWriter(new File(animationFolder, "graphicsInfo.json")));
                     writer.write("{\n" +
-                            "    \"fps\" : 5,\n" +
+                            "    \"fps\" : "+animationPreviewPanel.getFps()+",\n" +
                             "    \"file_type\" : \"png\",\n" +
-                            "    \"loop_type\" : \"START_OVER\"\n" +
+                            "    \"loop_type\" : \""+animationPreviewPanel.getLoopType()+"\"\n" +
                             "}");
                 }catch (IOException e) {
                     e.printStackTrace();
