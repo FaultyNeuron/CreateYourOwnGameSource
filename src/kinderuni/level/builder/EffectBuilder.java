@@ -93,6 +93,9 @@ public class EffectBuilder extends Builder{
 //                System.out.println(effectSettings.getProjectileSettings().getEffects());
                 effect = new Bounciness(effectSettings.getFactor());
                 break;
+            case PhysicsSlowMotion.ID:
+                effect = new PhysicsSlowMotion(effectSettings.getFactor());
+                break;
             default:
                 throw new RuntimeException("no effect with id \""+effectSettings.getId()+"\" exists!");
         }

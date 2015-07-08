@@ -43,7 +43,7 @@ public class DesktopFileGraphics extends DesktopGraphics {
     }
 
     public DesktopFileGraphics(String text, DoubleTupel dimensions) {
-        this(null, null, new int[]{0,0,0}, text, dimensions);
+        this(null, null, null, text, dimensions);
     }
 
     public DesktopFileGraphics(File path, int[] bgColour, int[] lineColour, String text, DoubleTupel dimensions) {

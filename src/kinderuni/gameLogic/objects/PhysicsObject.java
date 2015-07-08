@@ -18,6 +18,8 @@ public abstract class PhysicsObject extends AbstractGameObject {
     private double bounciness = 0;
     private double gravityFactor = 1;
     private double frictionCoefficient = 1;
+    private float physicsMotionFactor = 1;
+    private int physicsCoolDownCounter = 0;
 
     public DoubleTupel getSpeed() {
         return speed;
@@ -38,9 +40,21 @@ public abstract class PhysicsObject extends AbstractGameObject {
     @Override
     public void update(int time) {
         super.update(time);
-        accelerate(0, -getWorld().getGravity() * gravityFactor);
-        move(speed);
-        setSpeed(getSpeed().mult(1-(getWorld().getAirFriction()*getFrictionCoefficient())));
+//        if(physicsCoolDownCounter--<=0) {
+        accelerate(0, -getWorld().getGravity() * gravityFactor*physicsMotionFactor);
+        move(speed.mult(physicsMotionFactor));
+        double friction = Math.pow(1 - (getWorld().getAirFriction() * getFrictionCoefficient()), physicsMotionFactor);
+        setSpeed(getSpeed().mult(friction));
+//            physicsCoolDownCounter = Math.round(1/ physicsMotionFactor)-1;
+//        }
+    }
+
+    public void setPhysicsMotionFactor(double physicsMotionFactor) {
+        this.physicsMotionFactor = (float) physicsMotionFactor;
+    }
+
+    public float getPhysicsMotionFactor() {
+        return physicsMotionFactor;
     }
 
     public void accelerate(double x, double y){

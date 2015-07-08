@@ -20,7 +20,7 @@ public class DesktopSystem implements kinderuni.System {
     private DesktopScreen desktopScreen;
 
     public DesktopSystem() throws FileNotFoundException {
-        desktopScreen = new DesktopScreen(new DoubleTupel(500), this);
+        desktopScreen = new DesktopScreen(new DoubleTupel(800, 500), this);
         settings = Settings.read(resources);
     }
 

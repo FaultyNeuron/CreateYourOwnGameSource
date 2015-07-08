@@ -5,7 +5,7 @@
         "height" : 30
     },
     "bounciness" : 0.5,
-    "effect_duration" : 750,
+    "effect_duration" : 1250,
     "effects" : [
         {"id":"gun", "projectile":{
             "graphics": {
@@ -18,9 +18,10 @@
             "cool_down" : 30,
             "shooting_x" : 2,
             "shooting_y" : 3,
-            "duration" : 100,
+            "effect_duration" : 300,
             "effects" : [
-                {"id":"bounciness", "factor" : 2}
+//                {"id":"speed", "factor" : 0.25}
+                {"id":"slow_motion", "factor" : 0.5}
             ]
         }}
 //        {"id":"speed", "factor" : 4},

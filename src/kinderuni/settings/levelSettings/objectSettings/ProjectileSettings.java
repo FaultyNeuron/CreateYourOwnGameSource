@@ -17,12 +17,10 @@ public class ProjectileSettings extends CollectibleSettings {
         DEFAULT.shooting_y = 1.;
     }
 
-//    private Integer damage;
-//    private List<Drop> drop = new LinkedList<>();
-//    private Integer jump_pause;
     private Integer cool_down;
     private Double shooting_x;
     private Double shooting_y;
+//    private Integer duration;
 
     public Integer getCoolDown() {
         return cool_down;
