@@ -15,7 +15,7 @@
 
   "enemies" : [
     //{"id" : "standard_walking", "count" : 4},
-    //{"id" : "standard_flying", "count" : 2},
+    {"id" : "standard_flying", "count" : 20},
     {"id" : "spring_jumping", "count" : 15}
     //{"id" : "standard_shooting", "count" : 1},
     //{"id" : "standard_boss", "count" : 1}

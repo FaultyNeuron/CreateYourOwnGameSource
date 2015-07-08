@@ -2,6 +2,7 @@ package kinderuni.level.builder;
 
 import functionalJava.data.shape.box.Box;
 import functionalJava.data.tupel.DoubleTupel;
+import kinderuni.gameLogic.objects.Enemy;
 import kinderuni.gameLogic.objects.Goal;
 import kinderuni.gameLogic.objects.collectible.Collectible;
 import kinderuni.gameLogic.objects.collectible.DropBuilder;
@@ -115,26 +116,7 @@ public class LevelBuilder {
             lastEnd += width + floorSettings.getGapWidth();
         }
 
-        for (IdParametersSettings idSettings : levelSettings.getEnemies()) {
-            if(!system.getSettings().hasEnemySettings(idSettings.getId())){
-                throw new IdNotFoundException("enemy", idSettings.getId());
-            }
-            EnemySettings enemySettings = system.getSettings().getEnemySettings(idSettings.getId());
-            DropBuilder dropBuilder = new DropBuilder(system, random.nextLong());
-            enemyBuilder.setDropBuilder(dropBuilder);
-            for(EnemySettings.Drop drop : enemySettings.getDrop()){
-//                Collectible collectible = collectibleBuilder.build();
-                dropBuilder.addBluePrint(drop.getProbability(), system.getSettings().getCollectibleSettings(drop.getId()));
-            }
-            level.getWorld().addEnemies(enemyBuilder.build(idSettings, enemySettings));
-//            for (int i = 0; i < idSettings.getCount(); i++) {
-//                if(idSettings.hasEnemy()){
-//                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
-//                }else{
-//                    level.getWorld().add(enemyBuilder.build(enemySettings));
-//                }
-//            }
-        }
+
 
 
 
@@ -191,7 +173,39 @@ public class LevelBuilder {
             }
         }
 
-
+        Collections.shuffle(platformList);
+        it = platformList.iterator();
+        for (IdParametersSettings idSettings : levelSettings.getEnemies()) {
+            if(!system.getSettings().hasEnemySettings(idSettings.getId())){
+                throw new IdNotFoundException("enemy", idSettings.getId());
+            }
+            EnemySettings enemySettings = system.getSettings().getEnemySettings(idSettings.getId());
+            DropBuilder dropBuilder = new DropBuilder(system, random.nextLong());
+            enemyBuilder.setDropBuilder(dropBuilder);
+            for(EnemySettings.Drop drop : enemySettings.getDrop()){
+//                Collectible collectible = collectibleBuilder.build();
+                dropBuilder.addBluePrint(drop.getProbability(), system.getSettings().getCollectibleSettings(drop.getId()));
+            }
+            for (int i = 0; i < idSettings.getCount(); i++) {
+                if (it.hasNext()) {
+                    Platform platform = it.next();
+                    List<Enemy> enemyList = enemyBuilder.buildForPlatform(platform, enemySettings);
+                    for (Enemy enemy : enemyList) {
+                        enemy.stickToBase(platform);
+                    }
+                    level.getWorld().addEnemies(enemyList);
+                } else {
+                    break;
+                }
+            }
+//            for (int i = 0; i < idSettings.getCount(); i++) {
+//                if(idSettings.hasEnemy()){
+//                    level.getWorld().add(enemyBuilder.build(enemySettings, idSettings.getEnemy()));
+//                }else{
+//                    level.getWorld().add(enemyBuilder.build(enemySettings));
+//                }
+//            }
+        }
 
         //List<Collectible> collectibleList = collectibleBuilder.buildCoinsForPlatform(platform);
         //for(Collectible collectible : collectibleList){
