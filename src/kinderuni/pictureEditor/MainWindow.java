@@ -76,7 +76,7 @@ public class MainWindow extends JFrame implements TaskFinishedCallback {
 
     @Override
     public void taskFinished(Object result) {
-        detailView = new DetailView(imageSnippets);
+        detailView = new DetailView(imageSnippetContainer);
         this.remove(generalView);
         this.add(detailView);
         this.revalidate();

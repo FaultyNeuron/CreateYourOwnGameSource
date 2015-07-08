@@ -1,6 +1,7 @@
 package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
+import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
 import kinderuni.pictureEditor.language.Language;
 
 import javax.swing.*;
@@ -16,9 +17,10 @@ import java.util.ArrayList;
  * Created by markus on 27.06.15.
  */
 public class PreviewSettingsPanel extends JPanel {
-    private ArrayList<ImageSnippet> imageSnippets;
+//    private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
     private PreviewPanel previewPanel;
-    private JPanel buttonPanel;
+    private JPanel buttonPanel;ArrayList<ImageSnippet> imageSnippets;
     private JButton startButton, stopButton;
     private JScrollBar speedScrollBar;
     private JLabel scrollBarTitle, scrollBarValue;
@@ -28,12 +30,12 @@ public class PreviewSettingsPanel extends JPanel {
     private int maxAnimationSleepTime = 1000;
     private static final String SCROLL_BAR_VALUE_STRING = "%d ms";
 
-    public PreviewSettingsPanel(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
+    public PreviewSettingsPanel(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+        this.imageSnippetContainer = imageSnippetContainer;
 
         this.setLayout(new BorderLayout());
         this.previewPanel = new PreviewPanel();
-        this.previewPanel.setImage(imageSnippets.get(0).getSubimage());
+        this.previewPanel.setImage(imageSnippetContainer.get(0).getSubimage());
 
         this.startButton = new JButton(Language.START);
         this.stopButton = new JButton(Language.STOP);
@@ -160,6 +162,4 @@ public class PreviewSettingsPanel extends JPanel {
             this.sleepDuration = sleepDuration;
         }
     }
-
-
 }

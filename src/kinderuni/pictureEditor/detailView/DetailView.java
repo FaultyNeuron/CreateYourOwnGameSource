@@ -1,6 +1,7 @@
 package kinderuni.pictureEditor.detailView;
 
 import kinderuni.pictureEditor.ImageSnippet;
+import kinderuni.pictureEditor.ThreadSaveImageSnippetContainer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,21 +15,22 @@ public class DetailView extends JPanel implements DetailPanelCallback {
     private FrameSettingsPanel frameSettingsPanel;
     private PreviewSettingsPanel previewSettingsPanel;
     private ArrayList<ImageSnippet> imageSnippets;
+    private ThreadSaveImageSnippetContainer imageSnippetContainer;
 
-    public DetailView(ArrayList<ImageSnippet> imageSnippets) {
-        this.imageSnippets = imageSnippets;
+    public DetailView(ThreadSaveImageSnippetContainer imageSnippetContainer) {
+        this.imageSnippetContainer = imageSnippetContainer;
 
 //        this.setLayout(new SpringLayout());
         this.setLayout(new BorderLayout());
         this.setBackground(Color.BLUE);
 
-        this.animationTablePanel = new AnimationTablePanel(imageSnippets);
+        this.animationTablePanel = new AnimationTablePanel(imageSnippetContainer);
         this.animationTablePanel.setSize(new Dimension((int)this.animationTablePanel.getSize().getWidth(), (int)this.animationTablePanel.getSize().getHeight()+200));
         this.animationTablePanel.setDetailPanelCallback(this);
 
-        this.frameSettingsPanel = new FrameSettingsPanel(imageSnippets);
+        this.frameSettingsPanel = new FrameSettingsPanel(imageSnippetContainer);
 
-        this.previewSettingsPanel = new PreviewSettingsPanel(imageSnippets);
+        this.previewSettingsPanel = new PreviewSettingsPanel(imageSnippetContainer);
         previewSettingsPanel.setBackground(Color.PINK);
 
         JPanel container = new JPanel(new BoxLayout(this, this.getWidth()));

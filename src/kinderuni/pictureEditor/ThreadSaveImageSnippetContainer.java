@@ -7,6 +7,7 @@ import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Created by markus on 29.06.15.
@@ -33,6 +34,10 @@ public class ThreadSaveImageSnippetContainer {
 
     public synchronized void remove(ImageSnippet toRemove) {
         items.remove(toRemove);
+    }
+
+    public synchronized void remove(int index) {
+        items.remove(index);
     }
 
     public synchronized void deactivateAllResizables() {
@@ -76,6 +81,17 @@ public class ThreadSaveImageSnippetContainer {
             return null;
         }
         return snippet.getDisplaySpaceRectangle();
+    }
+
+    public synchronized ImageSnippet get(int index) throws NoSuchElementException {
+        if (index < items.size()) {
+            return items.get(index);
+        }
+        throw new NoSuchElementException();
+    }
+
+    public synchronized void set(int index, ImageSnippet snippet) throws NoSuchElementException {
+        items.set(index, snippet);
     }
 
 
