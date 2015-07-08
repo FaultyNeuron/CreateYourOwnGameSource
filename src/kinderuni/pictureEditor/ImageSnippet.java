@@ -204,6 +204,10 @@ public class ImageSnippet {
         resizableContainerCallback.replaceImageSnippet(this, newPositionInDisplaySpace);
     }
 
+    public Rectangle getDisplaySpaceRectangle() {
+        return getDisplaySpaceRectangle(snippetRectangleImageSpace);
+    }
+
     private int cutValue(int min, int max, int value) {
         return Math.min(max, Math.max(min, value));
     }

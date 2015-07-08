@@ -66,6 +66,18 @@ public class ThreadSaveImageSnippetContainer {
         }
     }
 
+    public synchronized int size() {
+        return items.size();
+    }
+
+    public synchronized Rectangle getBorderOfFirstSnippet() {
+        ImageSnippet snippet = items.get(0);
+        if (snippet == null) {
+            return null;
+        }
+        return snippet.getDisplaySpaceRectangle();
+    }
+
 
 
 
