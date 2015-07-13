@@ -72,10 +72,10 @@ public abstract class LivingObject extends PhysicsObject{
     }
 
     public boolean takeDamage(int damage, LivingObject source){
-        if(invincibleCounter==0){
+        if(invincibleCounter==0 || damage<0){
             hp-=damage;
             if(damage>0) {
-                getGraphics().blink(10, 3);
+                getGraphics().blink(5);
 
                 if (hp <= 0) {
                     killedBy(source);

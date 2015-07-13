@@ -45,7 +45,7 @@ public class World {
         this.airFriction = airFriction;
         this.gravity = gravity;
         this.activeBoundings = new FastAccessBox(DoubleTupel.ZEROS,
-                new DoubleTupel(screenWidth + ACTIVE_DISTANCE, 2<<10));
+                new DoubleTupel(screenWidth + ACTIVE_DISTANCE, (screenWidth + ACTIVE_DISTANCE)*2));
     }
 
     public double getGravity() {

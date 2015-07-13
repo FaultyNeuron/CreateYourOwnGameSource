@@ -16,7 +16,7 @@ public class AnimationLogicImpl implements AnimationLogic {
     private int pauseDelta;
     private int framesCount;
     private boolean paused;
-
+    
     public AnimationLogicImpl(double fps, int framesCount) {
         this(fps, LoopType.BACK_AND_FORTH, framesCount);
     }
@@ -95,12 +95,16 @@ public class AnimationLogicImpl implements AnimationLogic {
     @Override
     public int getCurrentFrame(){
         if(hasStarted){
+            if(framesCount==1){
+                return 0;
+            }
             long currentTime = System.currentTimeMillis();
             int timeDelta = (int) (currentTime - (animationStartingTime + getPauseDelta(currentTime)));
-            int cyclePosition = timeDelta % (frameDelta * framesCount);
-            int cyclesPassed = timeDelta / (frameDelta * framesCount);
-            int framePos = cyclePosition / frameDelta;
-            return handleLoopType(cyclesPassed, framePos);
+//            int cyclePosition = timeDelta % (frameDelta * framesCount);
+//            int cyclesPassed = timeDelta / (frameDelta * framesCount);
+//            int framePos = cyclePosition / frameDelta;
+
+            return handleLoopType(timeDelta);
 //            if(loopsInfinitly() || cyclesPassed < playbackTimes) {
 //                int framePos = cyclePosition / frameDelta;
 //                if (loopType == LoopType.START_OVER || (cyclesPassed) % 2 == 0) {
@@ -120,28 +124,39 @@ public class AnimationLogicImpl implements AnimationLogic {
         }
     }
 
-    private int handleLoopType(int cyclesPassed, int framePos){
-        boolean looping = loopsInfinitly() || cyclesPassed < playbackTimes;
+    private int handleLoopType(int timeDelta){
         switch (loopType){
-            case START_OVER:
-                if(looping){
+            case START_OVER: {
+                int cyclePosition = timeDelta % (frameDelta * framesCount);
+                int cyclesPassed = timeDelta / (frameDelta * framesCount);
+                int framePos = cyclePosition / frameDelta;
+                boolean looping = loopsInfinitly() || cyclesPassed < playbackTimes;
+                if (looping) {
                     return framePos;
-                }else{
+                } else {
                     return framesCount - 1;
                 }
-            case BACK_AND_FORTH:
-                framePos = (framePos+cyclesPassed)%framesCount;
-                if(looping){
-                    if(cyclesPassed % 2 == 0) {
-                        return framePos;
-                    }else{
-                        return framesCount - 1 - framePos;
+            }
+            case BACK_AND_FORTH: {
+                int cyclePosition = timeDelta % (frameDelta * (framesCount-1));
+                int cyclesPassed = timeDelta / (frameDelta * (framesCount-1));
+                int framePos = cyclePosition / frameDelta;
+                int toReturn;
+                boolean looping = loopsInfinitly() || cyclesPassed < playbackTimes;
+
+                if (looping) {
+                    if (cyclesPassed % 2 == 0) {
+                        toReturn = framePos;
+                    } else {
+                        toReturn = framesCount - 1 - framePos;
                     }
-                }else if(playbackTimes % 2 == 1){
-                    return framesCount - 1;
-                }else{
-                    return 0;
+                } else if (playbackTimes % 2 == 1) {
+                    toReturn = framesCount - 1;
+                } else {
+                    toReturn = 0;
                 }
+                return toReturn;
+            }
             default:
                 return 0;
         }

@@ -47,7 +47,7 @@ public class Settings {
     }
 
     private static <A> Map<String, A> toMap(File resources, String subFolder, Class<A> classToParse) throws FileNotFoundException {
-        Map<String, A> toReturn = new HashMap<>();
+        Map<String, A> toReturn = new LinkedHashMap<>();
         for(File file : new File(resources, subFolder).listFiles()){
             String fileName = file.getName();
             toReturn.put(fileName.substring(0, fileName.length()-5), readObject(file, classToParse));

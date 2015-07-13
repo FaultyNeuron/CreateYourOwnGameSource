@@ -13,6 +13,7 @@ public abstract class Effect {
     public void activate(LivingObject target){
         this.target = target;
     }
+
     public void update(int time){}
 
     public LivingObject getTarget() {

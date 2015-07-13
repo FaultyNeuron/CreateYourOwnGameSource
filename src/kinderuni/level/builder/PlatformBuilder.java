@@ -37,8 +37,6 @@ public class PlatformBuilder extends GameObjectBuilder {
     }
 
     public Platform build(PlatformSettings platformSettings, PlatformSettings defaultSettings, boolean keepDefault) {
-
-
         double friction = platformSettings.hasFriction()?platformSettings.getFriction():defaultSettings.getFriction();
         double speed = platformSettings.hasSpeed()?platformSettings.getSpeed():defaultSettings.getSpeed();
         DoubleTupel delta = platformSettings.hasDelta()?platformSettings.getDelta():defaultSettings.getDelta();
@@ -71,6 +69,7 @@ public class PlatformBuilder extends GameObjectBuilder {
 
         Collections.shuffle(platformSettingsList, getRandom());
         // iterate over all platforms in list
+        OUTER:
         for (PlatformSettings platformSettings : platformSettingsList){
             double yFound = -1;
             double xRand = -1;
@@ -83,8 +82,11 @@ public class PlatformBuilder extends GameObjectBuilder {
                 // find a y position (-1 -> not found)
                 yFound = findPosition(platformBox, existingBoxes, levelDimensions) + verticalDistance;
                 platformBox = platformBox.move(new DoubleTupel(0,yFound-verticalDistance));
-                if (yFound != -1)
+                if(yFound>levelDimensions.getSecond()){
+                    continue OUTER;
+                }else if (yFound != -1){
                     break;
+                }
             }
             if (yFound != -1) {
                 // create platform and add box to existingBoxes
@@ -142,9 +144,9 @@ public class PlatformBuilder extends GameObjectBuilder {
         }
         if (crash) {
             return moveUp + findPosition(platformBox, existingBoxes, levelDimensions);
-        }
-        else
+        } else{
             return moveUp;
+        }
     }
 
     public void setHorizontalDistance(double horizontalDistance) {
