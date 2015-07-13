@@ -29,7 +29,6 @@ public class PhysicsSlowMotionx extends ReversibleEffect {
     public String toString() {
         return "PhysicsSlowMotionx{" +
                 "factor=" + factor +
-                ", reverser=" + getReverser() +
                 '}';
     }
 
