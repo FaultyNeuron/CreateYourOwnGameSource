@@ -5,10 +5,10 @@ import kinderuni.gameLogic.objects.LivingObject;
 /**
 * Created by Georg Plaz.
 */
-public class PhysicsSlowMotion extends ReversibleEffect {
+public class PhysicsSlowMotionx extends ReversibleEffect {
     public static final String ID = "slow_motion";
     private double factor;
-    public PhysicsSlowMotion(double factor) {
+    public PhysicsSlowMotionx(double factor) {
         this.factor = factor;
     }
 
@@ -27,9 +27,8 @@ public class PhysicsSlowMotion extends ReversibleEffect {
 
     @Override
     public String toString() {
-        return "PhysicsSlowMotion{" +
+        return "PhysicsSlowMotionx{" +
                 "factor=" + factor +
-                ", reverser=" + getReverser() +
                 '}';
     }
 

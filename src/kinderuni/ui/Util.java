@@ -15,6 +15,8 @@ import java.util.Random;
  * Created by Georg Plaz.
  */
 public class Util {
+    private static float screenDensity = 1f;
+
     public static void pushLevelsToScreen(kinderuni.System system, Screen screen){
         pushLevelsToScreen(system.getSettings().getLevelSettings().values(), system, screen);
     }
@@ -47,5 +49,13 @@ public class Util {
 
     public static void pushLevelEditToScreen(LevelSettings levelSettings, kinderuni.System system, Screen screen) {
 
+    }
+
+    public static void setScreenDensity(float screenDensity) {
+        Util.screenDensity = screenDensity;
+    }
+
+    public static float getScreenDensityScaleFactor() {
+        return Util.screenDensity;
     }
 }

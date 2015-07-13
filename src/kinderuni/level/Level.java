@@ -8,6 +8,7 @@ import kinderuni.gameLogic.objects.Player;
 import kinderuni.gameLogic.objects.collectible.effects.Effect;
 import kinderuni.gameLogic.objects.collectible.effects.ReversibleEffect;
 import kinderuni.ui.Info;
+import kinderuni.ui.Util;
 import kinderuni.ui.graphics.GraphicsObject;
 import kinderuni.ui.graphics.InputRetriever;
 import kinderuni.ui.graphics.Paintable;
@@ -116,8 +117,11 @@ public class Level implements Paintable {
         DoubleTupel heartDim = heartGraphics.getDimensions();
         double iconDelta = heartDim.max();
         world.paint(painter);
-        double left = -painter.getRenderScreen().getCompSize().getFirst()/2;
-        double top = painter.getRenderScreen().getCompSize().getSecond()/2;
+
+        DoubleTupel compSize = painter.getRenderScreen().getCompSize();
+        double left = -compSize.getFirst()/(2* Util.getScreenDensityScaleFactor());
+        double top = compSize.getSecond()/(2* Util.getScreenDensityScaleFactor());
+
         for (int i = 0; i < getWorld().getPlayer().getHp(); i++) {
             painter.paint(heartGraphics, new DoubleTupel(left + iconDelta + i*(heartDim.getFirst()+iconDelta), top-iconDelta));
         }

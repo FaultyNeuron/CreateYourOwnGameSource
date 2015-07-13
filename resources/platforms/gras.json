@@ -1,6 +1,6 @@
 {
     "graphics" : {
-        "id" : "gras_platform",
+        "id" : "simple_platform",
         //"line_colour" : [0, 0, 0],
         //"bg_colour" : [115, 191, 201],
         "width" : 200,
